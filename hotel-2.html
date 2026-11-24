@@ -1,0 +1,2020 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stayora | Hotel Booking</title>
+
+<style>
+:root {
+    --primary: #173f35;
+    --primary-light: #286b58;
+    --gold: #d6aa65;
+    --bg: #f7f7f3;
+    --white: #ffffff;
+    --text: #26362f;
+    --muted: #78847d;
+    --border: #e4e9e4;
+    --red: #c64e4e;
+    --green: #23865b;
+    --shadow: 0 8px 25px #153d3010;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+button, input, select, textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 7px 0 16px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    outline: none;
+    background: white;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--primary-light);
+}
+
+label {
+    font-size: 12px;
+    font-weight: 650;
+}
+
+h1, h2, h3 {
+    color: var(--primary);
+}
+
+h2 {
+    font-size: 23px;
+}
+
+p {
+    line-height: 1.7;
+}
+
+.muted {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.primary-btn {
+    background: var(--primary);
+    color: white;
+    padding: 11px 17px;
+    border-radius: 7px;
+    font-weight: 600;
+}
+
+.primary-btn:hover {
+    background: var(--primary-light);
+}
+
+.gold-btn {
+    background: var(--gold);
+    color: #23362e;
+    padding: 11px 17px;
+    border-radius: 7px;
+    font-weight: 700;
+}
+
+.light-btn {
+    background: #edf3ef;
+    color: var(--primary);
+    padding: 9px 13px;
+    border-radius: 7px;
+}
+
+.danger-btn {
+    background: #fff0ef;
+    color: var(--red);
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* AUTHENTICATION */
+
+#authPage {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    background: linear-gradient(135deg, #102d25, #39705b);
+}
+
+.auth-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    max-width: 930px;
+    min-height: 560px;
+    background: white;
+    border-radius: 17px;
+    overflow: hidden;
+    box-shadow: 0 25px 65px #071d1645;
+}
+
+.auth-image {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    color: white;
+    background:
+      linear-gradient(0deg, #102c24ee, #102c2430),
+      url("https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=85")
+      center/cover;
+}
+
+.brand {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -.5px;
+}
+
+.auth-image .brand {
+    color: white;
+    margin-bottom: auto;
+}
+
+.auth-image h1 {
+    color: white;
+    font-size: 35px;
+    line-height: 1.25;
+    margin-bottom: 13px;
+}
+
+.auth-image p {
+    font-size: 14px;
+    color: #edf5ef;
+}
+
+.auth-form {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-form h2 {
+    margin-bottom: 5px;
+}
+
+.role-switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 22px 0;
+}
+
+.role-switch button {
+    padding: 11px;
+    background: #f2f5f2;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--primary);
+}
+
+.role-switch button.active {
+    background: var(--primary);
+    color: white;
+}
+
+.auth-form .primary-btn {
+    width: 100%;
+}
+
+.auth-link {
+    color: var(--primary-light);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.auth-bottom {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 18px;
+}
+
+.demo-box {
+    background: #edf5ef;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    line-height: 1.9;
+    margin-top: 20px;
+}
+
+/* HEADER */
+
+header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.navbar {
+    max-width: 1450px;
+    margin: auto;
+    padding: 14px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar .brand {
+    color: var(--primary);
+    font-size: 25px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.nav-links button {
+    background: transparent;
+    padding: 9px 10px;
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 12px;
+}
+
+.nav-links button:hover,
+.nav-links button.active {
+    background: #edf4ee;
+    color: var(--primary);
+}
+
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+}
+
+main {
+    max-width: 1450px;
+    padding: 25px 28px 50px;
+    margin: auto;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.page-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.page-heading p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+/* HERO AND SEARCH */
+
+.hero {
+    min-height: 310px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+    color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    background:
+      linear-gradient(90deg, #102f26ed, #102f2670),
+      url("https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1600&q=85")
+      center/cover;
+}
+
+.eyebrow {
+    color: var(--gold);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: 800;
+    margin-bottom: 13px;
+}
+
+.hero h1 {
+    color: white;
+    max-width: 620px;
+    font-size: clamp(30px, 5vw, 48px);
+    line-height: 1.2;
+    margin-bottom: 12px;
+}
+
+.hero p {
+    color: #e7efe9;
+    font-size: 14px;
+    max-width: 540px;
+}
+
+.search-panel {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr .7fr auto;
+    align-items: end;
+    gap: 12px;
+    padding: 20px;
+    margin-top: -25px;
+    position: relative;
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.search-panel label {
+    display: block;
+}
+
+.search-panel input,
+.search-panel select {
+    margin-bottom: 0;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin: 32px 0 18px;
+}
+
+.section-title h2 {
+    font-size: 21px;
+}
+
+/* ROOM CARDS */
+
+.room-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 19px;
+}
+
+.room-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform .2s;
+}
+
+.room-card:hover {
+    transform: translateY(-4px);
+}
+
+.room-card img {
+    width: 100%;
+    height: 225px;
+    object-fit: cover;
+    background: #e7ece7;
+}
+
+.room-content {
+    padding: 18px;
+}
+
+.room-content h3 {
+    font-size: 18px;
+    margin-bottom: 7px;
+}
+
+.room-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+    margin: 13px 0;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.price {
+    font-size: 21px;
+    color: var(--primary);
+    font-weight: 800;
+}
+
+.price small {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+}
+
+.amenities {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+    margin: 12px 0 17px;
+}
+
+.amenities span {
+    padding: 6px 8px;
+    border-radius: 5px;
+    background: #f1f5f1;
+    color: #53685c;
+    font-size: 10px;
+}
+
+.room-content button {
+    width: 100%;
+}
+
+/* GENERAL PANELS */
+
+.panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+    margin-bottom: 18px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 20px;
+}
+
+.stat p {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.stat h2 {
+    margin-top: 8px;
+    font-size: 26px;
+}
+
+.table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: white;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 690px;
+}
+
+th, td {
+    padding: 14px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    font-size: 12px;
+}
+
+th {
+    background: #eff4ef;
+    color: var(--primary);
+}
+
+tr:last-child td {
+    border-bottom: 0;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    background: #e2f5e9;
+    color: var(--green);
+}
+
+.badge.red {
+    background: #fff0ee;
+    color: var(--red);
+}
+
+.badge.gold {
+    background: #fff3db;
+    color: #98641b;
+}
+
+.empty {
+    padding: 25px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 17px;
+}
+
+.form-grid .full {
+    grid-column: 1 / -1;
+}
+
+.form-message {
+    font-size: 12px;
+    color: var(--green);
+    margin-top: 12px;
+}
+
+.form-panel {
+    max-width: 750px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.info-card {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.info-card h3 {
+    font-size: 15px;
+    margin-bottom: 9px;
+}
+
+.info-card p {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.faq-item {
+    padding: 17px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.faq-item:last-child {
+    border-bottom: 0;
+}
+
+.faq-item h3 {
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+
+.faq-item p {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+footer {
+    background: var(--primary);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+footer p {
+    color: #dce8df;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+@media(max-width: 1050px) {
+    .navbar {
+        flex-wrap: wrap;
+    }
+
+    .nav-links {
+        order: 3;
+        width: 100%;
+    }
+
+    .search-panel {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .room-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media(max-width: 700px) {
+    .auth-card {
+        grid-template-columns: 1fr;
+        max-width: 450px;
+    }
+
+    .auth-image {
+        min-height: 220px;
+        padding: 25px;
+    }
+
+    .auth-image h1 {
+        font-size: 27px;
+    }
+
+    .auth-form {
+        padding: 28px 24px;
+    }
+
+    .navbar {
+        padding: 13px 16px;
+    }
+
+    main {
+        padding: 18px 15px 35px;
+    }
+
+    .nav-links {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 5px;
+    }
+
+    .nav-links button {
+        white-space: nowrap;
+    }
+
+    .user-area {
+        margin-left: auto;
+    }
+
+    .hero {
+        min-height: 280px;
+        padding: 25px;
+    }
+
+    .search-panel {
+        margin-top: 15px;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .room-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .room-card img {
+        height: 235px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid .full {
+        grid-column: auto;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN / REGISTER -->
+
+<section id="authPage">
+    <div class="auth-card">
+        <div class="auth-image">
+            <div class="brand">✦ Stayora</div>
+            <h1>Find your perfect stay.</h1>
+            <p>Discover beautiful rooms, thoughtful service, and memorable destinations.</p>
+        </div>
+
+        <div class="auth-form">
+            <h2 id="authTitle">Welcome Back</h2>
+            <p class="muted" id="authSubtitle">Sign in to manage your bookings.</p>
+
+            <div class="role-switch">
+                <button id="userRoleBtn" class="active" onclick="selectRole('user')">
+                    Guest
+                </button>
+                <button id="adminRoleBtn" onclick="selectRole('admin')">
+                    Administrator
+                </button>
+            </div>
+
+            <form id="authForm">
+                <div id="nameField" class="hidden">
+                    <label>Full Name</label>
+                    <input id="regName" placeholder="Your full name">
+                </div>
+
+                <label>Email Address</label>
+                <input id="authEmail" type="email" placeholder="you@example.com" required>
+
+                <label>Password</label>
+                <input id="authPassword" type="password" placeholder="Enter password" required>
+
+                <div id="confirmField" class="hidden">
+                    <label>Confirm Password</label>
+                    <input id="authConfirm" type="password" placeholder="Confirm password">
+                </div>
+
+                <p id="authError" style="color:#c64e4e;font-size:12px;margin-bottom:12px"></p>
+
+                <button class="primary-btn" id="authSubmit" type="submit">Login</button>
+            </form>
+
+            <div class="auth-bottom" id="registerText">
+                New to Stayora?
+                <span class="auth-link" onclick="toggleRegister(true)">Create account</span>
+            </div>
+
+            <div class="auth-bottom hidden" id="loginText">
+                Already registered?
+                <span class="auth-link" onclick="toggleRegister(false)">Login</span>
+            </div>
+
+            <div class="demo-box">
+                <strong>Demo login details</strong><br>
+                Guest: guest@stayora.com / guest123<br>
+                Admin: admin@stayora.com / admin123<br>
+                <button class="light-btn" type="button" onclick="fillDemo()">
+                    Fill Demo Login
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN WEBSITE -->
+
+<div id="site" class="hidden">
+
+<header>
+    <div class="navbar">
+        <div class="brand">✦ Stayora</div>
+
+        <nav class="nav-links" id="navLinks">
+            <button data-page="home" onclick="showPage('home')">Home</button>
+            <button data-page="rooms" onclick="showPage('rooms')">Rooms</button>
+            <button data-page="bookings" onclick="showPage('bookings')">My Bookings</button>
+            <button data-page="profile" onclick="showPage('profile')">My Profile</button>
+            <button data-page="about" onclick="showPage('about')">About</button>
+            <button data-page="contact" onclick="showPage('contact')">Contact</button>
+            <button data-page="faq" onclick="showPage('faq')">FAQs</button>
+            <button data-page="travel" onclick="showPage('travel')">Travel Guide</button>
+            <button data-page="privacy" onclick="showPage('privacy')">Privacy</button>
+            <button data-page="admin" class="admin-nav hidden" onclick="showPage('admin')">Admin Panel</button>
+        </nav>
+
+        <div class="user-area">
+            <span id="navUserName">Guest</span>
+            <button class="light-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+</header>
+
+<main>
+
+<!-- HOME -->
+
+<section id="home" class="page active">
+    <div class="hero">
+        <span class="eyebrow">A better way to travel</span>
+        <h1>Comfort, elegance, and a stay to remember.</h1>
+        <p>Find a room that fits your journey. Explore our rooms, check availability, and plan your next getaway.</p>
+    </div>
+
+    <form class="search-panel" id="searchForm">
+        <div>
+            <label>Destination</label>
+            <input id="searchDestination" placeholder="City or destination" value="Chennai">
+        </div>
+        <div>
+            <label>Check-in</label>
+            <input id="searchCheckIn" type="date" required>
+        </div>
+        <div>
+            <label>Check-out</label>
+            <input id="searchCheckOut" type="date" required>
+        </div>
+        <div>
+            <label>Guests</label>
+            <select id="searchGuests">
+                <option value="1">1 Guest</option>
+                <option value="2" selected>2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4">4 Guests</option>
+            </select>
+        </div>
+        <button class="primary-btn" type="submit">Search Rooms</button>
+    </form>
+
+    <div class="section-title">
+        <div>
+            <h2>Explore Our Rooms</h2>
+            <p class="muted">Choose the space that suits your stay.</p>
+        </div>
+        <button class="light-btn" onclick="showPage('rooms')">View All Rooms →</button>
+    </div>
+
+    <div class="room-grid" id="homeRooms"></div>
+
+    <div class="section-title"><h2>Why Stayora?</h2></div>
+    <div class="info-grid">
+        <div class="info-card">
+            <h3>✓ Easy Booking</h3>
+            <p>Search for rooms, check dates, and manage your reservations from one dashboard.</p>
+        </div>
+        <div class="info-card">
+            <h3>♧ Thoughtful Comfort</h3>
+            <p>Explore room options with useful amenities and transparent nightly prices.</p>
+        </div>
+        <div class="info-card">
+            <h3>♡ Helpful Support</h3>
+            <p>Find contact information, frequently asked questions, and travel tips.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ROOM CATALOG -->
+
+<section id="rooms" class="page">
+    <div class="page-heading">
+        <div>
+            <h2>Our Rooms</h2>
+            <p>Find the right room for your next trip.</p>
+        </div>
+    </div>
+
+    <div class="panel">
+        <form id="roomFilterForm" class="form-grid">
+            <div>
+                <label>Check-in Date</label>
+                <input type="date" id="filterIn">
+            </div>
+            <div>
+                <label>Check-out Date</label>
+                <input type="date" id="filterOut">
+            </div>
+            <div>
+                <label>Number of Guests</label>
+                <select id="filterGuests">
+                    <option value="1">1 Guest</option>
+                    <option value="2" selected>2 Guests</option>
+                    <option value="3">3 Guests</option>
+                    <option value="4">4 Guests</option>
+                </select>
+            </div>
+            <div style="display:flex;align-items:end;padding-bottom:16px">
+                <button class="primary-btn" type="submit">Check Availability</button>
+            </div>
+        </form>
+    </div>
+
+    <p id="availabilityMessage" class="muted" style="margin-bottom:15px"></p>
+    <div class="room-grid" id="allRooms"></div>
+</section>
+
+<!-- BOOKING HISTORY -->
+
+<section id="bookings" class="page">
+    <div class="page-heading">
+        <div>
+            <h2>My Bookings</h2>
+            <p>View, change, and cancel your reservations.</p>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Room</th>
+                    <th>Dates</th>
+                    <th>Guests</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="bookingRows"></tbody>
+        </table>
+    </div>
+    <p class="muted" style="margin-top:12px">
+        Guests can change or cancel a booking only at least 3 days before the check-in date.
+    </p>
+</section>
+
+<!-- PROFILE -->
+
+<section id="profile" class="page">
+    <div class="page-heading">
+        <div>
+            <h2>My Profile</h2>
+            <p>Update your personal information.</p>
+        </div>
+    </div>
+
+    <div class="panel form-panel">
+        <form id="profileForm">
+            <label>Full Name</label>
+            <input id="profileName" required>
+            <label>Email Address</label>
+            <input id="profileEmail" type="email" readonly>
+            <label>Phone Number</label>
+            <input id="profilePhone" placeholder="Enter phone number">
+            <label>Address</label>
+            <textarea id="profileAddress" rows="3" placeholder="Enter address"></textarea>
+            <button class="primary-btn" type="submit">Save Profile</button>
+            <p id="profileMessage" class="form-message"></p>
+        </form>
+    </div>
+</section>
+
+<!-- ADMIN PANEL -->
+
+<section id="admin" class="page">
+    <div class="page-heading">
+        <div>
+            <h2>Administrator Dashboard</h2>
+            <p>Manage room inventory, prices, bookings, users, and website content.</p>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat"><p>Room Types</p><h2 id="adminTypes">4</h2></div>
+        <div class="stat"><p>Total Rooms</p><h2 id="adminTotal">0</h2></div>
+        <div class="stat"><p>Active Bookings</p><h2 id="adminBookings">0</h2></div>
+        <div class="stat"><p>Registered Accounts</p><h2 id="adminUsers">0</h2></div>
+    </div>
+
+    <div class="section-title"><h2>Manage Room Quantity and Prices</h2></div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Room Type</th>
+                    <th>Capacity</th>
+                    <th>Quantity</th>
+                    <th>Available</th>
+                    <th>Price / Night (₹)</th>
+                    <th>Save</th>
+                </tr>
+            </thead>
+            <tbody id="adminRoomRows"></tbody>
+        </table>
+    </div>
+
+    <div class="section-title"><h2>Manage All Bookings</h2></div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Guest</th>
+                    <th>Room</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="adminBookingRows"></tbody>
+        </table>
+    </div>
+
+    <div class="section-title"><h2>Registered Users</h2></div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr><th>Name</th><th>Email</th><th>Role</th></tr>
+            </thead>
+            <tbody id="adminUserRows"></tbody>
+        </table>
+    </div>
+
+    <div class="section-title"><h2>Edit Website Pages</h2></div>
+    <div class="panel">
+        <p class="muted">Choose a page and update the text displayed on the website.</p>
+        <form id="contentForm">
+            <label>Page</label>
+            <select id="contentPage">
+                <option value="about">About Us</option>
+                <option value="contact">Contact Us</option>
+                <option value="faq">Customer Service Q&A</option>
+                <option value="travel">Local Travel Guide</option>
+                <option value="privacy">Privacy Policy</option>
+            </select>
+            <label>Page Content</label>
+            <textarea id="contentText" rows="7" required></textarea>
+            <button class="primary-btn" type="submit">Save Page Content</button>
+            <p id="contentMessage" class="form-message"></p>
+        </form>
+    </div>
+</section>
+
+<!-- ABOUT -->
+
+<section id="about" class="page">
+    <div class="page-heading"><div><h2>About Stayora</h2><p>Our story and our promise.</p></div></div>
+    <div class="panel"><div id="aboutContent"></div></div>
+</section>
+
+<!-- CONTACT -->
+
+<section id="contact" class="page">
+    <div class="page-heading"><div><h2>Contact Us</h2><p>We are here to help with your stay.</p></div></div>
+    <div class="info-grid">
+        <div class="info-card"><h3>☎ Phone</h3><p id="contactPhone">+91 98765 43210</p></div>
+        <div class="info-card"><h3>✉ Email</h3><p id="contactEmail">support@stayora.example</p></div>
+        <div class="info-card"><h3>⌖ Address</h3><p id="contactAddress">Stayora Hotel, Chennai, Tamil Nadu, India</p></div>
+    </div>
+    <div class="panel" style="margin-top:20px">
+        <h3 style="margin-bottom:15px">Send an Enquiry</h3>
+        <form id="contactForm">
+            <label>Your Name</label><input required id="contactName">
+            <label>Email</label><input type="email" required id="contactUserEmail">
+            <label>Message</label><textarea rows="4" required id="contactMessage"></textarea>
+            <button class="primary-btn" type="submit">Submit Enquiry</button>
+            <p class="form-message" id="contactResult"></p>
+        </form>
+    </div>
+</section>
+
+<!-- FAQ -->
+
+<section id="faq" class="page">
+    <div class="page-heading"><div><h2>Customer Service Q&A</h2><p>Answers to common questions.</p></div></div>
+    <div class="panel" id="faqContent"></div>
+</section>
+
+<!-- TRAVEL GUIDE -->
+
+<section id="travel" class="page">
+    <div class="page-heading"><div><h2>Local Travel Guide</h2><p>Plan your journey before arrival.</p></div></div>
+    <div class="info-grid">
+        <div class="info-card"><h3>Getting Around</h3><p>Use local buses, metro services, taxis, or app-based transport where available. Check routes and schedules before departure.</p></div>
+        <div class="info-card"><h3>Nearby Attractions</h3><p>Explore local museums, parks, markets, cultural landmarks, and popular dining areas based on your destination.</p></div>
+        <div class="info-card"><h3>Travel Essentials</h3><p>Carry valid identification, keep your booking confirmation available, and check local weather and transport updates.</p></div>
+    </div>
+    <div class="panel" style="margin-top:18px" id="travelContent"></div>
+</section>
+
+<!-- PRIVACY POLICY -->
+
+<section id="privacy" class="page">
+    <div class="page-heading"><div><h2>Privacy Policy</h2><p>How this demonstration describes data handling.</p></div></div>
+    <div class="panel" id="privacyContent"></div>
+</section>
+
+</main>
+
+<footer>
+    <div class="brand" style="color:white">✦ Stayora</div>
+    <p>Thoughtful stays. Memorable journeys.</p>
+    <p>© 2026 Stayora Hotel Booking Demo</p>
+</footer>
+
+</div>
+
+<!-- BOOKING MODAL -->
+
+<div id="bookingModal" class="hidden" style="
+    position:fixed;inset:0;background:#10231eb8;z-index:50;
+    padding:18px;overflow:auto;align-items:center;justify-content:center">
+    <div class="panel" style="width:100%;max-width:600px;margin:auto">
+        <div class="page-heading">
+            <div><h2 id="bookingTitle">Book a Room</h2><p class="muted">Complete the details below.</p></div>
+            <button class="light-btn" onclick="closeModal()">✕</button>
+        </div>
+        <form id="bookingForm">
+            <input id="bookingId" type="hidden">
+            <input id="bookingRoomId" type="hidden">
+
+            <label>Room Type</label>
+            <input id="bookingRoomName" readonly>
+
+            <div class="form-grid">
+                <div><label>Check-in</label><input type="date" id="bookingIn" required></div>
+                <div><label>Check-out</label><input type="date" id="bookingOut" required></div>
+                <div class="full"><label>Number of Guests</label>
+                    <select id="bookingGuests">
+                        <option value="1">1 Guest</option>
+                        <option value="2" selected>2 Guests</option>
+                        <option value="3">3 Guests</option>
+                        <option value="4">4 Guests</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="panel" style="background:#f5f7f3">
+                <p class="muted">Estimated total</p>
+                <h2 id="bookingEstimate">₹0</h2>
+            </div>
+
+            <label>Payment Method (Demo)</label>
+            <select id="paymentMethod">
+                <option>Pay at Hotel</option>
+                <option>Demo Card Payment</option>
+                <option>Demo UPI Payment</option>
+            </select>
+
+            <p class="muted" style="margin-bottom:15px">
+                No real payment will be processed. This is a frontend demonstration.
+            </p>
+
+            <button class="primary-btn" style="width:100%" id="confirmBookingBtn" type="submit">
+                Confirm Booking
+            </button>
+            <p class="form-message" id="bookingMessage"></p>
+        </form>
+    </div>
+</div>
+
+<script>
+// ================= SAMPLE DATA =================
+
+const accounts = [
+    {
+        id: 1, name: "Demo Guest", email: "guest@stayora.com",
+        password: "guest123", role: "user", phone: "", address: ""
+    },
+    {
+        id: 2, name: "Hotel Administrator", email: "admin@stayora.com",
+        password: "admin123", role: "admin", phone: "", address: ""
+    }
+];
+
+let currentUser = null;
+let selectedRole = "user";
+let registering = false;
+let editingBookingId = null;
+
+let rooms = [
+    {
+        id: 1, name: "Standard Room", capacity: 2,
+        quantity: 10, price: 2500,
+        image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1000&q=85",
+        description: "A welcoming, comfortable room for solo travellers and couples.",
+        amenities: ["Wi-Fi", "Queen Bed", "AC"]
+    },
+    {
+        id: 2, name: "Deluxe Room", capacity: 3,
+        quantity: 8, price: 4000,
+        image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1000&q=85",
+        description: "A spacious room with upgraded comfort and relaxing interiors.",
+        amenities: ["Wi-Fi", "King Bed", "AC", "TV"]
+    },
+    {
+        id: 3, name: "Suite Room", capacity: 4,
+        quantity: 5, price: 7000,
+        image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1000&q=85",
+        description: "An elegant suite with extra living space for a premium stay.",
+        amenities: ["Wi-Fi", "Living Area", "Mini Bar", "AC"]
+    },
+    {
+        id: 4, name: "Family Room", capacity: 4,
+        quantity: 6, price: 5500,
+        image: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1000&q=85",
+        description: "A flexible, spacious room for families and small groups.",
+        amenities: ["Wi-Fi", "Twin Beds", "AC", "TV"]
+    }
+];
+
+let bookings = [];
+let nextBookingId = 1001;
+
+const pageDefaults = {
+    about: "Stayora is a hotel booking demonstration designed to make room discovery and reservation management simple. We aim to provide clear room details, transparent prices, and a friendly guest experience.",
+    contact: "Phone: +91 98765 43210\nEmail: support@stayora.example\nAddress: Stayora Hotel, Chennai, Tamil Nadu, India",
+    faq: "How can I book a room?\nSearch for your dates, check availability, choose a room, and confirm your reservation.\n\nCan I change or cancel a booking?\nYes. Guests can change or cancel at least 3 days before check-in. Administrators can manage bookings from the admin panel.\n\nIs payment processed online?\nNo. The payment options in this demonstration are simulated.",
+    travel: "Check local transport schedules before travelling. Carry valid identification and your booking confirmation. Explore nearby cultural attractions, restaurants, parks, and local markets.",
+    privacy: "This is an educational frontend prototype. Do not enter real passwords, payment information, or sensitive personal data. A production hotel website should use secure authentication, encrypted connections, a suitable privacy notice, and properly managed data retention."
+};
+
+let pageContent = { ...pageDefaults };
+
+// ================= HELPERS =================
+
+function $(id) {
+    return document.getElementById(id);
+}
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, ch => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;",
+        '"': "&quot;", "'": "&#39;"
+    })[ch]);
+}
+
+function money(value) {
+    return "₹" + Number(value).toLocaleString("en-IN");
+}
+
+function localDateString(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
+
+function addDays(dateString, days) {
+    const date = new Date(dateString + "T12:00:00");
+    date.setDate(date.getDate() + days);
+    return localDateString(date);
+}
+
+function nightsBetween(checkIn, checkOut) {
+    return Math.round(
+        (new Date(checkOut + "T12:00:00") -
+         new Date(checkIn + "T12:00:00")) / 86400000
+    );
+}
+
+function dateIsValid(checkIn, checkOut) {
+    const today = localDateString(new Date());
+    return checkIn >= today && checkOut > checkIn;
+}
+
+function safeMultiline(text) {
+    return escapeHTML(text).replace(/\n/g, "<br>");
+}
+
+// ================= AUTHENTICATION =================
+
+function selectRole(role) {
+    selectedRole = role;
+    $("userRoleBtn").classList.toggle("active", role === "user");
+    $("adminRoleBtn").classList.toggle("active", role === "admin");
+    $("authError").textContent = "";
+}
+
+function fillDemo() {
+    $("authEmail").value = selectedRole === "admin"
+        ? "admin@stayora.com" : "guest@stayora.com";
+    $("authPassword").value = selectedRole === "admin"
+        ? "admin123" : "guest123";
+}
+
+function toggleRegister(value) {
+    registering = value;
+
+    $("authTitle").textContent = value ? "Create Your Account" : "Welcome Back";
+    $("authSubtitle").textContent = value
+        ? "Register to manage your hotel reservations."
+        : "Sign in to manage your bookings.";
+
+    $("nameField").classList.toggle("hidden", !value);
+    $("confirmField").classList.toggle("hidden", !value);
+    $("registerText").classList.toggle("hidden", value);
+    $("loginText").classList.toggle("hidden", !value);
+
+    $("regName").required = value;
+    $("authConfirm").required = value;
+    $("authSubmit").textContent = value ? "Register" : "Login";
+
+    $("userRoleBtn").classList.toggle("hidden", value);
+    $("adminRoleBtn").classList.toggle("hidden", value);
+
+    if (value) selectRole("user");
+    $("authError").textContent = "";
+}
+
+$("authForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const email = $("authEmail").value.trim().toLowerCase();
+    const password = $("authPassword").value;
+
+    if (registering) {
+        const name = $("regName").value.trim();
+
+        if (password.length < 6) {
+            $("authError").textContent =
+                "Use at least 6 characters for this demo password.";
+            return;
+        }
+
+        if (password !== $("authConfirm").value) {
+            $("authError").textContent = "Passwords do not match.";
+            return;
+        }
+
+        if (accounts.some(account => account.email === email)) {
+            $("authError").textContent = "This email is already registered.";
+            return;
+        }
+
+        const account = {
+            id: Date.now(),
+            name, email, password, role: "user",
+            phone: "", address: ""
+        };
+
+        accounts.push(account);
+        currentUser = account;
+        launchSite();
+        return;
+    }
+
+    const account = accounts.find(item =>
+        item.email === email && item.password === password
+    );
+
+    if (!account) {
+        $("authError").textContent = "Incorrect email or password.";
+        return;
+    }
+
+    if (account.role !== selectedRole) {
+        $("authError").textContent = "Choose the correct login role.";
+        return;
+    }
+
+    currentUser = account;
+    launchSite();
+});
+
+function launchSite() {
+    $("authPage").classList.add("hidden");
+    $("site").classList.remove("hidden");
+
+    $("navUserName").textContent = currentUser.name;
+
+    document.querySelectorAll(".admin-nav").forEach(button => {
+        button.classList.toggle("hidden", currentUser.role !== "admin");
+    });
+
+    document.querySelectorAll(".nav-links button").forEach(button => {
+        const page = button.dataset.page;
+        button.classList.toggle(
+            "hidden",
+            page === "bookings" && currentUser.role === "admin" ||
+            page === "profile" && currentUser.role === "admin"
+        );
+    });
+
+    renderEverything();
+    showPage(currentUser.role === "admin" ? "admin" : "home");
+}
+
+function logout() {
+    currentUser = null;
+    $("site").classList.add("hidden");
+    $("authPage").classList.remove("hidden");
+    $("authForm").reset();
+    toggleRegister(false);
+    selectRole("user");
+}
+
+// ================= NAVIGATION =================
+
+function showPage(pageId) {
+    if (pageId === "admin" && currentUser.role !== "admin") {
+        alert("Administrator access required.");
+        return;
+    }
+
+    if (["bookings", "profile"].includes(pageId) &&
+        currentUser.role === "admin") {
+        alert("This page is for guest accounts.");
+        return;
+    }
+
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.toggle("active", page.id === pageId);
+    });
+
+    document.querySelectorAll(".nav-links button[data-page]").forEach(button => {
+        button.classList.toggle("active", button.dataset.page === pageId);
+    });
+
+    renderEverything();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// ================= AVAILABILITY =================
+
+// A reservation occupies a room for the nights from check-in
+// up to, but not including, check-out.
+function activeBookingsForRoom(roomId, excludeBookingId = null) {
+    return bookings.filter(booking =>
+        booking.roomId === roomId &&
+        booking.status === "Confirmed" &&
+        booking.id !== excludeBookingId
+    );
+}
+
+function roomsAvailable(roomId, checkIn, checkOut, excludeBookingId = null) {
+    const room = rooms.find(item => item.id === roomId);
+    if (!room) return 0;
+
+    const dates = [];
+    let current = checkIn;
+
+    while (current < checkOut) {
+        dates.push(current);
+        current = addDays(current, 1);
+    }
+
+    let minimumAvailable = room.quantity;
+
+    for (const date of dates) {
+        const occupied = activeBookingsForRoom(roomId, excludeBookingId)
+            .filter(booking =>
+                booking.checkIn <= date && booking.checkOut > date
+            ).length;
+
+        minimumAvailable = Math.min(
+            minimumAvailable, room.quantity - occupied
+        );
+    }
+
+    return Math.max(0, minimumAvailable);
+}
+
+function roomCard(room, checkIn = "", checkOut = "", guests = 1) {
+    let availabilityText = "Choose dates to check availability";
+    let canBook = true;
+
+    if (checkIn && checkOut && dateIsValid(checkIn, checkOut)) {
+        const available = roomsAvailable(room.id, checkIn, checkOut);
+        canBook = available > 0 && guests <= room.capacity;
+        availabilityText = guests > room.capacity
+            ? `Maximum ${room.capacity} guests`
+            : available > 0
+                ? `${available} room(s) available`
+                : "No rooms available for these dates";
+    }
+
+    return `
+        <article class="room-card">
+            <img src="${escapeHTML(room.image)}"
+                alt="${escapeHTML(room.name)}"
+                loading="lazy"
+                onerror="this.onerror=null;this.src='https://placehold.co/900x600/e8eee8/173f35?text=Hotel+Room'">
+            <div class="room-content">
+                <h3>${escapeHTML(room.name)}</h3>
+                <p class="muted">${escapeHTML(room.description)}</p>
+
+                <div class="room-meta">
+                    <span>♙ Up to ${room.capacity} guests</span>
+                    <span>★ 4.8 / 5</span>
+                </div>
+
+                <div class="amenities">
+                    ${room.amenities.map(a => `<span>${escapeHTML(a)}</span>`).join("")}
+                </div>
+
+                <div class="room-meta">
+                    <div class="price">${money(room.price)} <small>/ night</small></div>
+                    <span>${escapeHTML(availabilityText)}</span>
+                </div>
+
+                <button class="primary-btn" style="width:100%"
+                    onclick="openBooking(${room.id})">
+                    ${currentUser.role === "admin" ? "Room Details" : "Book This Room"}
+                </button>
+            </div>
+        </article>
+    `;
+}
+
+function renderRooms() {
+    const inDate = $("filterIn").value;
+    const outDate = $("filterOut").value;
+    const guests = Number($("filterGuests").value);
+
+    $("allRooms").innerHTML = rooms.map(room =>
+        roomCard(room, inDate, outDate, guests)
+    ).join("");
+
+    $("homeRooms").innerHTML = rooms.slice(0, 3).map(room =>
+        roomCard(room)
+    ).join("");
+
+    if (inDate && outDate && dateIsValid(inDate, outDate)) {
+        $("availabilityMessage").textContent =
+            `Availability shown for ${inDate} to ${outDate}, for ${guests} guest(s).`;
+    } else {
+        $("availabilityMessage").textContent =
+            "Select valid dates to check the availability of rooms.";
+    }
+}
+
+$("searchForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const checkIn = $("searchCheckIn").value;
+    const checkOut = $("searchCheckOut").value;
+
+    if (!dateIsValid(checkIn, checkOut)) {
+        alert("Please select a valid future check-in date and a later check-out date.");
+        return;
+    }
+
+    $("filterIn").value = checkIn;
+    $("filterOut").value = checkOut;
+    $("filterGuests").value = $("searchGuests").value;
+
+    showPage("rooms");
+});
+
+$("roomFilterForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const checkIn = $("filterIn").value;
+    const checkOut = $("filterOut").value;
+
+    if (!dateIsValid(checkIn, checkOut)) {
+        alert("Choose a valid check-in and check-out date.");
+        return;
+    }
+
+    renderRooms();
+});
+
+// ================= BOOKING FORM =================
+
+function openBooking(roomId, bookingId = null) {
+    if (currentUser.role === "admin" && bookingId === null) {
+        alert("Use the admin booking table to modify a specific booking.");
+        return;
+    }
+
+    const room = rooms.find(item => item.id === roomId);
+    if (!room) return;
+
+    editingBookingId = bookingId;
+    $("bookingRoomId").value = roomId;
+    $("bookingRoomName").value = room.name;
+    $("bookingId").value = bookingId || "";
+    $("bookingMessage").textContent = "";
+
+    if (bookingId !== null) {
+        const booking = bookings.find(item => item.id === bookingId);
+        if (!booking) return;
+
+        $("bookingTitle").textContent =
+            currentUser.role === "admin" ? "Modify Guest Booking" : "Change Booking";
+
+        $("bookingIn").value = booking.checkIn;
+        $("bookingOut").value = booking.checkOut;
+        $("bookingGuests").value = booking.guests;
+        $("paymentMethod").value = booking.paymentMethod || "Pay at Hotel";
+        $("confirmBookingBtn").textContent = "Save Changes";
+    } else {
+        $("bookingTitle").textContent = "Book a Room";
+        $("bookingIn").value = $("filterIn").value || $("searchCheckIn").value;
+        $("bookingOut").value = $("filterOut").value || $("searchCheckOut").value;
+        $("bookingGuests").value = $("filterGuests").value || "2";
+        $("paymentMethod").value = "Pay at Hotel";
+        $("confirmBookingBtn").textContent = "Confirm Booking";
+    }
+
+    updateEstimate();
+
+    $("bookingModal").classList.remove("hidden");
+    $("bookingModal").style.display = "flex";
+}
+
+function closeModal() {
+    $("bookingModal").classList.add("hidden");
+    $("bookingModal").style.display = "none";
+    editingBookingId = null;
+}
+
+$("bookingIn").addEventListener("change", updateEstimate);
+$("bookingOut").addEventListener("change", updateEstimate);
+$("bookingGuests").addEventListener("change", updateEstimate);
+
+function updateEstimate() {
+    const room = rooms.find(item => item.id === Number($("bookingRoomId").value));
+    if (!room) return;
+
+    const nights = nightsBetween($("bookingIn").value, $("bookingOut").value);
+    const total = nights > 0 ? nights * room.price : 0;
+
+    $("bookingEstimate").textContent = money(total);
+}
+
+function eligibleForGuestChange(booking) {
+    const deadline = addDays(booking.checkIn, -3);
+    return localDateString(new Date()) <= deadline;
+}
+
+$("bookingForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const roomId = Number($("bookingRoomId").value);
+    const room = rooms.find(item => item.id === roomId);
+    const checkIn = $("bookingIn").value;
+    const checkOut = $("bookingOut").value;
+    const guests = Number($("bookingGuests").value);
+
+    if (!room) {
+        alert("Please choose a valid room.");
+        return;
+    }
+
+    if (!dateIsValid(checkIn, checkOut)) {
+        alert("Choose valid future dates.");
+        return;
+    }
+
+    if (guests < 1 || guests > room.capacity) {
+        alert(`This room accommodates up to ${room.capacity} guests.`);
+        return;
+    }
+
+    const nights = nightsBetween(checkIn, checkOut);
+    const total = nights * room.price;
+    const paymentMethod = $("paymentMethod").value;
+
+    if (editingBookingId !== null) {
+        const booking = bookings.find(item => item.id === editingBookingId);
+        if (!booking) return;
+
+        if (currentUser.role !== "admin" &&
+            (booking.userId !== currentUser.id || !eligibleForGuestChange(booking))) {
+            alert("Guests can change bookings only at least 3 days before check-in.");
+            return;
+        }
+
+        const available = roomsAvailable(roomId, checkIn, checkOut, booking.id);
+        if (available < 1) {
+            alert("No rooms are available for the selected dates.");
+            return;
+        }
+
+        booking.roomId = roomId;
+        booking.checkIn = checkIn;
+        booking.checkOut = checkOut;
+        booking.guests = guests;
+        booking.total = total;
+        booking.paymentMethod = paymentMethod;
+
+        alert("Booking updated successfully.");
+    } else {
+        if (currentUser.role !== "user") {
+            alert("Only guest accounts can create bookings.");
+            return;
+        }
+
+        if (roomsAvailable(roomId, checkIn, checkOut) < 1) {
+            alert("Sorry, no rooms of this type are available for those dates.");
+            return;
+        }
+
+        const booking = {
+            id: nextBookingId++,
+            userId: currentUser.id,
+            userName: currentUser.name,
+            userEmail: currentUser.email,
+            roomId,
+            checkIn,
+            checkOut,
+            guests,
+            total,
+            paymentMethod,
+            status: "Confirmed",
+            createdAt: new Date().toISOString()
+        };
+
+        bookings.push(booking);
+        alert(`Booking confirmed! Your reference number is ST-${booking.id}.`);
+    }
+
+    closeModal();
+    renderEverything();
+    showPage(currentUser.role === "admin" ? "admin" : "bookings");
+});
+
+// ================= BOOKING MANAGEMENT =================
+
+function cancelBooking(id) {
+    const booking = bookings.find(item => item.id === id);
+    if (!booking || booking.status !== "Confirmed") return;
+
+    if (currentUser.role !== "admin") {
+        if (booking.userId !== currentUser.id) {
+            alert("You can only cancel your own bookings.");
+            return;
+        }
+
+        if (!eligibleForGuestChange(booking)) {
+            alert("Guest cancellations are allowed only at least 3 days before check-in.");
+            return;
+        }
+    }
+
+    if (confirm(`Cancel booking ST-${booking.id}?`)) {
+        booking.status = "Cancelled";
+        renderEverything();
+    }
+}
+
+function renderGuestBookings() {
+    const ownBookings = bookings.filter(item => item.userId === currentUser.id);
+
+    if (ownBookings.length === 0) {
+        $("bookingRows").innerHTML =
+            '<tr><td colspan="7" class="empty">You have no bookings yet. Explore our rooms to get started.</td></tr>';
+        return;
+    }
+
+    $("bookingRows").innerHTML = ownBookings.map(booking => {
+        const room = rooms.find(item => item.id === booking.roomId);
+        const editable = eligibleForGuestChange(booking);
+        const active = booking.status === "Confirmed";
+
+        return `
+            <tr>
+                <td>ST-${booking.id}</td>
+                <td>${escapeHTML(room?.name || "Room")}</td>
+                <td>${booking.checkIn}<br>to ${booking.checkOut}</td>
+                <td>${booking.guests}</td>
+                <td>${money(booking.total)}</td>
+                <td><span class="badge ${active ? "" : "red"}">${booking.status}</span></td>
+                <td>
+                    ${active && editable ? `
+                        <button class="light-btn" onclick="openBooking(${booking.roomId},${booking.id})">Change</button>
+                        <button class="danger-btn" onclick="cancelBooking(${booking.id})">Cancel</button>
+                    ` : active ? '<span class="muted">Deadline passed</span>' : "—"}
+                </td>
+            </tr>
+        `;
+    }).join("");
+}
+
+function renderAdmin() {
+    if (currentUser.role !== "admin") return;
+
+    $("adminTypes").textContent = rooms.length;
+    $("adminTotal").textContent = rooms.reduce((sum, room) => sum + room.quantity, 0);
+    $("adminBookings").textContent = bookings.filter(b => b.status === "Confirmed").length;
+    $("adminUsers").textContent = accounts.filter(a => a.role === "user").length;
+
+    $("adminRoomRows").innerHTML = rooms.map(room => {
+        const occupied = bookings.filter(b =>
+            b.roomId === room.id && b.status === "Confirmed"
+        ).length;
+
+        return `
+            <tr>
+                <td>${escapeHTML(room.name)}</td>
+                <td>${room.capacity}</td>
+                <td><input aria-label="Room quantity" type="number" min="${occupied}" id="qty-${room.id}" value="${room.quantity}" style="width:90px;margin:0"></td>
+                <td>${Math.max(0, room.quantity - occupied)}</td>
+                <td><input aria-label="Nightly price" type="number" min="1" id="price-${room.id}" value="${room.price}" style="width:120px;margin:0"></td>
+                <td><button class="primary-btn" onclick="saveRoom(${room.id})">Save</button></td>
+            </tr>
+        `;
+    }).join("");
+
+    $("adminBookingRows").innerHTML = bookings.length
+        ? bookings.map(booking => {
+            const room = rooms.find(item => item.id === booking.roomId);
+
+            return `
+                <tr>
+                    <td>ST-${booking.id}</td>
+                    <td>${escapeHTML(booking.userName)}<br><span class="muted">${escapeHTML(booking.userEmail)}</span></td>
+                    <td>${escapeHTML(room?.name || "Room")}</td>
+                    <td>${booking.checkIn}</td>
+                    <td>${booking.checkOut}</td>
+                    <td><span class="badge ${booking.status === "Confirmed" ? "" : "red"}">${booking.status}</span></td>
+                    <td>
+                        ${booking.status === "Confirmed" ? `
+                            <button class="light-btn" onclick="openBooking(${booking.roomId},${booking.id})">Edit</button>
+                            <button class="danger-btn" onclick="cancelBooking(${booking.id})">Cancel</button>
+                        ` : "—"}
+                    </td>
+                </tr>
+            `;
+        }).join("")
+        : '<tr><td colspan="7" class="empty">No bookings have been created.</td></tr>';
+
+    $("adminUserRows").innerHTML = accounts.map(account => `
+        <tr>
+            <td>${escapeHTML(account.name)}</td>
+            <td>${escapeHTML(account.email)}</td>
+            <td>${account.role === "admin" ? "Administrator" : "Guest"}</td>
+        </tr>
+    `).join("");
+}
+
+function saveRoom(id) {
+    if (currentUser.role !== "admin") return;
+
+    const room = rooms.find(item => item.id === id);
+    if (!room) return;
+
+    const quantity = Number($(`qty-${id}`).value);
+    const price = Number($(`price-${id}`).value);
+
+    const occupied = bookings.filter(b =>
+        b.roomId === id && b.status === "Confirmed"
+    ).length;
+
+    if (!Number.isInteger(quantity) || quantity < occupied || price <= 0) {
+        alert(`Quantity must be at least ${occupied}, and price must be greater than zero.`);
+        return;
+    }
+
+    room.quantity = quantity;
+    room.price = price;
+
+    alert("Room quantity and price updated.");
+    renderEverything();
+}
+
+// ================= PROFILE =================
+
+function renderProfile() {
+    if (currentUser.role !== "user") return;
+
+    $("profileName").value = currentUser.name;
+    $("profileEmail").value = currentUser.email;
+    $("profilePhone").value = currentUser.phone || "";
+    $("profileAddress").value = currentUser.address || "";
+}
+
+$("profileForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    currentUser.name = $("profileName").value.trim();
+    currentUser.phone = $("profilePhone").value.trim();
+    currentUser.address = $("profileAddress").value.trim();
+
+    bookings.filter(b => b.userId === currentUser.id).forEach(booking => {
+        booking.userName = currentUser.name;
+    });
+
+    $("navUserName").textContent = currentUser.name;
+    $("profileMessage").textContent = "Profile updated for this session.";
+    renderEverything();
+});
+
+// ================= STATIC WEBSITE PAGES =================
+
+function renderStaticPages() {
+    $("aboutContent").innerHTML = `<p>${safeMultiline(pageContent.about)}</p>`;
+
+    const contactLines = pageContent.contact.split("\n");
+    $("contactPhone").textContent =
+        contactLines.find(line => line.startsWith("Phone:"))?.replace("Phone:", "").trim()
+        || "+91 98765 43210";
+    $("contactEmail").textContent =
+        contactLines.find(line => line.startsWith("Email:"))?.replace("Email:", "").trim()
+        || "support@stayora.example";
+    $("contactAddress").textContent =
+        contactLines.find(line => line.startsWith("Address:"))?.replace("Address:", "").trim()
+        || "Stayora Hotel, Chennai, Tamil Nadu, India";
+
+    const faqParts = pageContent.faq.split("\n\n");
+    $("faqContent").innerHTML = faqParts.map(part => {
+        const lines = part.split("\n");
+        return `<div class="faq-item">
+            <h3>${escapeHTML(lines[0])}</h3>
+            <p>${safeMultiline(lines.slice(1).join("\n"))}</p>
+        </div>`;
+    }).join("");
+
+    $("travelContent").innerHTML = `<p>${safeMultiline(pageContent.travel)}</p>`;
+    $("privacyContent").innerHTML = `<p>${safeMultiline(pageContent.privacy)}</p>`;
+}
+
+$("contentPage").addEventListener("change", () => {
+    $("contentText").value = pageContent[$("contentPage").value];
+});
+
+$("contentForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    if (currentUser.role !== "admin") return;
+
+    const page = $("contentPage").value;
+    pageContent[page] = $("contentText").value;
+
+    renderStaticPages();
+    $("contentMessage").textContent = "Page content updated for this session.";
+});
+
+// ================= CONTACT ENQUIRY =================
+
+$("contactForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    $("contactResult").textContent =
+        "Thank you. Your enquiry was recorded in this demo form only.";
+    event.target.reset();
+});
+
+// ================= RENDER EVERYTHING =================
+
+function renderEverything() {
+    renderRooms();
+    renderGuestBookings();
+    renderAdmin();
+    renderProfile();
+    renderStaticPages();
+
+    if (currentUser.role === "admin") {
+        $("contentText").value = pageContent[$("contentPage").value];
+    }
+}
+
+// ================= INITIAL SETUP =================
+
+const tomorrow = addDays(localDateString(new Date()), 1);
+const dayAfter = addDays(tomorrow, 2);
+
+$("searchCheckIn").min = tomorrow;
+$("searchCheckIn").value = tomorrow;
+$("searchCheckOut").min = dayAfter;
+$("searchCheckOut").value = dayAfter;
+
+$("filterIn").min = tomorrow;
+$("filterIn").value = tomorrow;
+$("filterOut").min = dayAfter;
+$("filterOut").value = dayAfter;
+
+$("bookingIn").min = tomorrow;
+$("bookingOut").min = dayAfter;
+
+$("bookingIn").addEventListener("change", () => {
+    const minOut = addDays($("bookingIn").value, 1);
+    $("bookingOut").min = minOut;
+
+    if ($("bookingOut").value <= $("bookingIn").value) {
+        $("bookingOut").value = minOut;
+    }
+
+    updateEstimate();
+});
+
+$("filterIn").addEventListener("change", () => {
+    $("filterOut").min = addDays($("filterIn").value, 1);
+});
+
+$("searchCheckIn").addEventListener("change", () => {
+    $("searchCheckOut").min = addDays($("searchCheckIn").value, 1);
+});
+
+renderStaticPages();
+</script>
+</body>
+</html>
