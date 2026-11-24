@@ -1,0 +1,1973 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgriMart - Agriculture Shopping</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+:root {
+    --cream:#f6f3e9;
+    --white:#fffefa;
+    --green:#52734d;
+    --darkgreen:#34543a;
+    --lightgreen:#e5eddf;
+    --brown:#493c2e;
+    --orange:#c18a57;
+    --muted:#81796e;
+    --border:#e6e0d3;
+    --red:#a94e40;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+    background:var(--cream);
+    color:var(--brown);
+    font-family:'DM Sans',sans-serif;
+    min-height:100vh;
+}
+
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:none}
+
+header{
+    background:var(--white);
+    border-bottom:1px solid var(--border);
+    padding:17px 6%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.logo{
+    font-family:'Playfair Display',serif;
+    font-size:29px;
+    font-weight:700;
+    color:var(--darkgreen);
+}
+
+.logo span{color:var(--orange)}
+
+nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+.nav-btn{
+    background:transparent;
+    color:var(--brown);
+    padding:10px 15px;
+    border-radius:25px;
+    font-size:13px;
+}
+
+.nav-btn:hover{background:var(--lightgreen)}
+
+.nav-primary{
+    background:var(--green);
+    color:white;
+}
+
+.nav-primary:hover{background:var(--darkgreen)}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:35px auto;
+    min-height:60vh;
+}
+
+.hero{
+    min-height:390px;
+    border-radius:20px;
+    background:linear-gradient(115deg,#e4ebd9,#f0e5cf);
+    padding:60px 7%;
+    display:flex;
+    align-items:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.hero-content{max-width:650px;z-index:1}
+
+.eyebrow{
+    color:var(--green);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    margin-bottom:15px;
+}
+
+.hero h1{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(38px,5vw,62px);
+    line-height:1.12;
+    font-weight:500;
+    margin-bottom:18px;
+}
+
+.hero p{
+    color:#6e6a57;
+    line-height:1.9;
+    max-width:530px;
+    font-size:15px;
+}
+
+.hero-art{
+    position:absolute;
+    right:7%;
+    top:50%;
+    transform:translateY(-50%);
+    width:250px;
+    height:250px;
+    border:1px solid rgba(82,115,77,.35);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:100px;
+}
+
+.hero-art:before{
+    content:"";
+    position:absolute;
+    width:190px;
+    height:190px;
+    border:1px solid rgba(82,115,77,.35);
+    border-radius:50%;
+}
+
+.btn{
+    background:var(--green);
+    color:white;
+    padding:12px 20px;
+    border-radius:5px;
+    margin:17px 6px 0 0;
+    font-size:13px;
+    transition:.2s;
+}
+
+.btn:hover{
+    background:var(--darkgreen);
+    transform:translateY(-2px);
+}
+
+.btn-outline{
+    background:transparent;
+    border:1px solid var(--green);
+    color:var(--darkgreen);
+}
+
+.btn-outline:hover{background:var(--green);color:white}
+
+.btn-danger{background:var(--red)}
+.btn-small{padding:8px 12px;margin:3px;font-size:12px}
+
+.section-heading{
+    text-align:center;
+    margin:55px 0 25px;
+}
+
+.section-heading small{
+    color:var(--orange);
+    letter-spacing:3px;
+    font-weight:700;
+    font-size:11px;
+    text-transform:uppercase;
+}
+
+.section-heading h2{
+    font-family:'Playfair Display',serif;
+    font-size:35px;
+    font-weight:500;
+    margin-top:8px;
+}
+
+.features{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.feature-card{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:13px;
+    padding:25px;
+    min-height:160px;
+    transition:.2s;
+}
+
+.feature-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(50,70,40,.08);
+}
+
+.feature-icon{font-size:28px;margin-bottom:13px}
+
+.feature-card h3{
+    font-family:'Playfair Display',serif;
+    font-size:21px;
+    margin-bottom:8px;
+}
+
+.feature-card p{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.8;
+}
+
+.category-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin:25px 0;
+}
+
+.category-chip{
+    border:1px solid var(--border);
+    background:var(--white);
+    padding:10px 17px;
+    border-radius:25px;
+    color:var(--brown);
+    font-size:13px;
+}
+
+.category-chip:hover,.category-chip.active{
+    background:var(--green);
+    color:white;
+    border-color:var(--green);
+}
+
+.form-box{
+    max-width:620px;
+    margin:35px auto;
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:32px;
+    box-shadow:0 8px 25px rgba(50,70,40,.05);
+}
+
+.form-box h2{
+    font-family:'Playfair Display',serif;
+    font-weight:500;
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.7;
+    margin-bottom:22px;
+}
+
+label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    margin:14px 0 7px;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:12px 13px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    background:#fffefa;
+    color:var(--brown);
+    outline:none;
+}
+
+input:focus,select:focus,textarea:focus{
+    border-color:var(--green);
+    box-shadow:0 0 0 3px rgba(82,115,77,.1);
+}
+
+textarea{min-height:95px;resize:vertical}
+
+.form-box .btn.full{width:100%;margin-top:20px}
+
+.note{
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.7;
+    margin-top:15px;
+}
+
+.page-title{
+    font-family:'Playfair Display',serif;
+    font-size:36px;
+    font-weight:500;
+}
+
+.page-subtitle{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.7;
+    margin:7px 0 25px;
+}
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin:25px 0;
+}
+
+.stat-card{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:22px;
+}
+
+.stat-card span{font-size:12px;color:var(--muted)}
+.stat-card h2{
+    font-family:'Playfair Display',serif;
+    font-size:30px;
+    color:var(--darkgreen);
+    margin-top:8px;
+}
+
+.dashboard-actions{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:17px;
+}
+
+.action-card{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:23px;
+}
+
+.action-card h3{
+    font-family:'Playfair Display',serif;
+    font-size:21px;
+    margin-bottom:8px;
+}
+
+.action-card p{
+    font-size:13px;
+    color:var(--muted);
+    line-height:1.7;
+}
+
+.toolbar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:20px 0;
+}
+
+.toolbar input{flex:2;min-width:180px}
+.toolbar select{flex:1;min-width:150px}
+
+.products{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.product-card{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:13px;
+    overflow:hidden;
+    transition:.2s;
+}
+
+.product-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(50,70,40,.08);
+}
+
+.product-image{
+    height:190px;
+    width:100%;
+    object-fit:cover;
+    background:#e9eddf;
+    display:block;
+}
+
+.product-image-placeholder{
+    height:190px;
+    background:#e9eddf;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:65px;
+}
+
+.product-info{padding:18px}
+
+.product-info h3{
+    font-family:'Playfair Display',serif;
+    font-size:21px;
+    margin-bottom:7px;
+}
+
+.product-info p{
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.7;
+}
+
+.price{
+    color:var(--darkgreen);
+    font-size:21px;
+    font-weight:700;
+    margin-top:12px;
+}
+
+.stock{
+    color:var(--green);
+    font-size:12px;
+    margin-top:5px;
+}
+
+.table-wrap{
+    overflow-x:auto;
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:12px;
+    margin:20px 0;
+}
+
+table{width:100%;border-collapse:collapse;min-width:650px}
+
+th,td{
+    padding:14px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    font-size:12px;
+}
+
+th{background:#e9eddf;color:var(--darkgreen)}
+tr:last-child td{border-bottom:none}
+
+.status{
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:20px;
+    background:#e5eddf;
+    color:var(--darkgreen);
+    font-size:11px;
+    font-weight:700;
+}
+
+.status.pending{background:#f5ebd9;color:#946c32}
+.status.cancelled{background:#f4e0dc;color:#a94e40}
+
+.panel{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:13px;
+    padding:24px;
+    margin:20px 0;
+}
+
+.panel h3{
+    font-family:'Playfair Display',serif;
+    font-size:23px;
+    margin-bottom:12px;
+}
+
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    padding:15px 0;
+    border-bottom:1px solid var(--border);
+    flex-wrap:wrap;
+}
+
+.cart-item:last-child{border-bottom:none}
+
+.cart-item input{width:75px}
+
+.total{
+    text-align:right;
+    font-size:23px;
+    font-weight:700;
+    color:var(--darkgreen);
+    margin-top:20px;
+}
+
+.empty{
+    padding:30px;
+    text-align:center;
+    background:var(--white);
+    border:1px dashed var(--border);
+    border-radius:12px;
+    color:var(--muted);
+}
+
+.preview{
+    max-width:180px;
+    max-height:150px;
+    object-fit:cover;
+    display:block;
+    margin-top:12px;
+    border-radius:8px;
+}
+
+.message{
+    padding:14px;
+    background:var(--lightgreen);
+    color:var(--darkgreen);
+    border-radius:8px;
+    line-height:1.7;
+    margin:15px 0;
+}
+
+.hidden{display:none!important}
+
+footer{
+    background:#354d35;
+    color:#f5f0e5;
+    padding:30px;
+    text-align:center;
+    margin-top:70px;
+    font-size:13px;
+    line-height:1.8;
+}
+
+@media(max-width:850px){
+    .features,.products,.dashboard-actions{grid-template-columns:repeat(2,1fr)}
+    .dashboard-grid{grid-template-columns:repeat(2,1fr)}
+    .hero-art{opacity:.25;right:-30px}
+}
+
+@media(max-width:560px){
+    header{justify-content:center}
+    nav{justify-content:center}
+    .container{width:93%;margin:25px auto}
+    .hero{padding:40px 25px}
+    .hero-art{display:none}
+    .features,.products,.dashboard-actions,.dashboard-grid{grid-template-columns:1fr}
+    .form-box{padding:22px}
+    .section-heading h2{font-size:29px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Agri<span>Mart.</span> 🌱</div>
+    <nav id="nav"></nav>
+</header>
+
+<main class="container" id="app"></main>
+
+<footer>
+    <h2 style="font-family:'Playfair Display';font-weight:500">AgriMart</h2>
+    <p>Your trusted partner for smarter farming.</p>
+    <p>© 2026 AgriMart. College demonstration project.</p>
+</footer>
+
+<script>
+// ================= DATA STORAGE =================
+
+let farmers = JSON.parse(localStorage.getItem("am_farmers")) || [];
+let customers = JSON.parse(localStorage.getItem("am_customers")) || [];
+let products = JSON.parse(localStorage.getItem("am_products")) || [];
+let carts = JSON.parse(localStorage.getItem("am_carts")) || {};
+let orders = JSON.parse(localStorage.getItem("am_orders")) || [];
+let wallets = JSON.parse(localStorage.getItem("am_wallets")) || {};
+let addresses = JSON.parse(localStorage.getItem("am_addresses")) || {};
+
+let currentUser = JSON.parse(sessionStorage.getItem("am_user")) || null;
+let loginOTP = "";
+let pendingUser = null;
+let activeCategory = "All";
+let imageData = "";
+
+const categories = [
+    "Seeds","Fertilizers","Pesticides","Equipment","Tools","Other"
+];
+
+function save(){
+    localStorage.setItem("am_farmers",JSON.stringify(farmers));
+    localStorage.setItem("am_customers",JSON.stringify(customers));
+    localStorage.setItem("am_products",JSON.stringify(products));
+    localStorage.setItem("am_carts",JSON.stringify(carts));
+    localStorage.setItem("am_orders",JSON.stringify(orders));
+    localStorage.setItem("am_wallets",JSON.stringify(wallets));
+    localStorage.setItem("am_addresses",JSON.stringify(addresses));
+}
+
+function makeId(prefix){
+    return prefix + Date.now().toString().slice(-7) +
+        Math.floor(Math.random()*90+10);
+}
+
+function safe(value){
+    return String(value ?? "").replace(/[&<>"']/g,c=>({
+        "&":"&amp;","<":"&lt;",">":"&gt;",
+        '"':"&quot;","'":"&#39;"
+    })[c]);
+}
+
+function money(value){
+    return "₹" + Number(value || 0).toFixed(2);
+}
+
+function setSession(user){
+    currentUser=user;
+    sessionStorage.setItem("am_user",JSON.stringify(user));
+}
+
+function getFarmer(id){
+    return farmers.find(f=>f.id===id);
+}
+
+function getCustomer(id){
+    return customers.find(c=>c.id===id);
+}
+
+function getProduct(id){
+    return products.find(p=>p.id===id);
+}
+
+function currentCart(){
+    if(!currentUser || currentUser.role!=="customer") return [];
+    return carts[currentUser.id] || [];
+}
+
+function saveCart(cart){
+    carts[currentUser.id]=cart;
+    save();
+}
+
+function updateNav(){
+    const nav=document.getElementById("nav");
+
+    if(!currentUser){
+        nav.innerHTML=`
+            <button class="nav-btn" onclick="home()">Home</button>
+            <button class="nav-btn" onclick="showProducts()">Products</button>
+            <button class="nav-btn" onclick="customerLogin()">Customer Login</button>
+            <button class="nav-btn nav-primary" onclick="farmerLogin()">Farmer Login</button>
+        `;
+    }else if(currentUser.role==="farmer"){
+        nav.innerHTML=`
+            <button class="nav-btn" onclick="farmerDashboard()">Dashboard</button>
+            <button class="nav-btn" onclick="showProducts()">Products</button>
+            <button class="nav-btn nav-primary" onclick="logout()">Logout</button>
+        `;
+    }else{
+        nav.innerHTML=`
+            <button class="nav-btn" onclick="customerDashboard()">Dashboard</button>
+            <button class="nav-btn" onclick="showProducts()">Shop</button>
+            <button class="nav-btn" onclick="viewCart()">Cart (${currentCart().length})</button>
+            <button class="nav-btn nav-primary" onclick="logout()">Logout</button>
+        `;
+    }
+}
+
+// ================= HOME PAGE =================
+
+function home(){
+    currentUser=null;
+    sessionStorage.removeItem("am_user");
+    updateNav();
+
+    document.getElementById("app").innerHTML=`
+        <section class="hero">
+            <div class="hero-content">
+                <div class="eyebrow">Growing together, naturally</div>
+                <h1>Everything your farm needs, in one place.</h1>
+                <p>
+                    Discover quality seeds, fertilizers, pesticides,
+                    farming equipment and essential tools.
+                    AgriMart connects farmers and customers through
+                    a convenient online shopping experience.
+                </p>
+                <button class="btn" onclick="showProducts()">Explore Products</button>
+                <button class="btn btn-outline" onclick="farmerRegister()">Become a Farmer Seller</button>
+            </div>
+            <div class="hero-art">🌾</div>
+        </section>
+
+        <div class="section-heading">
+            <small>Explore AgriMart</small>
+            <h2>Shop by Category</h2>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🌱</div>
+                <h3>Quality Seeds</h3>
+                <p>Explore seeds for different crops and farming needs.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌿</div>
+                <h3>Fertilizers</h3>
+                <p>Find suitable fertilizers and plant nutrition products.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Crop Protection</h3>
+                <p>Browse agricultural crop protection products.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚜</div>
+                <h3>Farm Equipment</h3>
+                <p>Discover equipment that supports farming activities.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🧰</div>
+                <h3>Farming Tools</h3>
+                <p>Shop useful tools and accessories for your farm.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h3>Order Tracking</h3>
+                <p>Place orders and check their delivery progress.</p>
+            </div>
+        </div>
+
+        <div class="section-heading">
+            <small>Start shopping</small>
+            <h2>Products for Every Farm</h2>
+            <button class="btn" onclick="showProducts()">View All Products</button>
+        </div>
+    `;
+}
+
+// ================= REGISTRATION =================
+
+function farmerRegister(){
+    updateNav();
+
+    document.getElementById("app").innerHTML=`
+        <div class="form-box">
+            <div class="eyebrow">Farmer registration</div>
+            <h2>Join AgriMart as a Farmer.</h2>
+            <p class="subtitle">Create your seller account to list agricultural products.</p>
+
+            <form onsubmit="registerFarmer(event)">
+                <label>Farmer Name</label>
+                <input id="fName" required>
+
+                <label>Email Address</label>
+                <input type="email" id="fEmail" required>
+
+                <label>Phone Number</label>
+                <input id="fPhone" required>
+
+                <label>Farm / Business Name</label>
+                <input id="fBusiness" required>
+
+                <label>Password</label>
+                <input type="password" id="fPassword" minlength="4" required>
+
+                <button class="btn full" type="submit">Create Farmer Account</button>
+            </form>
+            <p class="note">Already registered? <a href="#" onclick="farmerLogin()">Login here</a></p>
+        </div>
+    `;
+}
+
+function registerFarmer(event){
+    event.preventDefault();
+
+    const email=document.getElementById("fEmail").value.trim().toLowerCase();
+
+    if(farmers.some(f=>f.email===email)){
+        alert("This farmer email is already registered.");
+        return;
+    }
+
+    farmers.push({
+        id:makeId("FARM"),
+        name:document.getElementById("fName").value.trim(),
+        email,
+        phone:document.getElementById("fPhone").value.trim(),
+        business:document.getElementById("fBusiness").value.trim(),
+        password:document.getElementById("fPassword").value,
+        active:true
+    });
+
+    save();
+    alert("Farmer account created successfully. Please login.");
+    farmerLogin();
+}
+
+function customerRegister(){
+    updateNav();
+
+    document.getElementById("app").innerHTML=`
+        <div class="form-box">
+            <div class="eyebrow">Customer registration</div>
+            <h2>Create your account.</h2>
+            <p class="subtitle">Register to shop and order agricultural products.</p>
+
+            <form onsubmit="registerCustomer(event)">
+                <label>Full Name</label>
+                <input id="cName" required>
+
+                <label>Email Address</label>
+                <input type="email" id="cEmail" required>
+
+                <label>Phone Number</label>
+                <input id="cPhone" required>
+
+                <label>Password</label>
+                <input type="password" id="cPassword" minlength="4" required>
+
+                <button class="btn full" type="submit">Register</button>
+            </form>
+            <p class="note">Already have an account? <a href="#" onclick="customerLogin()">Login</a></p>
+        </div>
+    `;
+}
+
+function registerCustomer(event){
+    event.preventDefault();
+
+    const email=document.getElementById("cEmail").value.trim().toLowerCase();
+
+    if(customers.some(c=>c.email===email)){
+        alert("This customer email is already registered.");
+        return;
+    }
+
+    const customer={
+        id:makeId("CUS"),
+        name:document.getElementById("cName").value.trim(),
+        email,
+        phone:document.getElementById("cPhone").value.trim(),
+        password:document.getElementById("cPassword").value,
+        active:true
+    };
+
+    customers.push(customer);
+    wallets[customer.id]=0;
+    addresses[customer.id]=[];
+    carts[customer.id]=[];
+
+    save();
+    alert("Customer account created successfully.");
+    customerLogin();
+}
+
+// ================= LOGIN AND OTP =================
+
+function farmerLogin(){
+    updateNav();
+
+    document.getElementById("app").innerHTML=`
+        <div class="form-box">
+            <div class="eyebrow">Farmer portal</div>
+            <h2>Welcome back, Farmer.</h2>
+            <p class="subtitle">Login to manage your products and sales.</p>
+
+            <form onsubmit="loginFarmer(event)">
+                <label>Email</label>
+                <input type="email" id="farmerEmail" required>
+
+                <label>Password</label>
+                <input type="password" id="farmerPassword" required>
+
+                <button class="btn full" type="submit">Login</button>
+            </form>
+            <p class="note">New farmer? <a href="#" onclick="farmerRegister()">Register here</a></p>
+        </div>
+    `;
+}
+
+function loginFarmer(event){
+    event.preventDefault();
+
+    const email=document.getElementById("farmerEmail").value.trim().toLowerCase();
+    const password=document.getElementById("farmerPassword").value;
+
+    const farmer=farmers.find(f=>f.email===email && f.password===password && f.active);
+
+    if(!farmer){
+        alert("Invalid farmer login details.");
+        return;
+    }
+
+    pendingUser={role:"farmer",id:farmer.id};
+    showOTPPage("farmer");
+}
+
+function customerLogin(){
+    updateNav();
+
+    document.getElementById("app").innerHTML=`
+        <div class="form-box">
+            <div class="eyebrow">Customer portal</div>
+            <h2>Welcome to AgriMart.</h2>
+            <p class="subtitle">Login to continue shopping.</p>
+
+            <form onsubmit="loginCustomer(event)">
+                <label>Email</label>
+                <input type="email" id="customerEmail" required>
+
+                <label>Password</label>
+                <input type="password" id="customerPassword" required>
+
+                <button class="btn full" type="submit">Login</button>
+            </form>
+            <p class="note">New customer? <a href="#" onclick="customerRegister()">Register here</a></p>
+        </div>
+    `;
+}
+
+function loginCustomer(event){
+    event.preventDefault();
+
+    const email=document.getElementById("customerEmail").value.trim().toLowerCase();
+    const password=document.getElementById("customerPassword").value;
+
+    const customer=customers.find(c=>
+        c.email===email && c.password===password && c.active
+    );
+
+    if(!customer){
+        alert("Invalid customer login details.");
+        return;
+    }
+
+    pendingUser={role:"customer",id:customer.id};
+    showOTPPage("customer");
+}
+
+function showOTPPage(role){
+    loginOTP=String(Math.floor(100000+Math.random()*900000));
+
+    document.getElementById("app").innerHTML=`
+        <div class="form-box">
+            <div class="eyebrow">Account verification</div>
+            <h2>Verify your account.</h2>
+            <p class="subtitle">Enter the six-digit OTP to complete login.</p>
+
+            <label>OTP Verification</label>
+            <input id="otpInput" maxlength="6" placeholder="Enter OTP">
+
+            <button class="btn full" onclick="verifyLoginOTP()">Verify OTP</button>
+            <p class="note">For this demonstration, the OTP is shown in a browser alert.</p>
+        </div>
+    `;
+
+    alert("Demo OTP: "+loginOTP);
+}
+
+function verifyLoginOTP(){
+    if(document.getElementById("otpInput").value!==loginOTP){
+        alert("Incorrect OTP. Try again.");
+        return;
+    }
+
+    const user=pendingUser;
+    loginOTP="";
+    pendingUser=null;
+
+    setSession(user);
+    updateNav();
+
+    if(user.role==="farmer") farmerDashboard();
+    else customerDashboard();
+}
+
+function logout(){
+    currentUser=null;
+    sessionStorage.removeItem("am_user");
+    home();
+    updateNav();
+}
+
+// ================= FARMER DASHBOARD =================
+
+function farmerDashboard(){
+    if(!currentUser || currentUser.role!=="farmer") return farmerLogin();
+
+    updateNav();
+
+    const farmer=getFarmer(currentUser.id);
+    const mine=products.filter(p=>p.farmerId===currentUser.id);
+    const myOrders=orders.filter(o=>o.items.some(i=>i.farmerId===currentUser.id));
+    const sales=myOrders.reduce((sum,o)=>
+        sum+o.items.filter(i=>i.farmerId===currentUser.id)
+        .reduce((s,i)=>s+i.price*i.quantity,0),0);
+
+    document.getElementById("app").innerHTML=`
+        <div class="eyebrow">Farmer dashboard</div>
+        <h1 class="page-title">Welcome, ${safe(farmer.name)}.</h1>
+        <p class="page-subtitle">Manage your products, orders and sales from one place.</p>
+
+        <div class="dashboard-grid">
+            <div class="stat-card"><span>My Products</span><h2>${mine.length}</h2></div>
+            <div class="stat-card"><span>My Orders</span><h2>${myOrders.length}</h2></div>
+            <div class="stat-card"><span>Products Sold</span><h2>${myOrders.reduce((s,o)=>s+o.items.filter(i=>i.farmerId===currentUser.id).reduce((a,i)=>a+i.quantity,0),0)}</h2></div>
+            <div class="stat-card"><span>My Sales</span><h2 style="font-size:24px">${money(sales)}</h2></div>
+        </div>
+
+        <div class="dashboard-actions">
+            <div class="action-card">
+                <h3>➕ Add Product</h3>
+                <p>Add a new agricultural product with price, stock and image.</p>
+                <button class="btn" onclick="productForm()">Add Product</button>
+            </div>
+            <div class="action-card">
+                <h3>📦 Manage Products</h3>
+                <p>View, edit or delete your listed products.</p>
+                <button class="btn" onclick="myProducts()">Manage Products</button>
+            </div>
+            <div class="action-card">
+                <h3>🧾 Manage Orders</h3>
+                <p>View customer orders and update their order status.</p>
+                <button class="btn" onclick="farmerOrders()">View Orders</button>
+            </div>
+            <div class="action-card">
+                <h3>🚚 Shipping Status</h3>
+                <p>Update shipping and delivery progress.</p>
+                <button class="btn" onclick="farmerOrders()">Update Shipping</button>
+            </div>
+            <div class="action-card">
+                <h3>💰 My Sales</h3>
+                <p>View sales information and sold product details.</p>
+                <button class="btn" onclick="mySales()">View Sales</button>
+            </div>
+            <div class="action-card">
+                <h3>👤 My Account</h3>
+                <p>View your farmer account details.</p>
+                <button class="btn" onclick="farmerProfile()">My Account</button>
+            </div>
+        </div>
+    `;
+}
+
+// ================= FARMER PROFILE =================
+
+function farmerProfile(){
+    const f=getFarmer(currentUser.id);
+
+    document.getElementById("app").innerHTML=`
+        <div class="form-box">
+            <h2>Farmer Account</h2>
+            <p class="subtitle">Your registered details.</p>
+            <p><b>Farmer ID:</b> ${safe(f.id)}</p><br>
+            <p><b>Name:</b> ${safe(f.name)}</p><br>
+            <p><b>Email:</b> ${safe(f.email)}</p><br>
+            <p><b>Phone:</b> ${safe(f.phone)}</p><br>
+            <p><b>Business:</b> ${safe(f.business)}</p>
+            <button class="btn" onclick="farmerDashboard()">Back</button>
+        </div>
+    `;
+}
+
+// ================= ADD PRODUCT =================
+
+function productForm(productId=null){
+    const p=productId?getProduct(productId):null;
+
+    if(productId && (!p || p.farmerId!==currentUser.id)){
+        alert("Product not found.");
+        return;
+    }
+
+    imageData=p?.image || "";
+
+    document.getElementById("app").innerHTML=`
+        <div class="form-box">
+            <div class="eyebrow">Farmer product listing</div>
+            <h2>${p?"Update Product":"Add New Product"}</h2>
+            <p class="subtitle">Enter complete product details for customers.</p>
+
+            <form onsubmit="saveProduct(event,'${productId||""}')">
+                <label>Product Name</label>
+                <input id="pName" value="${safe(p?.name||"")}" required>
+
+                <label>Category</label>
+                <select id="pCategory" required>
+                    ${categories.map(c=>`<option ${p?.category===c?"selected":""}>${c}</option>`).join("")}
+                </select>
+
+                <label>Description</label>
+                <textarea id="pDescription" required>${safe(p?.description||"")}</textarea>
+
+                <label>Price (₹)</label>
+                <input type="number" id="pPrice" min="0.01" step="0.01" value="${p?.price??""}" required>
+
+                <label>Available Quantity</label>
+                <input type="number" id="pStock" min="0" value="${p?.stock??""}" required>
+
+                <label>Unit (kg, packet, litre, piece etc.)</label>
+                <input id="pUnit" value="${safe(p?.unit||"piece")}" required>
+
+                <label>Upload Product Image</label>
+                <input type="file" id="pImage" accept="image/*" onchange="previewImage(event)">
+
+                <img id="imagePreview" class="preview" src="${safe(p?.image||"")}" style="${p?.image?"":"display:none"}">
+
+                <button class="btn full" type="submit">${p?"Update Product":"Add Product"}</button>
+            </form>
+            <button class="btn btn-outline" onclick="farmerDashboard()">Back</button>
+        </div>
+    `;
+}
+
+function previewImage(event){
+    const file=event.target.files[0];
+    if(!file) return;
+
+    if(!file.type.startsWith("image/")){
+        alert("Please choose an image file.");
+        return;
+    }
+
+    if(file.size>3*1024*1024){
+        alert("Choose an image smaller than 3 MB.");
+        event.target.value="";
+        return;
+    }
+
+    const reader=new FileReader();
+
+    reader.onload=function(e){
+        imageData=e.target.result;
+        const preview=document.getElementById("imagePreview");
+        preview.src=imageData;
+        preview.style.display="block";
+    };
+
+    reader.readAsDataURL(file);
+}
+
+function saveProduct(event,productId){
+    event.preventDefault();
+
+    const name=document.getElementById("pName").value.trim();
+    const price=Number(document.getElementById("pPrice").value);
+    const stock=Number(document.getElementById("pStock").value);
+
+    if(price<=0 || stock<0){
+        alert("Enter a valid price and quantity.");
+        return;
+    }
+
+    if(productId){
+        const p=getProduct(productId);
+        p.name=name;
+        p.category=document.getElementById("pCategory").value;
+        p.description=document.getElementById("pDescription").value.trim();
+        p.price=price;
+        p.stock=stock;
+        p.unit=document.getElementById("pUnit").value.trim();
+        p.image=imageData;
+    }else{
+        products.push({
+            id:makeId("PROD"),
+            farmerId:currentUser.id,
+            name,
+            category:document.getElementById("pCategory").value,
+            description:document.getElementById("pDescription").value.trim(),
+            price,
+            stock,
+            unit:document.getElementById("pUnit").value.trim(),
+            image:imageData
+        });
+    }
+
+    save();
+    alert(productId?"Product updated successfully.":"Product added successfully.");
+    myProducts();
+}
+
+// ================= FARMER PRODUCT MANAGEMENT =================
+
+function myProducts(){
+    const mine=products.filter(p=>p.farmerId===currentUser.id);
+
+    document.getElementById("app").innerHTML=`
+        <h1 class="page-title">My Products</h1>
+        <p class="page-subtitle">Manage your agricultural product listings.</p>
+
+        <button class="btn" onclick="productForm()">+ Add New Product</button>
+
+        <div class="products" style="margin-top:25px">
+            ${mine.map(p=>`
+                <div class="product-card">
+                    ${p.image
+                        ?`<img class="product-image" src="${p.image}" alt="${safe(p.name)}">`
+                        :`<div class="product-image-placeholder">🌱</div>`}
+                    <div class="product-info">
+                        <h3>${safe(p.name)}</h3>
+                        <p>${safe(p.category)} · ${safe(p.stock)} ${safe(p.unit)} available</p>
+                        <div class="price">${money(p.price)} / ${safe(p.unit)}</div>
+                        <button class="btn btn-small" onclick="productForm('${p.id}')">Edit</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteProduct('${p.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join("")||`<div class="empty">You have not added any products yet.</div>`}
+        </div>
+        <button class="btn btn-outline" onclick="farmerDashboard()">Back</button>
+    `;
+}
+
+function deleteProduct(productId){
+    const p=getProduct(productId);
+
+    if(!p || p.farmerId!==currentUser.id) return;
+
+    const hasPending=orders.some(o=>o.items.some(i=>
+        i.productId===productId && i.status!=="Delivered" && i.status!=="Cancelled"
+    ));
+
+    if(hasPending){
+        alert("This product has an active order. Update the order before deleting it.");
+        return;
+    }
+
+    if(!confirm("Are you sure you want to delete this product?")) return;
+
+    products=products.filter(p=>p.id!==productId);
+    save();
+    myProducts();
+}
+
+// ================= FARMER ORDERS =================
+
+function farmerOrders(){
+    const myOrders=orders.filter(o=>o.items.some(i=>i.farmerId===currentUser.id));
+
+    document.getElementById("app").innerHTML=`
+        <h1 class="page-title">Manage Orders</h1>
+        <p class="page-subtitle">View customer orders and update order and shipping status.</p>
+
+        ${myOrders.map(o=>{
+            const items=o.items.filter(i=>i.farmerId===currentUser.id);
+
+            return `
+                <div class="panel">
+                    <h3>Order ${safe(o.id)}</h3>
+                    <p>Customer: ${safe(o.customerName)}</p>
+                    <p>Order Date: ${safe(o.date)}</p>
+                    <p>Shipping Address: ${safe(o.address)}</p>
+
+                    ${items.map(i=>`
+                        <div class="cart-item">
+                            <div>
+                                <b>${safe(i.name)}</b>
+                                <p>${i.quantity} × ${money(i.price)}</p>
+                                <p>Order status: <span class="status">${safe(i.status)}</span></p>
+                                <p>Shipping: <span class="status">${safe(i.shipping)}</span></p>
+                            </div>
+                            <div>
+                                <label>Order Status</label>
+                                <select id="order-${i.id}">
+                                    ${["Confirmed","Processing","Shipped","Delivered","Cancelled"].map(s=>
+                                        `<option ${i.status===s?"selected":""}>${s}</option>`
+                                    ).join("")}
+                                </select>
+                                <label>Shipping Status</label>
+                                <select id="ship-${i.id}">
+                                    ${["Not Shipped","Packed","Shipped","Out for Delivery","Delivered"].map(s=>
+                                        `<option ${i.shipping===s?"selected":""}>${s}</option>`
+                                    ).join("")}
+                                </select>
+                                <button class="btn btn-small" onclick="updateOrderItem('${o.id}','${i.id}')">Update Status</button>
+                            </div>
+                        </div>
+                    `).join("")}
+                </div>
+            `;
+        }).join("")||`<div class="empty">No orders received yet.</div>`}
+
+        <button class="btn btn-outline" onclick="farmerDashboard()">Back</button>
+    `;
+}
+
+function updateOrderItem(orderId,itemId){
+    const order=orders.find(o=>o.id===orderId);
+    const item=order?.items.find(i=>i.id===itemId);
+
+    if(!item || item.farmerId!==currentUser.id) return;
+
+    const status=document.getElementById("order-"+itemId).value;
+    const shipping=document.getElementById("ship-"+itemId).value;
+
+    if(status==="Delivered" && shipping!=="Delivered"){
+        alert("Set shipping status to Delivered first.");
+        return;
+    }
+
+    if(status==="Cancelled" && item.status!=="Cancelled"){
+        const p=getProduct(item.productId);
+        if(p) p.stock+=item.quantity;
+    }
+
+    if(item.status==="Cancelled" && status!=="Cancelled"){
+        alert("A cancelled order cannot be reopened in this demo.");
+        return;
+    }
+
+    item.status=status;
+    item.shipping=shipping;
+
+    save();
+    alert("Order status updated.");
+    farmerOrders();
+}
+
+// ================= FARMER SALES =================
+
+function mySales(){
+    const soldItems=orders.flatMap(o=>
+        o.items.filter(i=>i.farmerId===currentUser.id)
+        .map(i=>({...i,orderId:o.id,customerName:o.customerName}))
+    );
+
+    const total=soldItems.filter(i=>i.status!=="Cancelled")
+        .reduce((sum,i)=>sum+i.price*i.quantity,0);
+
+    document.getElementById("app").innerHTML=`
+        <h1 class="page-title">My Sales</h1>
+        <p class="page-subtitle">Your product sales overview.</p>
+
+        <div class="stat-card" style="margin-bottom:20px">
+            <span>Total Sales Value</span>
+            <h2>${money(total)}</h2>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <tr><th>Order ID</th><th>Product</th><th>Customer</th><th>Quantity</th><th>Amount</th><th>Status</th></tr>
+                ${soldItems.map(i=>`
+                    <tr>
+                        <td>${safe(i.orderId)}</td>
+                        <td>${safe(i.name)}</td>
+                        <td>${safe(i.customerName)}</td>
+                        <td>${i.quantity}</td>
+                        <td>${money(i.price*i.quantity)}</td>
+                        <td>${safe(i.status)}</td>
+                    </tr>
+                `).join("")||`<tr><td colspan="6">No sales yet.</td></tr>`}
+            </table>
+        </div>
+
+        <button class="btn btn-outline" onclick="farmerDashboard()">Back</button>
+    `;
+}
+
+// ================= CUSTOMER DASHBOARD =================
+
+function customerDashboard(){
+    if(!currentUser || currentUser.role!=="customer") return customerLogin();
+
+    updateNav();
+
+    const customer=getCustomer(currentUser.id);
+    const myOrders=orders.filter(o=>o.customerId===currentUser.id);
+
+    document.getElementById("app").innerHTML=`
+        <div class="eyebrow">Customer account</div>
+        <h1 class="page-title">Welcome, ${safe(customer.name)}.</h1>
+        <p class="page-subtitle">Explore products, manage your wallet and track your orders.</p>
+
+        <div class="dashboard-grid">
+            <div class="stat-card"><span>Wallet Balance</span><h2>${money(wallets[currentUser.id]||0)}</h2></div>
+            <div class="stat-card"><span>My Orders</span><h2>${myOrders.length}</h2></div>
+            <div class="stat-card"><span>Cart Items</span><h2>${currentCart().length}</h2></div>
+            <div class="stat-card"><span>Saved Addresses</span><h2>${(addresses[currentUser.id]||[]).length}</h2></div>
+        </div>
+
+        <div class="dashboard-actions">
+            <div class="action-card">
+                <h3>🛍️ Shop Products</h3>
+                <p>Browse agricultural products and view details.</p>
+                <button class="btn" onclick="showProducts()">Explore Shop</button>
+            </div>
+            <div class="action-card">
+                <h3>🛒 My Cart</h3>
+                <p>Add, edit and remove products from your cart.</p>
+                <button class="btn" onclick="viewCart()">View Cart</button>
+            </div>
+            <div class="action-card">
+                <h3>💳 My Wallet</h3>
+                <p>Check your balance and add demo wallet funds.</p>
+                <button class="btn" onclick="walletPage()">Manage Wallet</button>
+            </div>
+            <div class="action-card">
+                <h3>📍 Shipping Address</h3>
+                <p>Add or edit your delivery addresses.</p>
+                <button class="btn" onclick="addressPage()">Manage Address</button>
+            </div>
+            <div class="action-card">
+                <h3>📦 My Orders</h3>
+                <p>View your orders and track their status.</p>
+                <button class="btn" onclick="customerOrders()">Track Orders</button>
+            </div>
+            <div class="action-card">
+                <h3>👤 My Account</h3>
+                <p>View your registered account details.</p>
+                <button class="btn" onclick="customerProfile()">My Account</button>
+            </div>
+        </div>
+    `;
+}
+
+// ================= CUSTOMER PROFILE =================
+
+function customerProfile(){
+    const c=getCustomer(currentUser.id);
+
+    document.getElementById("app").innerHTML=`
+        <div class="form-box">
+            <h2>My Account</h2>
+            <p class="subtitle">Your customer details.</p>
+            <p><b>Customer ID:</b> ${safe(c.id)}</p><br>
+            <p><b>Name:</b> ${safe(c.name)}</p><br>
+            <p><b>Email:</b> ${safe(c.email)}</p><br>
+            <p><b>Phone:</b> ${safe(c.phone)}</p>
+            <button class="btn" onclick="customerDashboard()">Back</button>
+        </div>
+    `;
+}
+
+// ================= PRODUCT SEARCH AND FILTER =================
+
+function showProducts(){
+    updateNav();
+    activeCategory="All";
+
+    document.getElementById("app").innerHTML=`
+        <div class="eyebrow">AgriMart marketplace</div>
+        <h1 class="page-title">Explore Products</h1>
+        <p class="page-subtitle">Find agricultural products for your farming needs.</p>
+
+        <div class="toolbar">
+            <input id="searchProduct" placeholder="Search products..." oninput="filterProducts()">
+            <select id="sortProduct" onchange="filterProducts()">
+                <option value="">Sort Products</option>
+                <option value="low">Price: Low to High</option>
+                <option value="high">Price: High to Low</option>
+                <option value="name">Name: A to Z</option>
+            </select>
+        </div>
+
+        <div class="category-row">
+            <button class="category-chip active" onclick="chooseCategory('All',this)">All</button>
+            ${categories.map(c=>`
+                <button class="category-chip" onclick="chooseCategory('${c}',this)">${c}</button>
+            `).join("")}
+        </div>
+
+        <div id="productResults" class="products"></div>
+    `;
+
+    filterProducts();
+}
+
+function chooseCategory(category,button){
+    activeCategory=category;
+
+    document.querySelectorAll(".category-chip").forEach(b=>b.classList.remove("active"));
+    button.classList.add("active");
+
+    filterProducts();
+}
+
+function filterProducts(){
+    const search=(document.getElementById("searchProduct")?.value||"").toLowerCase();
+    const sort=document.getElementById("sortProduct")?.value||"";
+
+    let list=products.filter(p=>
+        p.stock>0 &&
+        (activeCategory==="All" || p.category===activeCategory) &&
+        (p.name.toLowerCase().includes(search) ||
+         p.category.toLowerCase().includes(search) ||
+         p.description.toLowerCase().includes(search))
+    );
+
+    if(sort==="low") list.sort((a,b)=>a.price-b.price);
+    if(sort==="high") list.sort((a,b)=>b.price-a.price);
+    if(sort==="name") list.sort((a,b)=>a.name.localeCompare(b.name));
+
+    document.getElementById("productResults").innerHTML=list.map(p=>`
+        <div class="product-card">
+            ${p.image
+                ?`<img class="product-image" src="${p.image}" alt="${safe(p.name)}">`
+                :`<div class="product-image-placeholder">🌱</div>`}
+            <div class="product-info">
+                <p>${safe(p.category)}</p>
+                <h3>${safe(p.name)}</h3>
+                <p>${safe(p.description.substring(0,90))}${p.description.length>90?"...":""}</p>
+                <div class="price">${money(p.price)} / ${safe(p.unit)}</div>
+                <div class="stock">${p.stock} ${safe(p.unit)} available</div>
+                <button class="btn btn-small" onclick="productDetails('${p.id}')">View Details</button>
+                ${currentUser?.role==="customer"
+                    ?`<button class="btn btn-small" onclick="addToCart('${p.id}')">Add to Cart</button>`
+                    :""}
+            </div>
+        </div>
+    `).join("")||`<div class="empty">No products found. Try another search or category.</div>`;
+}
+
+// ================= PRODUCT DETAILS =================
+
+function productDetails(productId){
+    const p=getProduct(productId);
+    if(!p) return;
+
+    const farmer=getFarmer(p.farmerId);
+
+    document.getElementById("app").innerHTML=`
+        <div class="panel">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px;align-items:center">
+                <div>
+                    ${p.image
+                        ?`<img src="${p.image}" style="width:100%;max-height:350px;object-fit:cover;border-radius:12px">`
+                        :`<div class="product-image-placeholder" style="height:300px;border-radius:12px">🌱</div>`}
+                </div>
+                <div>
+                    <div class="eyebrow">${safe(p.category)}</div>
+                    <h1 class="page-title">${safe(p.name)}</h1>
+                    <p class="page-subtitle">${safe(p.description)}</p>
+                    <div class="price">${money(p.price)} / ${safe(p.unit)}</div>
+                    <p class="stock">${p.stock} ${safe(p.unit)} available</p>
+                    <p style="margin-top:15px">Seller: ${safe(farmer?.name||"Farmer")}</p>
+                    <p>Business: ${safe(farmer?.business||"-")}</p>
+                    ${currentUser?.role==="customer"
+                        ?`<button class="btn" onclick="addToCart('${p.id}')">Add to Cart</button>`
+                        :`<button class="btn" onclick="customerLogin()">Login to Buy</button>`}
+                    <button class="btn btn-outline" onclick="showProducts()">Back to Products</button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// ================= CART =================
+
+function addToCart(productId){
+    if(!currentUser || currentUser.role!=="customer"){
+        alert("Please login as a customer to add products to your cart.");
+        customerLogin();
+        return;
+    }
+
+    const p=getProduct(productId);
+    if(!p || p.stock<=0){
+        alert("Product is unavailable.");
+        return;
+    }
+
+    let cart=currentCart();
+    const item=cart.find(i=>i.productId===productId);
+
+    if(item){
+        if(item.quantity+1>p.stock){
+            alert("Not enough stock available.");
+            return;
+        }
+        item.quantity++;
+    }else{
+        cart.push({productId,quantity:1});
+    }
+
+    saveCart(cart);
+    alert("Product added to cart.");
+    updateNav();
+}
+
+function viewCart(){
+    if(!currentUser || currentUser.role!=="customer") return customerLogin();
+
+    const cart=currentCart();
+
+    let total=0;
+
+    document.getElementById("app").innerHTML=`
+        <h1 class="page-title">My Shopping Cart</h1>
+        <p class="page-subtitle">Review your products before checkout.</p>
+
+        <div class="panel">
+            ${cart.map(item=>{
+                const p=getProduct(item.productId);
+                if(!p) return "";
+
+                total+=p.price*item.quantity;
+
+                return `
+                    <div class="cart-item">
+                        <div>
+                            <b>${safe(p.name)}</b>
+                            <p>${money(p.price)} / ${safe(p.unit)}</p>
+                            <p>Available: ${p.stock}</p>
+                        </div>
+                        <div>
+                            <label>Quantity</label>
+                            <input type="number" id="qty-${p.id}" min="1" max="${p.stock}" value="${item.quantity}">
+                            <button class="btn btn-small" onclick="editCart('${p.id}')">Update</button>
+                            <button class="btn btn-danger btn-small" onclick="removeCart('${p.id}')">Remove</button>
+                        </div>
+                        <b>${money(p.price*item.quantity)}</b>
+                    </div>
+                `;
+            }).join("")||`<div class="empty">Your cart is empty.</div>`}
+
+            <div class="total">Total: ${money(total)}</div>
+
+            ${cart.length?`<button class="btn" onclick="checkoutPage()">Proceed to Checkout</button>`:""}
+        </div>
+        <button class="btn btn-outline" onclick="showProducts()">Continue Shopping</button>
+    `;
+}
+
+function editCart(productId){
+    const quantity=Number(document.getElementById("qty-"+productId).value);
+    const p=getProduct(productId);
+
+    if(!Number.isInteger(quantity)||quantity<1||quantity>p.stock){
+        alert("Enter a valid quantity within available stock.");
+        return;
+    }
+
+    const cart=currentCart();
+    const item=cart.find(i=>i.productId===productId);
+    item.quantity=quantity;
+
+    saveCart(cart);
+    viewCart();
+}
+
+function removeCart(productId){
+    if(!confirm("Remove this product from your cart?")) return;
+
+    const cart=currentCart().filter(i=>i.productId!==productId);
+    saveCart(cart);
+    viewCart();
+}
+
+// ================= WALLET =================
+
+function walletPage(){
+    const balance=wallets[currentUser.id]||0;
+
+    document.getElementById("app").innerHTML=`
+        <div class="form-box">
+            <div class="eyebrow">Customer wallet</div>
+            <h2>Manage Wallet Balance</h2>
+            <p class="subtitle">View your balance and add demo wallet funds.</p>
+
+            <div class="message">
+                Available Balance: <h2>${money(balance)}</h2>
+            </div>
+
+            <label>Amount to Add (₹)</label>
+            <input type="number" id="walletAmount" min="1" placeholder="Enter amount">
+
+            <button class="btn full" onclick="addWallet()">Add Money</button>
+            <p class="note">This is a simulated wallet for a college demonstration. No real payment is processed.</p>
+            <button class="btn btn-outline" onclick="customerDashboard()">Back</button>
+        </div>
+    `;
+}
+
+function addWallet(){
+    const amount=Number(document.getElementById("walletAmount").value);
+
+    if(!Number.isFinite(amount)||amount<=0){
+        alert("Enter a valid amount.");
+        return;
+    }
+
+    wallets[currentUser.id]=(wallets[currentUser.id]||0)+amount;
+    save();
+
+    alert("Wallet balance updated.");
+    walletPage();
+}
+
+// ================= SHIPPING ADDRESS =================
+
+function addressPage(){
+    const list=addresses[currentUser.id]||[];
+
+    document.getElementById("app").innerHTML=`
+        <h1 class="page-title">Shipping Addresses</h1>
+        <p class="page-subtitle">Add and manage your delivery addresses.</p>
+
+        <div class="form-box" style="margin-left:0">
+            <h2>Add New Address</h2>
+
+            <form onsubmit="saveAddress(event)">
+                <label>Full Name</label>
+                <input id="aName" required>
+
+                <label>Phone Number</label>
+                <input id="aPhone" required>
+
+                <label>House / Street Address</label>
+                <textarea id="aStreet" required></textarea>
+
+                <label>City</label>
+                <input id="aCity" required>
+
+                <label>PIN Code</label>
+                <input id="aPin" required>
+
+                <button class="btn" type="submit">Save Address</button>
+            </form>
+        </div>
+
+        <h2 style="font-family:'Playfair Display';margin-top:30px">Saved Addresses</h2>
+
+        <div class="features" style="margin-top:20px">
+            ${list.map(a=>`
+                <div class="feature-card">
+                    <h3>${safe(a.name)}</h3>
+                    <p>${safe(a.phone)}</p>
+                    <p>${safe(a.street)}, ${safe(a.city)} - ${safe(a.pin)}</p>
+                    <button class="btn btn-danger btn-small" onclick="deleteAddress('${a.id}')">Delete</button>
+                </div>
+            `).join("")||`<div class="empty">No saved addresses yet.</div>`}
+        </div>
+
+        <button class="btn btn-outline" onclick="customerDashboard()">Back</button>
+    `;
+}
+
+function saveAddress(event){
+    event.preventDefault();
+
+    addresses[currentUser.id]=addresses[currentUser.id]||[];
+
+    addresses[currentUser.id].push({
+        id:makeId("ADDR"),
+        name:document.getElementById("aName").value.trim(),
+        phone:document.getElementById("aPhone").value.trim(),
+        street:document.getElementById("aStreet").value.trim(),
+        city:document.getElementById("aCity").value.trim(),
+        pin:document.getElementById("aPin").value.trim()
+    });
+
+    save();
+    alert("Shipping address saved.");
+    addressPage();
+}
+
+function deleteAddress(addressId){
+    if(!confirm("Delete this address?")) return;
+
+    addresses[currentUser.id]=addresses[currentUser.id].filter(a=>a.id!==addressId);
+    save();
+    addressPage();
+}
+
+// ================= CHECKOUT =================
+
+function checkoutPage(){
+    const cart=currentCart();
+
+    if(!cart.length){
+        alert("Your cart is empty.");
+        return viewCart();
+    }
+
+    const list=addresses[currentUser.id]||[];
+
+    if(!list.length){
+        alert("Please add a shipping address before checkout.");
+        return addressPage();
+    }
+
+    let total=0;
+
+    cart.forEach(item=>{
+        const p=getProduct(item.productId);
+        if(p) total+=p.price*item.quantity;
+    });
+
+    document.getElementById("app").innerHTML=`
+        <div class="form-box">
+            <div class="eyebrow">Order checkout</div>
+            <h2>Complete Your Order</h2>
+            <p class="subtitle">Choose your shipping address and confirm your order.</p>
+
+            <div class="panel">
+                ${cart.map(i=>{
+                    const p=getProduct(i.productId);
+                    return `<p>${safe(p.name)} × ${i.quantity} — ${money(p.price*i.quantity)}</p>`;
+                }).join("")}
+                <div class="total">Total: ${money(total)}</div>
+            </div>
+
+            <label>Select Shipping Address</label>
+            <select id="checkoutAddress">
+                ${list.map(a=>`
+                    <option value="${a.id}">
+                        ${safe(a.name)} - ${safe(a.street)}, ${safe(a.city)} (${safe(a.pin)})
+                    </option>
+                `).join("")}
+            </select>
+
+            <div class="message">
+                Wallet Balance: <b>${money(wallets[currentUser.id]||0)}</b>
+            </div>
+
+            <button class="btn full" onclick="placeOrder()">Place Order</button>
+            <button class="btn btn-outline" onclick="viewCart()">Back to Cart</button>
+            <p class="note">Payment is simulated using your AgriMart wallet balance.</p>
+        </div>
+    `;
+}
+
+function placeOrder(){
+    const cart=currentCart();
+    const addressId=document.getElementById("checkoutAddress").value;
+    const address=(addresses[currentUser.id]||[]).find(a=>a.id===addressId);
+
+    if(!address){
+        alert("Select a valid shipping address.");
+        return;
+    }
+
+    let total=0;
+
+    for(const item of cart){
+        const p=getProduct(item.productId);
+
+        if(!p || p.stock<item.quantity){
+            alert("Insufficient stock for "+(p?.name||"a product"));
+            return;
+        }
+
+        total+=p.price*item.quantity;
+    }
+
+    if((wallets[currentUser.id]||0)<total){
+        alert("Insufficient wallet balance. Please add money.");
+        return;
+    }
+
+    const orderItems=cart.map(item=>{
+        const p=getProduct(item.productId);
+        p.stock-=item.quantity;
+
+        return {
+            id:makeId("ITEM"),
+            productId:p.id,
+            farmerId:p.farmerId,
+            name:p.name,
+            price:p.price,
+            quantity:item.quantity,
+            status:"Confirmed",
+            shipping:"Not Shipped"
+        };
+    });
+
+    const orderId=makeId("ORD");
+
+    orders.push({
+        id:orderId,
+        customerId:currentUser.id,
+        customerName:getCustomer(currentUser.id).name,
+        items:orderItems,
+        total,
+        address:`${address.name}, ${address.phone}, ${address.street}, ${address.city} - ${address.pin}`,
+        date:new Date().toLocaleString()
+    });
+
+    wallets[currentUser.id]-=total;
+    carts[currentUser.id]=[];
+
+    save();
+    updateNav();
+
+    document.getElementById("app").innerHTML=`
+        <div class="form-box" style="text-align:center">
+            <div style="font-size:55px;color:var(--green)">✓</div>
+            <div class="eyebrow">Order confirmed</div>
+            <h2>Your order has been placed!</h2>
+            <p class="subtitle">Thank you for shopping with AgriMart.</p>
+
+            <div class="message">
+                Order ID: <b>${safe(orderId)}</b><br>
+                Amount Paid: <b>${money(total)}</b><br>
+                Payment: Wallet
+            </div>
+
+            <button class="btn" onclick="customerOrders()">Track My Order</button>
+            <button class="btn btn-outline" onclick="customerDashboard()">Dashboard</button>
+        </div>
+    `;
+}
+
+// ================= CUSTOMER ORDERS =================
+
+function customerOrders(){
+    const mine=orders.filter(o=>o.customerId===currentUser.id);
+
+    document.getElementById("app").innerHTML=`
+        <h1 class="page-title">My Orders</h1>
+        <p class="page-subtitle">Track your order and shipping status.</p>
+
+        ${mine.map(o=>`
+            <div class="panel">
+                <h3>Order ${safe(o.id)}</h3>
+                <p>Order Date: ${safe(o.date)}</p>
+                <p>Delivery Address: ${safe(o.address)}</p>
+                <p>Total Amount: <b>${money(o.total)}</b></p>
+
+                <div class="table-wrap">
+                    <table>
+                        <tr><th>Product</th><th>Quantity</th><th>Amount</th><th>Order Status</th><th>Shipping Status</th></tr>
+                        ${o.items.map(i=>`
+                            <tr>
+                                <td>${safe(i.name)}</td>
+                                <td>${i.quantity}</td>
+                                <td>${money(i.price*i.quantity)}</td>
+                                <td><span class="status ${i.status==="Cancelled"?"cancelled":""}">${safe(i.status)}</span></td>
+                                <td><span class="status">${safe(i.shipping)}</span></td>
+                            </tr>
+                        `).join("")}
+                    </table>
+                </div>
+            </div>
+        `).join("")||`<div class="empty">You have not placed any orders yet.</div>`}
+
+        <button class="btn btn-outline" onclick="customerDashboard()">Back</button>
+    `;
+}
+
+// ================= START WEBSITE =================
+
+if(currentUser){
+    if(currentUser.role==="farmer" && getFarmer(currentUser.id)?.active){
+        farmerDashboard();
+    }else if(currentUser.role==="customer" && getCustomer(currentUser.id)?.active){
+        customerDashboard();
+    }else{
+        currentUser=null;
+        sessionStorage.removeItem("am_user");
+        home();
+    }
+}else{
+    home();
+}
+
+updateNav();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,859 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RoadRescue - Vehicle Breakdown Assistance</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f3f6fa;
+    color: #263238;
+}
+
+header {
+    background: #102a43;
+    color: white;
+    padding: 18px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+header h2 {
+    color: #ffbd59;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+button {
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #ffbd59;
+    color: #102a43;
+    font-weight: bold;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+nav button {
+    background: transparent;
+    color: white;
+}
+
+nav button:hover {
+    background: #254766;
+}
+
+.hero {
+    background: linear-gradient(120deg, #102a43, #176b87);
+    color: white;
+    text-align: center;
+    padding: 65px 20px;
+}
+
+.hero h1 {
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    margin-bottom: 22px;
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 30px auto;
+}
+
+h2, h3 {
+    margin-bottom: 15px;
+}
+
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 18px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 15px;
+    border: 1px solid #ccd5df;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+textarea {
+    min-height: 85px;
+    resize: vertical;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.primary {
+    background: #176b87;
+    color: white;
+}
+
+.danger {
+    background: #dc3545;
+    color: white;
+}
+
+.success {
+    background: #218838;
+    color: white;
+}
+
+.small {
+    padding: 7px 11px;
+    margin: 4px;
+    font-size: 12px;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 15px;
+    background: #fff0c2;
+    color: #765300;
+    font-size: 12px;
+    margin: 8px 0;
+}
+
+.approved {
+    background: #d4edda;
+    color: #155724;
+}
+
+.pending {
+    background: #fff0c2;
+    color: #765300;
+}
+
+footer {
+    background: #102a43;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+.hidden {
+    display: none;
+}
+
+a {
+    color: #176b87;
+    font-weight: bold;
+}
+
+.message {
+    padding: 12px;
+    background: #e8f4f8;
+    border-radius: 6px;
+    margin: 10px 0;
+}
+
+@media(max-width: 600px) {
+    header {
+        flex-direction: column;
+    }
+
+    .hero h1 {
+        font-size: 27px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>🚗 RoadRescue</h2>
+    <nav>
+        <button onclick="showHome()">Home</button>
+        <button onclick="showLogin()">Login</button>
+        <button onclick="showRegister()">Register</button>
+        <button onclick="logout()">Logout</button>
+    </nav>
+</header>
+
+<section id="home">
+    <div class="hero">
+        <h1>Vehicle Breakdown? We Are Here to Help!</h1>
+        <p>Find nearby approved mechanics and get roadside assistance<br>
+        whenever your vehicle faces an unexpected problem.</p>
+        <button onclick="showLogin()">Find a Mechanic</button>
+    </div>
+
+    <div class="container">
+        <h2 style="text-align:center;">Our Services</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>🔧 Find Mechanics</h3>
+                <p>Search for available mechanics in your area.</p>
+            </div>
+            <div class="card">
+                <h3>📍 Google Maps Location</h3>
+                <p>View the mechanic's business location on Google Maps.</p>
+            </div>
+            <div class="card">
+                <h3>⭐ Customer Feedback</h3>
+                <p>Share your experience and view customer feedback.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- LOGIN -->
+<section id="loginPage" class="container hidden">
+    <div class="card">
+        <h2>Login</h2>
+
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="Enter email">
+
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter password">
+
+        <label>Login As</label>
+        <select id="loginRole">
+            <option value="user">User</option>
+            <option value="mechanic">Mechanic</option>
+            <option value="admin">Admin</option>
+        </select>
+
+        <button class="primary" onclick="login()">Login</button>
+        <p id="loginMessage"></p>
+
+        <p>Don't have an account?
+            <a href="#" onclick="showRegister()">Register here</a>
+        </p>
+
+        <div class="message">
+            <b>Demo Admin Login</b><br>
+            Email: admin@roadrescue.com<br>
+            Password: admin123
+        </div>
+    </div>
+</section>
+
+<!-- REGISTRATION -->
+<section id="registerPage" class="container hidden">
+    <div class="card">
+        <h2>Create Account</h2>
+
+        <label>Register As</label>
+        <select id="regRole" onchange="changeRegistrationFields()">
+            <option value="user">User</option>
+            <option value="mechanic">Mechanic</option>
+        </select>
+
+        <label>Full Name</label>
+        <input type="text" id="regName" placeholder="Enter your name">
+
+        <label>Email</label>
+        <input type="email" id="regEmail" placeholder="Enter email">
+
+        <label>Phone Number</label>
+        <input type="tel" id="regPhone" placeholder="Enter phone number">
+
+        <div id="mechanicFields" class="hidden">
+            <label>Business Name</label>
+            <input type="text" id="regBusiness" placeholder="Enter business name">
+
+            <label>Business Location</label>
+            <input type="text" id="regLocation" placeholder="Example: Porur, Chennai">
+
+            <label>Services Provided</label>
+            <input type="text" id="regService" placeholder="Car repair, tyre repair, battery">
+
+            <label>Licence Number</label>
+            <input type="text" id="regLicence" placeholder="Enter mechanic licence number">
+        </div>
+
+        <label>Password</label>
+        <input type="password" id="regPassword" placeholder="Create password">
+
+        <button class="primary" onclick="register()">Register</button>
+        <p id="registerMessage"></p>
+    </div>
+</section>
+
+<!-- USER DASHBOARD -->
+<section id="userDashboard" class="container hidden">
+    <h2>User Dashboard</h2>
+
+    <div class="card">
+        <h3>Search Approved Mechanics</h3>
+
+        <label>Enter Location</label>
+        <input type="text" id="searchLocation"
+               placeholder="Enter area or city">
+
+        <label>Vehicle Problem / Service</label>
+        <select id="searchService">
+            <option value="">All Services</option>
+            <option value="General Car Repair">General Car Repair</option>
+            <option value="Tyre Repair">Tyre Repair</option>
+            <option value="Battery Repair">Battery Repair</option>
+            <option value="Engine Repair">Engine Repair</option>
+            <option value="Towing Service">Towing Service</option>
+        </select>
+
+        <button class="primary" onclick="searchMechanics()">Search Mechanics</button>
+        <button onclick="getMyLocation()">Use My Current Location</button>
+    </div>
+
+    <div id="mechanicResults"></div>
+
+    <div class="card">
+        <h3>My Profile</h3>
+        <div id="userProfile"></div>
+        <button onclick="editProfile()">Edit Profile</button>
+    </div>
+
+    <div class="card">
+        <h3>Post Feedback</h3>
+
+        <label>Select Mechanic</label>
+        <select id="feedbackMechanic"></select>
+
+        <label>Rating</label>
+        <select id="feedbackRating">
+            <option value="5">5 - Excellent</option>
+            <option value="4">4 - Very Good</option>
+            <option value="3">3 - Good</option>
+            <option value="2">2 - Average</option>
+            <option value="1">1 - Poor</option>
+        </select>
+
+        <label>Your Feedback</label>
+        <textarea id="feedbackText" placeholder="Write your experience"></textarea>
+
+        <button class="primary" onclick="postFeedback()">Submit Feedback</button>
+        <p id="feedbackMessage"></p>
+    </div>
+</section>
+
+<!-- MECHANIC DASHBOARD -->
+<section id="mechanicDashboard" class="container hidden">
+    <h2>Mechanic Dashboard</h2>
+
+    <div class="card">
+        <h3>My Account Status</h3>
+        <div id="mechanicStatus"></div>
+    </div>
+
+    <div class="card">
+        <h3>Post / Update Business</h3>
+
+        <label>Business Name</label>
+        <input type="text" id="businessName">
+
+        <label>Business Location</label>
+        <input type="text" id="businessLocation">
+
+        <label>Services Provided</label>
+        <input type="text" id="businessServices"
+               placeholder="Example: Car repair, tyre repair">
+
+        <label>Phone Number</label>
+        <input type="tel" id="businessPhone">
+
+        <label>Business Description</label>
+        <textarea id="businessDescription"></textarea>
+
+        <button class="primary" onclick="saveBusiness()">Save Business</button>
+        <p id="businessMessage"></p>
+    </div>
+
+    <div class="card">
+        <h3>Manage My Business</h3>
+        <div id="myBusiness"></div>
+    </div>
+
+    <div class="card">
+        <h3>Customer Feedback</h3>
+        <div id="mechanicFeedback"></div>
+    </div>
+</section>
+
+<!-- ADMIN DASHBOARD -->
+<section id="adminDashboard" class="container hidden">
+    <h2>Admin Dashboard</h2>
+
+    <div class="card">
+        <h3>Mechanic Registration Approval</h3>
+        <p>Review mechanic details and approve or reject their accounts.</p>
+        <div id="adminMechanics"></div>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 RoadRescue | On Road Vehicle Breakdown Assistance System</p>
+</footer>
+
+<script>
+// Initial demo data
+let users = JSON.parse(localStorage.getItem("rr_users")) || [];
+let mechanics = JSON.parse(localStorage.getItem("rr_mechanics")) || [];
+let feedbacks = JSON.parse(localStorage.getItem("rr_feedbacks")) || [];
+let currentUser = JSON.parse(sessionStorage.getItem("rr_currentUser")) || null;
+
+const ADMIN_EMAIL = "admin@roadrescue.com";
+const ADMIN_PASSWORD = "admin123";
+
+function saveData() {
+    localStorage.setItem("rr_users", JSON.stringify(users));
+    localStorage.setItem("rr_mechanics", JSON.stringify(mechanics));
+    localStorage.setItem("rr_feedbacks", JSON.stringify(feedbacks));
+}
+
+function hideAll() {
+    ["home", "loginPage", "registerPage", "userDashboard",
+     "mechanicDashboard", "adminDashboard"].forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+    });
+}
+
+function showHome() {
+    hideAll();
+    document.getElementById("home").classList.remove("hidden");
+}
+
+function showLogin() {
+    hideAll();
+    document.getElementById("loginPage").classList.remove("hidden");
+}
+
+function showRegister() {
+    hideAll();
+    document.getElementById("registerPage").classList.remove("hidden");
+}
+
+function changeRegistrationFields() {
+    let role = document.getElementById("regRole").value;
+    document.getElementById("mechanicFields").classList.toggle(
+        "hidden", role !== "mechanic"
+    );
+}
+
+// Registration
+function register() {
+    let role = document.getElementById("regRole").value;
+    let name = document.getElementById("regName").value.trim();
+    let email = document.getElementById("regEmail").value.trim().toLowerCase();
+    let phone = document.getElementById("regPhone").value.trim();
+    let password = document.getElementById("regPassword").value;
+
+    if (!name || !email || !phone || !password) {
+        alert("Please fill in all required fields.");
+        return;
+    }
+
+    if (role === "user") {
+        if (users.some(u => u.email === email)) {
+            alert("This email is already registered.");
+            return;
+        }
+
+        users.push({ name, email, phone, password, role });
+        saveData();
+        alert("User registration successful! Please login.");
+    } else {
+        let business = document.getElementById("regBusiness").value.trim();
+        let location = document.getElementById("regLocation").value.trim();
+        let service = document.getElementById("regService").value.trim();
+        let licence = document.getElementById("regLicence").value.trim();
+
+        if (!business || !location || !service || !licence) {
+            alert("Please fill in all mechanic and business details.");
+            return;
+        }
+
+        if (mechanics.some(m => m.email === email)) {
+            alert("This email is already registered.");
+            return;
+        }
+
+        mechanics.push({
+            name, email, phone, password, role,
+            business, location, service, licence,
+            description: "",
+            approved: false
+        });
+
+        saveData();
+        alert("Mechanic registration submitted. Wait for admin approval.");
+    }
+
+    showLogin();
+}
+
+// Login
+function login() {
+    let email = document.getElementById("loginEmail").value.trim().toLowerCase();
+    let password = document.getElementById("loginPassword").value;
+    let role = document.getElementById("loginRole").value;
+
+    if (role === "admin") {
+        if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+            currentUser = { email, name: "Administrator", role: "admin" };
+            openDashboard();
+        } else {
+            document.getElementById("loginMessage").innerText =
+                "Invalid admin login details.";
+        }
+        return;
+    }
+
+    let accountList = role === "user" ? users : mechanics;
+    let account = accountList.find(
+        item => item.email === email && item.password === password
+    );
+
+    if (!account) {
+        document.getElementById("loginMessage").innerText =
+            "Invalid email or password.";
+        return;
+    }
+
+    if (role === "mechanic" && !account.approved) {
+        alert("Your account is waiting for admin approval.");
+        return;
+    }
+
+    currentUser = { ...account, role };
+    openDashboard();
+}
+
+function openDashboard() {
+    sessionStorage.setItem("rr_currentUser", JSON.stringify(currentUser));
+    hideAll();
+
+    if (currentUser.role === "user") {
+        document.getElementById("userDashboard").classList.remove("hidden");
+        loadUserDashboard();
+    } else if (currentUser.role === "mechanic") {
+        document.getElementById("mechanicDashboard").classList.remove("hidden");
+        loadMechanicDashboard();
+    } else {
+        document.getElementById("adminDashboard").classList.remove("hidden");
+        loadAdminDashboard();
+    }
+}
+
+// Logout
+function logout() {
+    currentUser = null;
+    sessionStorage.removeItem("rr_currentUser");
+    showHome();
+}
+
+// User dashboard
+function loadUserDashboard() {
+    document.getElementById("userProfile").innerHTML = `
+        <p><b>Name:</b> ${escapeHTML(currentUser.name)}</p>
+        <p><b>Email:</b> ${escapeHTML(currentUser.email)}</p>
+        <p><b>Phone:</b> ${escapeHTML(currentUser.phone)}</p>
+    `;
+
+    updateFeedbackMechanics();
+    searchMechanics();
+}
+
+function searchMechanics() {
+    let location = document.getElementById("searchLocation").value.trim().toLowerCase();
+    let service = document.getElementById("searchService").value.toLowerCase();
+
+    let results = mechanics.filter(m =>
+        m.approved &&
+        (!location || m.location.toLowerCase().includes(location)) &&
+        (!service || m.service.toLowerCase().includes(service))
+    );
+
+    let output = document.getElementById("mechanicResults");
+
+    if (results.length === 0) {
+        output.innerHTML = `
+            <div class="card">
+                <h3>No approved mechanics found</h3>
+                <p>Try another location or service.</p>
+            </div>`;
+        return;
+    }
+
+    output.innerHTML = "<h3>Available Mechanics</h3>" +
+        results.map(m => `
+        <div class="card">
+            <h3>🔧 ${escapeHTML(m.business)}</h3>
+            <span class="status approved">Admin Approved</span>
+            <p><b>Mechanic:</b> ${escapeHTML(m.name)}</p>
+            <p><b>Location:</b> ${escapeHTML(m.location)}</p>
+            <p><b>Services:</b> ${escapeHTML(m.service)}</p>
+            <p><b>Phone:</b> ${escapeHTML(m.phone)}</p>
+            <p>${escapeHTML(m.description || "Roadside assistance available.")}</p>
+            <a target="_blank" rel="noopener"
+               href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(m.location)}">
+               View Google Maps Location
+            </a>
+        </div>
+    `).join("");
+
+    updateFeedbackMechanics();
+}
+
+// Current location
+function getMyLocation() {
+    if (!navigator.geolocation) {
+        alert("Geolocation is not supported by this browser.");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        position => {
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+
+            document.getElementById("searchLocation").value =
+                lat.toFixed(5) + ", " + lon.toFixed(5);
+
+            window.open(
+                `https://www.google.com/maps?q=${lat},${lon}`,
+                "_blank"
+            );
+
+            alert("Your current location was detected.");
+        },
+        () => alert("Unable to access your location. Allow location permission.")
+    );
+}
+
+// Edit profile
+function editProfile() {
+    let name = prompt("Enter your new name:", currentUser.name);
+    if (name === null || !name.trim()) return;
+
+    let phone = prompt("Enter your new phone number:", currentUser.phone);
+    if (phone === null || !phone.trim()) return;
+
+    let user = users.find(u => u.email === currentUser.email);
+    if (!user) return;
+
+    user.name = name.trim();
+    user.phone = phone.trim();
+
+    currentUser.name = user.name;
+    currentUser.phone = user.phone;
+
+    saveData();
+    sessionStorage.setItem("rr_currentUser", JSON.stringify(currentUser));
+    loadUserDashboard();
+    alert("Profile updated successfully.");
+}
+
+// Feedback
+function updateFeedbackMechanics() {
+    let approved = mechanics.filter(m => m.approved);
+    document.getElementById("feedbackMechanic").innerHTML =
+        approved.map(m =>
+            `<option value="${escapeHTML(m.email)}">${escapeHTML(m.business)}</option>`
+        ).join("");
+}
+
+function postFeedback() {
+    let mechanicEmail = document.getElementById("feedbackMechanic").value;
+    let rating = document.getElementById("feedbackRating").value;
+    let comment = document.getElementById("feedbackText").value.trim();
+
+    if (!mechanicEmail || !comment) {
+        alert("Select a mechanic and enter your feedback.");
+        return;
+    }
+
+    feedbacks.push({
+        mechanicEmail,
+        userEmail: currentUser.email,
+        userName: currentUser.name,
+        rating,
+        comment
+    });
+
+    saveData();
+    document.getElementById("feedbackText").value = "";
+    document.getElementById("feedbackMessage").innerText =
+        "Feedback submitted successfully!";
+}
+
+// Mechanic dashboard
+function loadMechanicDashboard() {
+    let mechanic = mechanics.find(m => m.email === currentUser.email);
+    if (!mechanic) return;
+
+    document.getElementById("mechanicStatus").innerHTML =
+        mechanic.approved
+        ? '<span class="status approved">Approved</span><p>Your business is visible to users.</p>'
+        : '<span class="status pending">Pending Approval</span><p>Wait for admin approval.</p>';
+
+    document.getElementById("businessName").value = mechanic.business || "";
+    document.getElementById("businessLocation").value = mechanic.location || "";
+    document.getElementById("businessServices").value = mechanic.service || "";
+    document.getElementById("businessPhone").value = mechanic.phone || "";
+    document.getElementById("businessDescription").value = mechanic.description || "";
+
+    document.getElementById("myBusiness").innerHTML = `
+        <p><b>Business:</b> ${escapeHTML(mechanic.business)}</p>
+        <p><b>Location:</b> ${escapeHTML(mechanic.location)}</p>
+        <p><b>Services:</b> ${escapeHTML(mechanic.service)}</p>
+    `;
+
+    let myFeedback = feedbacks.filter(f => f.mechanicEmail === mechanic.email);
+
+    document.getElementById("mechanicFeedback").innerHTML =
+        myFeedback.length
+        ? myFeedback.map(f => `
+            <div class="message">
+                <b>${escapeHTML(f.userName)}</b>
+                <p>Rating: ${"⭐".repeat(Number(f.rating))}</p>
+                <p>${escapeHTML(f.comment)}</p>
+            </div>
+        `).join("")
+        : "<p>No feedback received yet.</p>";
+}
+
+// Save / manage business
+function saveBusiness() {
+    let mechanic = mechanics.find(m => m.email === currentUser.email);
+    if (!mechanic) return;
+
+    let business = document.getElementById("businessName").value.trim();
+    let location = document.getElementById("businessLocation").value.trim();
+    let service = document.getElementById("businessServices").value.trim();
+    let phone = document.getElementById("businessPhone").value.trim();
+    let description = document.getElementById("businessDescription").value.trim();
+
+    if (!business || !location || !service || !phone) {
+        alert("Please complete all business details.");
+        return;
+    }
+
+    mechanic.business = business;
+    mechanic.location = location;
+    mechanic.service = service;
+    mechanic.phone = phone;
+    mechanic.description = description;
+
+    saveData();
+
+    currentUser = { ...mechanic, role: "mechanic" };
+    sessionStorage.setItem("rr_currentUser", JSON.stringify(currentUser));
+
+    document.getElementById("businessMessage").innerText =
+        "Business details updated successfully.";
+
+    loadMechanicDashboard();
+}
+
+// Admin dashboard
+function loadAdminDashboard() {
+    let output = document.getElementById("adminMechanics");
+
+    if (mechanics.length === 0) {
+        output.innerHTML = "<p>No mechanic registrations found.</p>";
+        return;
+    }
+
+    output.innerHTML = mechanics.map((m, index) => `
+        <div class="card">
+            <h3>${escapeHTML(m.business)}</h3>
+            <p><b>Mechanic:</b> ${escapeHTML(m.name)}</p>
+            <p><b>Email:</b> ${escapeHTML(m.email)}</p>
+            <p><b>Phone:</b> ${escapeHTML(m.phone)}</p>
+            <p><b>Location:</b> ${escapeHTML(m.location)}</p>
+            <p><b>Services:</b> ${escapeHTML(m.service)}</p>
+            <p><b>Licence Number:</b> ${escapeHTML(m.licence)}</p>
+
+            <span class="status ${m.approved ? "approved" : "pending"}">
+                ${m.approved ? "Approved" : "Pending"}
+            </span><br>
+
+            ${!m.approved
+                ? `<button class="success small" onclick="approveMechanic(${index})">Approve</button>
+                   <button class="danger small" onclick="rejectMechanic(${index})">Reject</button>`
+                : `<button class="danger small" onclick="rejectMechanic(${index})">Remove Approval</button>`
+            }
+        </div>
+    `).join("");
+}
+
+function approveMechanic(index) {
+    mechanics[index].approved = true;
+    saveData();
+    loadAdminDashboard();
+    alert("Mechanic approved successfully.");
+}
+
+function rejectMechanic(index) {
+    if (!confirm("Are you sure you want to reject this mechanic?")) return;
+
+    mechanics[index].approved = false;
+    saveData();
+    loadAdminDashboard();
+}
+
+// Basic HTML escaping for user-entered text
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+// Restore session after page refresh
+if (currentUser) {
+    openDashboard();
+} else {
+    showHome();
+}
+</script>
+
+</body>
+</html>

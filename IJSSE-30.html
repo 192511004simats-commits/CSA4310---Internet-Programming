@@ -1,0 +1,1349 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IJSSE | International Journal</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #f5f7fa;
+    color: #263447;
+}
+
+header {
+    background: #102b4e;
+    color: white;
+    padding: 20px 6%;
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.logo h1 {
+    color: #e9c46a;
+    font-size: 25px;
+}
+
+.logo p {
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 17px;
+    margin-top: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+}
+
+nav a:hover {
+    color: #e9c46a;
+}
+
+.hero {
+    background: linear-gradient(120deg, #102b4e, #285783);
+    color: white;
+    text-align: center;
+    padding: 85px 8%;
+}
+
+.hero h2 {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    line-height: 1.8;
+    max-width: 750px;
+    margin: auto;
+}
+
+.btn {
+    display: inline-block;
+    background: #e9c46a;
+    color: #102b4e;
+    border: none;
+    padding: 12px 20px;
+    margin-top: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background: #f5d98d;
+}
+
+section {
+    padding: 55px 8%;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.title h2 {
+    font-size: 30px;
+    color: #102b4e;
+    margin-bottom: 10px;
+}
+
+.title p {
+    color: #687789;
+    line-height: 1.6;
+}
+
+.about-content {
+    max-width: 900px;
+    margin: auto;
+    line-height: 1.9;
+}
+
+.about-content p {
+    margin-bottom: 15px;
+}
+
+.issn {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.issn div {
+    flex: 1;
+    min-width: 200px;
+    background: #e9eff6;
+    padding: 20px;
+    border-left: 4px solid #e9c46a;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 6px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.06);
+}
+
+.card h3 {
+    color: #173c63;
+    margin-bottom: 12px;
+}
+
+.card p {
+    color: #657386;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+.card a {
+    color: #1c619d;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 12px;
+}
+
+.card a:hover {
+    text-decoration: underline;
+}
+
+.light {
+    background: #eaf0f6;
+}
+
+ul {
+    padding-left: 22px;
+    line-height: 2;
+    color: #526477;
+}
+
+.form-box {
+    background: white;
+    padding: 25px;
+    max-width: 650px;
+    margin: auto;
+    border-radius: 7px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.07);
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 16px;
+    border: 1px solid #ccd5df;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+textarea {
+    min-height: 100px;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.form-box button {
+    margin-top: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 14px;
+    text-align: left;
+    border: 1px solid #dce3eb;
+    font-size: 14px;
+}
+
+th {
+    background: #102b4e;
+    color: white;
+}
+
+.download {
+    display: inline-block;
+    background: #102b4e;
+    color: white;
+    padding: 9px 13px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.download:hover {
+    background: #285783;
+}
+
+.status {
+    color: #16804a;
+    font-weight: bold;
+}
+
+#dashboard {
+    display: none;
+    background: #e8f2ea;
+    padding: 25px;
+    margin: 25px auto;
+    max-width: 900px;
+    border-radius: 7px;
+}
+
+#dashboard h3 {
+    margin-bottom: 15px;
+}
+
+footer {
+    background: #102b4e;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+footer p {
+    margin: 10px;
+    color: #d2dce8;
+}
+
+@media(max-width:700px) {
+    .hero h2 {
+        font-size: 29px;
+    }
+
+    nav {
+        gap: 12px;
+    }
+
+    section {
+        padding: 40px 5%;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="top">
+        <div class="logo">
+            <h1>IJSSE</h1>
+            <p>International Journal of Scientific and Social Excellence</p>
+        </div>
+
+        <div>
+            <p>Print ISSN: 2395-1443</p>
+            <p>Online ISSN: 2395-1451</p>
+        </div>
+    </div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#about">About Journal</a>
+        <a href="#ethics">Publication Ethics</a>
+        <a href="#editorial">Editorial Board</a>
+        <a href="#reviewers">Reviewers</a>
+        <a href="#authors">Authors</a>
+        <a href="#articles">Articles</a>
+        <a href="#call">Call for Papers</a>
+        <a href="#contact">Contact Us</a>
+    </nav>
+</header>
+
+<!-- HOME -->
+<section class="hero" id="home">
+    <h2>International Journal of Scientific and Social Excellence</h2>
+
+    <p>
+        A platform for researchers, academicians and scholars
+        to share innovative research, scientific discoveries
+        and knowledge across different disciplines.
+    </p>
+
+    <a href="#call" class="btn">Submit Your Manuscript</a>
+    <a href="#articles" class="btn">Explore Articles</a>
+</section>
+
+<!-- ABOUT JOURNAL -->
+<section id="about">
+    <div class="title">
+        <h2>About Journal</h2>
+        <p>Promoting research, innovation and academic excellence.</p>
+    </div>
+
+    <div class="about-content">
+        <p>
+            The International Journal of Scientific and Social
+            Excellence (IJSSE) is an academic journal website
+            designed to support researchers, authors, reviewers
+            and editors in the scholarly publishing process.
+        </p>
+
+        <p>
+            The journal provides a platform for sharing research
+            in science, technology, engineering, education,
+            management and social sciences.
+        </p>
+
+        <p>
+            Its mission is to encourage quality research,
+            knowledge sharing, academic collaboration and
+            responsible publication practices.
+        </p>
+
+        <div class="issn">
+            <div>
+                <h3>Print ISSN</h3>
+                <h2>2395-1443</h2>
+            </div>
+
+            <div>
+                <h3>Online ISSN</h3>
+                <h2>2395-1451</h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PUBLICATION ETHICS -->
+<section class="light" id="ethics">
+    <div class="title">
+        <h2>Publication Ethics</h2>
+        <p>Maintaining honesty, transparency and research integrity.</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Original Research</h3>
+            <p>Authors must submit original work and avoid plagiarism.</p>
+        </div>
+
+        <div class="card">
+            <h3>Peer Review</h3>
+            <p>Submitted manuscripts should undergo an appropriate review process.</p>
+        </div>
+
+        <div class="card">
+            <h3>Confidentiality</h3>
+            <p>Reviewers must maintain the confidentiality of submitted research.</p>
+        </div>
+
+        <div class="card">
+            <h3>Conflict of Interest</h3>
+            <p>Authors, reviewers and editors should disclose relevant conflicts.</p>
+        </div>
+    </div>
+</section>
+
+<!-- EDITORIAL BOARD -->
+<section id="editorial">
+    <div class="title">
+        <h2>Editorial Board</h2>
+        <p>Manage editorial activities and publication decisions.</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Editor Registration</h3>
+            <p>Create an account to participate in editorial activities.</p>
+            <a href="#register">Register as Editor</a>
+        </div>
+
+        <div class="card">
+            <h3>Editor Login</h3>
+            <p>Access the editor dashboard.</p>
+            <a href="#login">Editor Login</a>
+        </div>
+
+        <div class="card">
+            <h3>Editorial Committee</h3>
+            <p>View the committee responsible for journal management.</p>
+            <a href="#committee">View Committee</a>
+        </div>
+
+        <div class="card">
+            <h3>Editor Responsibilities</h3>
+            <p>Manage submissions, assign reviewers and make decisions.</p>
+            <a href="#responsibilities">Read Responsibilities</a>
+        </div>
+    </div>
+</section>
+
+<section class="light" id="committee">
+    <div class="title">
+        <h2>Editorial Committee</h2>
+        <p>Sample committee information for website demonstration.</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Editor-in-Chief</h3>
+            <p>Dr. John Smith</p>
+            <p>Research and Publication Management</p>
+        </div>
+
+        <div class="card">
+            <h3>Associate Editor</h3>
+            <p>Dr. Sarah Wilson</p>
+            <p>Science and Technology</p>
+        </div>
+
+        <div class="card">
+            <h3>Managing Editor</h3>
+            <p>Dr. David Kumar</p>
+            <p>Editorial Operations</p>
+        </div>
+    </div>
+</section>
+
+<section id="responsibilities">
+    <div class="title">
+        <h2>Editor Responsibilities</h2>
+    </div>
+
+    <div class="about-content">
+        <ul>
+            <li>Manage submitted manuscripts.</li>
+            <li>Assign suitable reviewers to articles.</li>
+            <li>Monitor peer-review progress.</li>
+            <li>Evaluate reviewer recommendations.</li>
+            <li>Communicate publication decisions.</li>
+            <li>Maintain publication quality and ethics.</li>
+        </ul>
+    </div>
+</section>
+
+<!-- REVIEWERS -->
+<section class="light" id="reviewers">
+    <div class="title">
+        <h2>For Reviewers</h2>
+        <p>Participate in the academic peer-review process.</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Reviewer Registration</h3>
+            <p>Register with your academic and research details.</p>
+            <a href="#register">Register as Reviewer</a>
+        </div>
+
+        <div class="card">
+            <h3>Reviewer Login</h3>
+            <p>Access assigned manuscript details.</p>
+            <a href="#login">Reviewer Login</a>
+        </div>
+
+        <div class="card">
+            <h3>Reviewer Responsibilities</h3>
+            <p>Evaluate research quality, originality and methodology.</p>
+        </div>
+    </div>
+
+    <h3 style="text-align:center;margin-top:35px">
+        Reviewers for Sample Article
+    </h3>
+
+    <table>
+        <tr>
+            <th>Article</th>
+            <th>Reviewer</th>
+            <th>Specialization</th>
+        </tr>
+        <tr>
+            <td>Artificial Intelligence in Education</td>
+            <td>Dr. Robert</td>
+            <td>Computer Science</td>
+        </tr>
+        <tr>
+            <td>Artificial Intelligence in Education</td>
+            <td>Dr. Priya</td>
+            <td>Educational Technology</td>
+        </tr>
+    </table>
+</section>
+
+<!-- AUTHORS -->
+<section id="authors">
+    <div class="title">
+        <h2>For Authors</h2>
+        <p>Everything researchers need to publish their work.</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Author Registration</h3>
+            <p>Create an account to submit research papers.</p>
+            <a href="#register">Register as Author</a>
+        </div>
+
+        <div class="card">
+            <h3>Author Login</h3>
+            <p>Track manuscript submission status.</p>
+            <a href="#login">Author Login</a>
+        </div>
+
+        <div class="card">
+            <h3>Author Instructions</h3>
+            <p>Read the instructions before manuscript submission.</p>
+            <a href="#guidelines">Read Instructions</a>
+        </div>
+
+        <div class="card">
+            <h3>Publication Charges</h3>
+            <p>View sample publication charge information.</p>
+            <a href="#charges">View Charges</a>
+        </div>
+    </div>
+</section>
+
+<section class="light" id="guidelines">
+    <div class="title">
+        <h2>Author Guidelines</h2>
+    </div>
+
+    <div class="about-content">
+        <ul>
+            <li>Submit original and unpublished research work.</li>
+            <li>Include a clear title and abstract.</li>
+            <li>Provide relevant keywords.</li>
+            <li>Follow the journal's required formatting style.</li>
+            <li>Include references and citations.</li>
+            <li>Submit the copyright declaration where required.</li>
+            <li>Ensure all authors approve the manuscript.</li>
+        </ul>
+
+        <a class="download" href="javascript:downloadTemplate('Article Template')">
+            Download Article Template
+        </a>
+
+        <a class="download" href="javascript:downloadTemplate('Copyright Form Template')">
+            Download Copyright Form
+        </a>
+    </div>
+</section>
+
+<section id="charges">
+    <div class="title">
+        <h2>Publication Charges</h2>
+        <p>Sample fee information for demonstration only.</p>
+    </div>
+
+    <div class="card" style="max-width:600px;margin:auto">
+        <h3>Publication Fee Details</h3>
+        <p>Regular Article: ₹2,000 (sample amount)</p>
+        <p>Review Article: ₹2,500 (sample amount)</p>
+        <p>Actual charges must be confirmed with the journal.</p>
+    </div>
+</section>
+
+<!-- ARTICLES -->
+<section class="light" id="articles">
+    <div class="title">
+        <h2>Articles & Publications</h2>
+        <p>Explore published and upcoming research papers.</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Current Issue</h3>
+            <p>View articles from the latest journal issue.</p>
+            <a href="#current">View Current Issue</a>
+        </div>
+
+        <div class="card">
+            <h3>Archive</h3>
+            <p>Explore previously published journal issues.</p>
+            <a href="#archive">View Archive</a>
+        </div>
+
+        <div class="card">
+            <h3>Most Viewed Articles</h3>
+            <p>Discover articles with high reader interest.</p>
+            <a href="#popular">View Articles</a>
+        </div>
+
+        <div class="card">
+            <h3>Most Cited Articles</h3>
+            <p>Explore articles with high citation counts.</p>
+            <a href="#popular">View Citations</a>
+        </div>
+
+        <div class="card">
+            <h3>About to Print</h3>
+            <p>Read accepted articles awaiting publication.</p>
+            <a href="#upcoming">View Articles</a>
+        </div>
+    </div>
+</section>
+
+<section id="current">
+    <div class="title">
+        <h2>Current Issue</h2>
+        <p>Sample journal article listings.</p>
+    </div>
+
+    <div class="grid" id="articleList"></div>
+</section>
+
+<section class="light" id="archive">
+    <div class="title">
+        <h2>Journal Archive</h2>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Volume 3 - 2026</h3>
+            <p>Issue 1 | January - June 2026</p>
+        </div>
+
+        <div class="card">
+            <h3>Volume 2 - 2025</h3>
+            <p>Issue 1 | January - June 2025</p>
+        </div>
+
+        <div class="card">
+            <h3>Volume 1 - 2024</h3>
+            <p>Issue 1 | January - June 2024</p>
+        </div>
+    </div>
+</section>
+
+<section id="popular">
+    <div class="title">
+        <h2>Popular Research Articles</h2>
+    </div>
+
+    <table>
+        <tr>
+            <th>Article Title</th>
+            <th>Views</th>
+            <th>Citations</th>
+        </tr>
+        <tr>
+            <td>Machine Learning Applications</td>
+            <td>1200</td>
+            <td>45</td>
+        </tr>
+        <tr>
+            <td>Renewable Energy Technologies</td>
+            <td>950</td>
+            <td>38</td>
+        </tr>
+        <tr>
+            <td>Digital Education Development</td>
+            <td>800</td>
+            <td>25</td>
+        </tr>
+    </table>
+</section>
+
+<section class="light" id="upcoming">
+    <div class="title">
+        <h2>Articles About to Print</h2>
+    </div>
+
+    <div class="card">
+        <h3>Smart Technologies for Sustainable Development</h3>
+        <p>Sample accepted article awaiting publication.</p>
+        <span class="status">Accepted - Awaiting Publication</span>
+    </div>
+</section>
+
+<!-- CALL FOR PAPERS -->
+<section id="call">
+    <div class="title">
+        <h2>Call for Papers</h2>
+        <p>Submit your original research for academic consideration.</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Submit Manuscript</h3>
+            <p>Upload your manuscript for editorial consideration.</p>
+            <a href="#submission">Submit Now</a>
+        </div>
+
+        <div class="card">
+            <h3>Indexed List</h3>
+            <p>View journal indexing information.</p>
+            <a href="#indexed">View Information</a>
+        </div>
+
+        <div class="card">
+            <h3>Newsletter</h3>
+            <p>Subscribe for journal announcements.</p>
+            <a href="#newsletter">Subscribe</a>
+        </div>
+
+        <div class="card">
+            <h3>Feedback</h3>
+            <p>Share your experience and suggestions.</p>
+            <a href="#feedback">Give Feedback</a>
+        </div>
+    </div>
+</section>
+
+<section class="light" id="submission">
+    <div class="title">
+        <h2>Manuscript Submission</h2>
+        <p>Complete the form to submit your research paper.</p>
+    </div>
+
+    <div class="form-box">
+        <form id="submissionForm">
+
+            <label>Author Name</label>
+            <input type="text" id="paperAuthor" required>
+
+            <label>Email Address</label>
+            <input type="email" id="paperEmail" required>
+
+            <label>Article Title</label>
+            <input type="text" id="paperTitle" required>
+
+            <label>Research Category</label>
+            <select id="paperCategory" required>
+                <option value="">Select Category</option>
+                <option>Computer Science</option>
+                <option>Engineering</option>
+                <option>Science</option>
+                <option>Education</option>
+                <option>Management</option>
+                <option>Social Science</option>
+            </select>
+
+            <label>Upload Manuscript (PDF/DOC/DOCX)</label>
+            <input type="file" id="paperFile"
+                   accept=".pdf,.doc,.docx" required>
+
+            <button class="btn" type="submit">Submit Manuscript</button>
+        </form>
+
+        <p id="submissionMessage"></p>
+    </div>
+</section>
+
+<section id="indexed">
+    <div class="title">
+        <h2>Indexing Information</h2>
+        <p>Indexing details should be verified against official database records.</p>
+    </div>
+
+    <div class="card">
+        <h3>Journal Indexing</h3>
+        <p>
+            This demonstration page does not verify any indexing
+            or Scopus status. Add only confirmed indexing services
+            and official profile links here.
+        </p>
+    </div>
+</section>
+
+<section class="light" id="newsletter">
+    <div class="title">
+        <h2>Subscribe to Newsletter</h2>
+        <p>Receive updates about new issues and calls for papers.</p>
+    </div>
+
+    <div class="form-box">
+        <form id="newsletterForm">
+            <label>Email Address</label>
+            <input type="email" id="subscriberEmail" required>
+            <button class="btn">Subscribe</button>
+        </form>
+        <p id="newsletterMessage"></p>
+    </div>
+</section>
+
+<section id="feedback">
+    <div class="title">
+        <h2>Reader Feedback</h2>
+    </div>
+
+    <div class="form-box">
+        <form id="feedbackForm">
+            <label>Your Name</label>
+            <input type="text" id="feedbackName" required>
+
+            <label>Your Feedback</label>
+            <textarea id="feedbackText" required></textarea>
+
+            <button class="btn">Submit Feedback</button>
+        </form>
+        <p id="feedbackMessage"></p>
+    </div>
+</section>
+
+<!-- REGISTRATION -->
+<section class="light" id="register">
+    <div class="title">
+        <h2>User Registration</h2>
+        <p>Register as an author, reviewer or editor.</p>
+    </div>
+
+    <div class="form-box">
+        <form id="registerForm">
+
+            <label>Full Name</label>
+            <input type="text" id="regName" required>
+
+            <label>Email</label>
+            <input type="email" id="regEmail" required>
+
+            <label>Institution</label>
+            <input type="text" id="regInstitution" required>
+
+            <label>Register As</label>
+            <select id="regRole" required>
+                <option value="">Select Role</option>
+                <option value="Author">Author</option>
+                <option value="Reviewer">Reviewer</option>
+                <option value="Editor">Editor</option>
+            </select>
+
+            <label>Password</label>
+            <input type="password" id="regPassword" required minlength="6">
+
+            <button class="btn">Create Account</button>
+        </form>
+
+        <p id="registerMessage"></p>
+    </div>
+</section>
+
+<!-- LOGIN -->
+<section id="login">
+    <div class="title">
+        <h2>User Login</h2>
+        <p>Login to access your journal dashboard.</p>
+    </div>
+
+    <div class="form-box">
+        <form id="loginForm">
+
+            <label>Email Address</label>
+            <input type="email" id="loginEmail" required>
+
+            <label>Password</label>
+            <input type="password" id="loginPassword" required>
+
+            <label>Login As</label>
+            <select id="loginRole" required>
+                <option value="">Select Role</option>
+                <option>Author</option>
+                <option>Reviewer</option>
+                <option>Editor</option>
+            </select>
+
+            <button class="btn">Login</button>
+        </form>
+
+        <p id="loginMessage"></p>
+    </div>
+
+    <div id="dashboard">
+        <h3 id="welcome"></h3>
+        <p id="dashboardInfo"></p>
+        <div id="dashboardContent"></div>
+        <button class="btn" onclick="logout()">Logout</button>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section class="light" id="contact">
+    <div class="title">
+        <h2>Contact Us</h2>
+        <p>Get in touch with the journal team.</p>
+    </div>
+
+    <div class="form-box">
+        <p><b>Journal:</b> International Journal of Scientific and Social Excellence</p>
+        <p><b>Print ISSN:</b> 2395-1443</p>
+        <p><b>Online ISSN:</b> 2395-1451</p>
+
+        <form id="contactForm" style="margin-top:20px">
+            <label>Name</label>
+            <input type="text" id="contactName" required>
+
+            <label>Email</label>
+            <input type="email" id="contactEmail" required>
+
+            <label>Message</label>
+            <textarea id="contactMessage" required></textarea>
+
+            <button class="btn">Send Message</button>
+        </form>
+
+        <p id="contactMessageStatus"></p>
+    </div>
+</section>
+
+<footer>
+    <h2>IJSSE</h2>
+    <p>International Journal of Scientific and Social Excellence</p>
+    <p>Print ISSN: 2395-1443 | Online ISSN: 2395-1451</p>
+    <p>© 2026 IJSSE - Academic Journal Website Demonstration</p>
+</footer>
+
+<script>
+
+// STORAGE DATA
+function getData(key) {
+    return JSON.parse(localStorage.getItem(key) || "[]");
+}
+
+function saveData(key, data) {
+    localStorage.setItem(key, JSON.stringify(data));
+}
+
+// ARTICLE DATA
+const articles = [
+    {
+        title: "Machine Learning Applications",
+        author: "Dr. Robert",
+        category: "Computer Science",
+        year: 2026,
+        views: 1200,
+        citations: 45
+    },
+    {
+        title: "Renewable Energy Technologies",
+        author: "Dr. Priya",
+        category: "Engineering",
+        year: 2026,
+        views: 950,
+        citations: 38
+    },
+    {
+        title: "Digital Education Development",
+        author: "Dr. John",
+        category: "Education",
+        year: 2025,
+        views: 800,
+        citations: 25
+    }
+];
+
+function displayArticles() {
+    document.getElementById("articleList").innerHTML =
+        articles.map(article => `
+            <div class="card">
+                <h3>${article.title}</h3>
+                <p>Author: ${article.author}</p>
+                <p>Category: ${article.category}</p>
+                <p>Year: ${article.year}</p>
+                <p>Views: ${article.views}</p>
+                <p>Citations: ${article.citations}</p>
+            </div>
+        `).join("");
+}
+
+// DOWNLOAD SAMPLE TEMPLATES
+function downloadTemplate(name) {
+    const content =
+        name + "\n\nInternational Journal of Scientific and Social Excellence\n\n" +
+        "Title:\nAuthor Name:\nInstitution:\nAbstract:\nKeywords:\n\n" +
+        "Introduction:\nMethodology:\nResults:\nConclusion:\nReferences:\n";
+
+    const blob = new Blob([content], {type: "text/plain"});
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = name.replaceAll(" ", "_") + ".txt";
+    link.click();
+
+    URL.revokeObjectURL(url);
+}
+
+// REGISTRATION
+document.getElementById("registerForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let users = getData("ijsseUsers");
+
+    let name = document.getElementById("regName").value.trim();
+    let email = document.getElementById("regEmail").value.trim().toLowerCase();
+    let institution = document.getElementById("regInstitution").value.trim();
+    let role = document.getElementById("regRole").value;
+    let password = document.getElementById("regPassword").value;
+
+    if (users.some(user => user.email === email)) {
+        document.getElementById("registerMessage").innerText =
+            "This email is already registered.";
+        return;
+    }
+
+    users.push({
+        name,
+        email,
+        institution,
+        role,
+        password
+    });
+
+    saveData("ijsseUsers", users);
+
+    document.getElementById("registerMessage").innerText =
+        "Registration successful! Please login.";
+
+    this.reset();
+});
+
+// LOGIN
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let email = document.getElementById("loginEmail").value.trim().toLowerCase();
+    let password = document.getElementById("loginPassword").value;
+    let role = document.getElementById("loginRole").value;
+
+    let users = getData("ijsseUsers");
+
+    let user = users.find(u =>
+        u.email === email &&
+        u.password === password &&
+        u.role === role
+    );
+
+    if (!user) {
+        document.getElementById("loginMessage").innerText =
+            "Invalid email, password or role.";
+        return;
+    }
+
+    sessionStorage.setItem("ijsseCurrentUser", JSON.stringify(user));
+
+    showDashboard(user);
+    document.getElementById("loginMessage").innerText = "Login successful!";
+});
+
+// DASHBOARD
+function showDashboard(user) {
+
+    document.getElementById("dashboard").style.display = "block";
+    document.getElementById("welcome").innerText =
+        "Welcome, " + user.name + " (" + user.role + ")";
+
+    let papers = getData("ijssePapers");
+
+    let content = "";
+
+    if (user.role === "Author") {
+
+        let myPapers = papers.filter(p => p.email === user.email);
+
+        content = "<h3>My Submitted Papers</h3>";
+
+        if (myPapers.length === 0) {
+            content += "<p>No manuscripts submitted yet.</p>";
+        } else {
+            content += `
+                <table>
+                    <tr><th>Paper Title</th><th>Paper ID</th><th>Status</th></tr>
+                    ${myPapers.map(p => `
+                        <tr>
+                            <td>${p.title}</td>
+                            <td>${p.id}</td>
+                            <td>${p.status}</td>
+                        </tr>
+                    `).join("")}
+                </table>
+            `;
+        }
+
+        content += '<p><a href="#submission">Go to Manuscript Submission</a></p>';
+
+    } else if (user.role === "Reviewer") {
+
+        content = "<h3>Reviewer Dashboard</h3>";
+
+        content += papers.length
+            ? papers.map(p => `
+                <div class="card">
+                    <h4>${p.title}</h4>
+                    <p>Paper ID: ${p.id}</p>
+                    <p>Review Status: ${p.status}</p>
+                    <button class="btn" onclick="reviewPaper('${p.id}')">
+                        Mark as Reviewed
+                    </button>
+                </div>
+            `).join("")
+            : "<p>No manuscripts available for review.</p>";
+
+    } else if (user.role === "Editor") {
+
+        content = "<h3>Editor Dashboard - Manuscript Management</h3>";
+
+        content += papers.length
+            ? papers.map(p => `
+                <div class="card">
+                    <h4>${p.title}</h4>
+                    <p>Author: ${p.author}</p>
+                    <p>Paper ID: ${p.id}</p>
+                    <p>Status: ${p.status}</p>
+
+                    <button class="btn"
+                        onclick="updatePaper('${p.id}','Under Review')">
+                        Send for Review
+                    </button>
+
+                    <button class="btn"
+                        onclick="updatePaper('${p.id}','Accepted')">
+                        Accept
+                    </button>
+
+                    <button class="btn"
+                        onclick="updatePaper('${p.id}','Rejected')">
+                        Reject
+                    </button>
+                </div>
+            `).join("")
+            : "<p>No submitted manuscripts available.</p>";
+    }
+
+    document.getElementById("dashboardContent").innerHTML = content;
+
+    document.getElementById("dashboardInfo").innerText =
+        "Institution: " + user.institution;
+}
+
+// LOGOUT
+function logout() {
+    sessionStorage.removeItem("ijsseCurrentUser");
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("loginForm").reset();
+    document.getElementById("loginMessage").innerText = "Logged out successfully.";
+}
+
+// SUBMIT MANUSCRIPT
+document.getElementById("submissionForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let papers = getData("ijssePapers");
+
+    let file = document.getElementById("paperFile").files[0];
+
+    if (!file) return;
+
+    let paper = {
+        id: "IJSSE" + Date.now(),
+        author: document.getElementById("paperAuthor").value.trim(),
+        email: document.getElementById("paperEmail").value.trim().toLowerCase(),
+        title: document.getElementById("paperTitle").value.trim(),
+        category: document.getElementById("paperCategory").value,
+        fileName: file.name,
+        status: "Submitted"
+    };
+
+    papers.push(paper);
+    saveData("ijssePapers", papers);
+
+    document.getElementById("submissionMessage").innerText =
+        "Manuscript submitted successfully! Paper ID: " + paper.id;
+
+    this.reset();
+
+    let currentUser = JSON.parse(
+        sessionStorage.getItem("ijsseCurrentUser") || "null"
+    );
+
+    if (currentUser) showDashboard(currentUser);
+});
+
+// EDITOR UPDATE
+function updatePaper(id, status) {
+
+    let papers = getData("ijssePapers");
+
+    papers = papers.map(p => {
+        if (p.id === id) {
+            p.status = status;
+        }
+        return p;
+    });
+
+    saveData("ijssePapers", papers);
+
+    let user = JSON.parse(sessionStorage.getItem("ijsseCurrentUser"));
+
+    if (user) showDashboard(user);
+
+    alert("Paper status updated to " + status);
+}
+
+// REVIEWER UPDATE
+function reviewPaper(id) {
+
+    let papers = getData("ijssePapers");
+
+    papers = papers.map(p => {
+        if (p.id === id && p.status !== "Accepted" && p.status !== "Rejected") {
+            p.status = "Reviewed";
+        }
+        return p;
+    });
+
+    saveData("ijssePapers", papers);
+
+    let user = JSON.parse(sessionStorage.getItem("ijsseCurrentUser"));
+
+    if (user) showDashboard(user);
+
+    alert("Review status updated.");
+}
+
+// NEWSLETTER
+document.getElementById("newsletterForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let email = document.getElementById("subscriberEmail").value.trim().toLowerCase();
+    let subscribers = getData("ijsseSubscribers");
+
+    if (subscribers.includes(email)) {
+        document.getElementById("newsletterMessage").innerText =
+            "This email is already subscribed.";
+        return;
+    }
+
+    subscribers.push(email);
+    saveData("ijsseSubscribers", subscribers);
+
+    document.getElementById("newsletterMessage").innerText =
+        "Successfully subscribed!";
+
+    this.reset();
+});
+
+// FEEDBACK
+document.getElementById("feedbackForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let feedbacks = getData("ijsseFeedback");
+
+    feedbacks.push({
+        name: document.getElementById("feedbackName").value,
+        message: document.getElementById("feedbackText").value
+    });
+
+    saveData("ijsseFeedback", feedbacks);
+
+    document.getElementById("feedbackMessage").innerText =
+        "Thank you for your feedback!";
+
+    this.reset();
+});
+
+// CONTACT
+document.getElementById("contactForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let messages = getData("ijsseMessages");
+
+    messages.push({
+        name: document.getElementById("contactName").value,
+        email: document.getElementById("contactEmail").value,
+        message: document.getElementById("contactMessage").value
+    });
+
+    saveData("ijsseMessages", messages);
+
+    document.getElementById("contactMessageStatus").innerText =
+        "Your enquiry has been recorded successfully.";
+
+    this.reset();
+});
+
+// INITIALIZE
+displayArticles();
+
+</script>
+
+</body>
+</html>

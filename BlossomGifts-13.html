@@ -1,0 +1,608 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlossomGifts | Online Gift Store</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#fff8f8;color:#392d32}
+header{background:#fff;padding:18px 7%;display:flex;justify-content:space-between;align-items:center;box-shadow:0 3px 12px #ddd;position:sticky;top:0;z-index:10}
+.logo{font-size:27px;font-weight:bold;color:#c64d78}
+nav a{margin:0 10px;text-decoration:none;color:#49353d;font-weight:bold;cursor:pointer}
+nav a:hover{color:#d64e80}
+button{background:#d64e80;color:white;border:0;padding:11px 17px;border-radius:7px;cursor:pointer}
+button:hover{background:#ad315e}
+input,select,textarea{width:100%;padding:11px;margin:8px 0;border:1px solid #ddd;border-radius:6px}
+.hero{padding:75px 8%;background:linear-gradient(90deg,#fce1e9,#fff1f4);display:flex;align-items:center;justify-content:space-between;gap:25px}
+.hero h1{font-size:43px;color:#a83260;margin-bottom:15px}
+.hero p{font-size:17px;line-height:1.7;margin-bottom:20px}
+.hero img{width:40%;max-height:300px;object-fit:cover;border-radius:18px}
+section{padding:40px 7%}
+h2{color:#a83260;margin-bottom:20px}
+.categories,.products,.dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+.category,.product,.panel{background:white;padding:20px;border-radius:12px;box-shadow:0 3px 12px #eadde1}
+.category{text-align:center;cursor:pointer;font-size:18px}
+.category:hover,.product:hover{transform:translateY(-4px);transition:.2s}
+.category span{font-size:35px;display:block;margin-bottom:10px}
+.product{text-align:center}
+.product .photo{font-size:65px;background:#fff0f4;padding:25px;border-radius:10px}
+.product h3{margin:12px 0}
+.price{color:#c64d78;font-weight:bold;margin:10px}
+.product button{margin:4px}
+.page{display:none;min-height:70vh}
+.page.active{display:block}
+.form-box{max-width:450px;margin:35px auto;background:white;padding:28px;border-radius:12px;box-shadow:0 3px 15px #ddd}
+.form-box h2{text-align:center}
+table{width:100%;border-collapse:collapse;background:white;margin-top:15px}
+th,td{padding:12px;border:1px solid #eee;text-align:left}
+th{background:#fce1e9}
+.cart-item{background:white;padding:15px;margin:10px 0;border-radius:8px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+footer{text-align:center;background:#382b32;color:white;padding:25px;margin-top:30px}
+.small{font-size:13px;color:#777}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.actions button{margin:3px}
+@media(max-width:700px){
+ header{flex-direction:column;gap:15px}
+ nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+ .hero{flex-direction:column;text-align:center}
+ .hero img{width:100%}
+ .hero h1{font-size:32px}
+ table{font-size:12px}
+ th,td{padding:7px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">🌸 BlossomGifts</div>
+ <nav>
+  <a onclick="showPage('home')">Home</a>
+  <a onclick="showPage('shop')">Shop</a>
+  <a onclick="showPage('cart')">Cart (<span id="cartCount">0</span>)</a>
+  <a onclick="showPage('orders')">My Orders</a>
+  <a onclick="showPage('login')">Login</a>
+  <a onclick="showPage('adminLogin')">Admin</a>
+ </nav>
+</header>
+
+<!-- HOME -->
+<div id="home" class="page active">
+ <div class="hero">
+  <div>
+   <h1>Make Every Moment Bloom 🌷</h1>
+   <p>Beautiful flowers and thoughtful gifts for every special occasion. Make your loved ones smile with BlossomGifts!</p>
+   <button onclick="showPage('shop')">Explore Gifts</button>
+  </div>
+  <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=700" alt="Beautiful flowers">
+ </div>
+
+ <section>
+  <h2>Shop by Category</h2>
+  <div class="categories">
+   <div class="category" onclick="filterCategory('Flowers')"><span>💐</span>Flowers</div>
+   <div class="category" onclick="filterCategory('Gift Baskets')"><span>🎁</span>Gift Baskets</div>
+   <div class="category" onclick="filterCategory('Cakes')"><span>🎂</span>Cakes</div>
+   <div class="category" onclick="filterCategory('Personalized')"><span>💝</span>Personalized Gifts</div>
+   <div class="category" onclick="filterCategory('Plants')"><span>🪴</span>Plants</div>
+   <div class="category" onclick="filterCategory('Teddy Bears')"><span>🧸</span>Teddy Bears</div>
+  </div>
+ </section>
+
+ <section>
+  <h2>Popular Gifts</h2>
+  <div class="products" id="homeProducts"></div>
+ </section>
+</div>
+
+<!-- SHOP -->
+<div id="shop" class="page">
+ <section>
+  <h2>Explore Our Collection 🌸</h2>
+  <input id="search" placeholder="Search for flowers and gifts..." oninput="displayProducts()">
+  <select id="categoryFilter" onchange="displayProducts()">
+   <option value="All">All Categories</option>
+   <option>Flowers</option>
+   <option>Gift Baskets</option>
+   <option>Cakes</option>
+   <option>Personalized</option>
+   <option>Plants</option>
+   <option>Teddy Bears</option>
+  </select>
+  <div class="products" id="shopProducts"></div>
+ </section>
+</div>
+
+<!-- PRODUCT DETAILS -->
+<div id="details" class="page">
+ <section id="productDetails"></section>
+</div>
+
+<!-- CART -->
+<div id="cart" class="page">
+ <section>
+  <h2>🛒 Your Shopping Cart</h2>
+  <div id="cartItems"></div>
+  <h3 id="cartTotal">Total: ₹0</h3>
+  <button onclick="showPage('checkout')">Proceed to Checkout</button>
+ </section>
+</div>
+
+<!-- CHECKOUT -->
+<div id="checkout" class="page">
+ <div class="form-box">
+  <h2>Delivery Details 🎁</h2>
+  <form onsubmit="placeOrder(event)">
+   <input id="deliveryName" placeholder="Full Name" required>
+   <input id="deliveryPhone" placeholder="Phone Number" required>
+   <textarea id="deliveryAddress" placeholder="Delivery Address" required></textarea>
+   <label>Delivery Date</label>
+   <input type="date" id="deliveryDate" required>
+   <label>Delivery Time</label>
+   <select id="deliveryTime">
+    <option>9 AM - 12 PM</option>
+    <option>12 PM - 3 PM</option>
+    <option>3 PM - 6 PM</option>
+    <option>6 PM - 9 PM</option>
+   </select>
+   <label>Payment Method</label>
+   <select id="payment">
+    <option>Cash on Delivery</option>
+    <option>UPI (Demo)</option>
+    <option>Card (Demo)</option>
+   </select>
+   <button type="submit">Confirm Order</button>
+  </form>
+ </div>
+</div>
+
+<!-- CUSTOMER LOGIN -->
+<div id="login" class="page">
+ <div class="form-box">
+  <h2>Customer Login</h2>
+  <form onsubmit="customerLogin(event)">
+   <input id="loginEmail" type="email" placeholder="Email Address" required>
+   <input id="loginPassword" type="password" placeholder="Password" required>
+   <button type="submit">Login</button>
+  </form>
+  <p class="small">New customer? <a onclick="showPage('register')">Create an account</a></p>
+ </div>
+</div>
+
+<!-- REGISTER -->
+<div id="register" class="page">
+ <div class="form-box">
+  <h2>Create Account</h2>
+  <form onsubmit="registerCustomer(event)">
+   <input id="regName" placeholder="Full Name" required>
+   <input id="regEmail" type="email" placeholder="Email" required>
+   <input id="regPhone" placeholder="Phone Number" required>
+   <input id="regPassword" type="password" placeholder="Password" required>
+   <button type="submit">Register</button>
+  </form>
+ </div>
+</div>
+
+<!-- CUSTOMER PROFILE -->
+<div id="profile" class="page">
+ <section>
+  <h2>My Account</h2>
+  <div id="profileInfo" class="panel"></div>
+  <button onclick="logout()">Logout</button>
+ </section>
+</div>
+
+<!-- CUSTOMER ORDERS -->
+<div id="orders" class="page">
+ <section>
+  <h2>My Order History</h2>
+  <div id="myOrders"></div>
+ </section>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div id="adminLogin" class="page">
+ <div class="form-box">
+  <h2>Administrator Login</h2>
+  <form onsubmit="adminLogin(event)">
+   <input id="adminEmail" type="email" placeholder="Admin Email" required>
+   <input id="adminPassword" type="password" placeholder="Password" required>
+   <button type="submit">Login as Admin</button>
+  </form>
+  <p class="small">Demo: admin@blossom.com / admin123</p>
+ </div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div id="admin" class="page">
+ <section>
+  <h2>🌸 Admin Dashboard</h2>
+  <div class="dashboard">
+   <div class="panel"><h3>Total Products</h3><h2 id="totalProducts">0</h2></div>
+   <div class="panel"><h3>Total Customers</h3><h2 id="totalCustomers">0</h2></div>
+   <div class="panel"><h3>Total Orders</h3><h2 id="totalOrders">0</h2></div>
+  </div>
+
+  <h2 style="margin-top:30px">Add New Product</h2>
+  <div class="panel">
+   <input id="newName" placeholder="Product Name">
+   <input id="newPrice" type="number" placeholder="Price">
+   <select id="newCategory">
+    <option>Flowers</option>
+    <option>Gift Baskets</option>
+    <option>Cakes</option>
+    <option>Personalized</option>
+    <option>Plants</option>
+    <option>Teddy Bears</option>
+   </select>
+   <input id="newEmoji" placeholder="Product Emoji (e.g. 🌹)">
+   <textarea id="newDescription" placeholder="Product Description"></textarea>
+   <button onclick="addProduct()">Add Product</button>
+  </div>
+
+  <h2 style="margin-top:30px">Manage Inventory</h2>
+  <div id="adminProducts"></div>
+
+  <h2 style="margin-top:30px">Customer Information</h2>
+  <div id="customerList"></div>
+
+  <h2 style="margin-top:30px">Order Summary</h2>
+  <div id="adminOrders"></div>
+
+  <button onclick="logout()">Logout</button>
+ </section>
+</div>
+
+<footer>
+ <h3>🌸 BlossomGifts</h3>
+ <p>Spread Happiness Through Beautiful Gifts!</p>
+ <p>© 2026 BlossomGifts. All Rights Reserved.</p>
+</footer>
+
+<script>
+// DATA
+let products = JSON.parse(localStorage.getItem("bgProducts")) || [
+ {id:1,name:"Red Rose Bouquet",price:599,category:"Flowers",emoji:"🌹",description:"A beautiful bouquet of fresh red roses."},
+ {id:2,name:"Pink Flower Bouquet",price:799,category:"Flowers",emoji:"💐",description:"A lovely pink floral arrangement."},
+ {id:3,name:"Chocolate Gift Basket",price:999,category:"Gift Baskets",emoji:"🎁",description:"A basket filled with delicious chocolates."},
+ {id:4,name:"Birthday Cake",price:650,category:"Cakes",emoji:"🎂",description:"A delicious cake for birthday celebrations."},
+ {id:5,name:"Personalized Mug",price:299,category:"Personalized",emoji:"☕",description:"A customized mug for your loved ones."},
+ {id:6,name:"Indoor Plant",price:399,category:"Plants",emoji:"🪴",description:"A beautiful indoor plant for your home."},
+ {id:7,name:"Cute Teddy Bear",price:499,category:"Teddy Bears",emoji:"🧸",description:"A soft and adorable teddy bear."}
+];
+
+let customers = JSON.parse(localStorage.getItem("bgCustomers")) || [];
+let orders = JSON.parse(localStorage.getItem("bgOrders")) || [];
+let cart = [];
+let currentCustomer = JSON.parse(sessionStorage.getItem("bgUser")) || null;
+let isAdmin = false;
+
+function saveData(){
+ localStorage.setItem("bgProducts",JSON.stringify(products));
+ localStorage.setItem("bgCustomers",JSON.stringify(customers));
+ localStorage.setItem("bgOrders",JSON.stringify(orders));
+}
+
+function showPage(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+
+ if(id==="shop") displayProducts();
+ if(id==="cart") displayCart();
+ if(id==="orders") displayMyOrders();
+ if(id==="profile") displayProfile();
+ if(id==="admin") displayAdmin();
+ window.scrollTo(0,0);
+}
+
+function displayProducts(){
+ let search=document.getElementById("search")?.value.toLowerCase() || "";
+ let category=document.getElementById("categoryFilter")?.value || "All";
+
+ let filtered=products.filter(p=>
+  p.name.toLowerCase().includes(search) &&
+  (category==="All" || p.category===category)
+ );
+
+ let html=filtered.map(p=>`
+  <div class="product">
+   <div class="photo">${p.emoji}</div>
+   <h3>${p.name}</h3>
+   <p>${p.category}</p>
+   <p class="price">₹${p.price}</p>
+   <button onclick="viewDetails(${p.id})">View Details</button>
+   <button onclick="addToCart(${p.id})">Add to Cart</button>
+  </div>
+ `).join("");
+
+ document.getElementById("shopProducts").innerHTML=html || "No products found.";
+}
+
+function displayHome(){
+ document.getElementById("homeProducts").innerHTML=products.slice(0,4).map(p=>`
+  <div class="product">
+   <div class="photo">${p.emoji}</div>
+   <h3>${p.name}</h3>
+   <p class="price">₹${p.price}</p>
+   <button onclick="addToCart(${p.id})">Add to Cart</button>
+  </div>
+ `).join("");
+}
+
+function filterCategory(category){
+ document.getElementById("categoryFilter").value=category;
+ showPage("shop");
+}
+
+function viewDetails(id){
+ let p=products.find(x=>x.id===id);
+ document.getElementById("productDetails").innerHTML=`
+  <div class="panel" style="text-align:center">
+   <div style="font-size:100px">${p.emoji}</div>
+   <h2>${p.name}</h2>
+   <p>${p.description}</p>
+   <h3 class="price">₹${p.price}</h3>
+   <button onclick="addToCart(${p.id})">Add to Cart</button>
+   <button onclick="showPage('shop')">Back to Shop</button>
+  </div>`;
+ showPage("details");
+}
+
+function addToCart(id){
+ let item=cart.find(x=>x.id===id);
+ if(item)item.qty++;
+ else cart.push({id:id,qty:1});
+ updateCartCount();
+ alert("Product added to cart!");
+}
+
+function updateCartCount(){
+ document.getElementById("cartCount").innerText=cart.reduce((sum,x)=>sum+x.qty,0);
+}
+
+function displayCart(){
+ let area=document.getElementById("cartItems");
+ if(cart.length===0){
+  area.innerHTML="<p>Your cart is empty.</p>";
+  document.getElementById("cartTotal").innerText="Total: ₹0";
+  return;
+ }
+
+ let total=0;
+ area.innerHTML=cart.map(item=>{
+  let p=products.find(x=>x.id===item.id);
+  if(!p)return "";
+  total+=p.price*item.qty;
+  return `<div class="cart-item">
+   <div>${p.emoji} <b>${p.name}</b><br>₹${p.price}</div>
+   <div>
+    <button onclick="changeQty(${p.id},-1)">-</button>
+    ${item.qty}
+    <button onclick="changeQty(${p.id},1)">+</button>
+    <button onclick="removeCart(${p.id})">Remove</button>
+   </div>
+  </div>`;
+ }).join("");
+
+ document.getElementById("cartTotal").innerText="Total: ₹"+total;
+}
+
+function changeQty(id,change){
+ let item=cart.find(x=>x.id===id);
+ if(item){
+  item.qty+=change;
+  if(item.qty<=0)cart=cart.filter(x=>x.id!==id);
+ }
+ updateCartCount();
+ displayCart();
+}
+
+function removeCart(id){
+ cart=cart.filter(x=>x.id!==id);
+ updateCartCount();
+ displayCart();
+}
+
+function registerCustomer(e){
+ e.preventDefault();
+ let email=document.getElementById("regEmail").value;
+ if(customers.some(c=>c.email===email)){
+  alert("Email already registered!");
+  return;
+ }
+ customers.push({
+  id:Date.now(),
+  name:document.getElementById("regName").value,
+  email:email,
+  phone:document.getElementById("regPhone").value,
+  password:document.getElementById("regPassword").value
+ });
+ saveData();
+ alert("Registration successful! Please login.");
+ e.target.reset();
+ showPage("login");
+}
+
+function customerLogin(e){
+ e.preventDefault();
+ let email=document.getElementById("loginEmail").value;
+ let password=document.getElementById("loginPassword").value;
+ let user=customers.find(c=>c.email===email && c.password===password);
+
+ if(!user){alert("Invalid email or password!");return;}
+ currentCustomer=user;
+ sessionStorage.setItem("bgUser",JSON.stringify(user));
+ alert("Welcome "+user.name+"!");
+ showPage("profile");
+}
+
+function displayProfile(){
+ if(!currentCustomer){
+  showPage("login");
+  return;
+ }
+ document.getElementById("profileInfo").innerHTML=`
+  <h3>${currentCustomer.name}</h3>
+  <p>Email: ${currentCustomer.email}</p>
+  <p>Phone: ${currentCustomer.phone}</p>`;
+}
+
+function placeOrder(e){
+ e.preventDefault();
+
+ if(cart.length===0){alert("Your cart is empty!");return;}
+
+ let total=cart.reduce((sum,item)=>{
+  let p=products.find(x=>x.id===item.id);
+  return sum+(p?p.price*item.qty:0);
+ },0);
+
+ let order={
+  id:Date.now(),
+  customer:document.getElementById("deliveryName").value,
+  phone:document.getElementById("deliveryPhone").value,
+  address:document.getElementById("deliveryAddress").value,
+  date:document.getElementById("deliveryDate").value,
+  time:document.getElementById("deliveryTime").value,
+  payment:document.getElementById("payment").value,
+  items:cart.map(item=>{
+   let p=products.find(x=>x.id===item.id);
+   return {name:p.name,price:p.price,qty:item.qty};
+  }),
+  total:total,
+  status:"Order Placed"
+ };
+
+ orders.push(order);
+ saveData();
+ cart=[];
+ updateCartCount();
+ e.target.reset();
+ alert("Order placed successfully! Your order ID is "+order.id);
+ showPage("orders");
+}
+
+function displayMyOrders(){
+ let my=orders.filter(o=>currentCustomer && o.phone===currentCustomer.phone);
+ document.getElementById("myOrders").innerHTML=my.length?my.map(o=>`
+  <div class="panel" style="margin-bottom:15px">
+   <h3>Order #${o.id}</h3>
+   <p>Total: ₹${o.total}</p>
+   <p>Delivery: ${o.date}, ${o.time}</p>
+   <p>Payment: ${o.payment}</p>
+   <p>Status: <b>${o.status}</b></p>
+   <p>Items: ${o.items.map(i=>i.name+" × "+i.qty).join(", ")}</p>
+  </div>`).join(""):"<p>No orders found. Please login to view your orders.</p>";
+}
+
+function adminLogin(e){
+ e.preventDefault();
+ let email=document.getElementById("adminEmail").value;
+ let password=document.getElementById("adminPassword").value;
+
+ if(email==="admin@blossom.com" && password==="admin123"){
+  isAdmin=true;
+  alert("Admin login successful!");
+  showPage("admin");
+ }else{
+  alert("Invalid admin credentials!");
+ }
+}
+
+function addProduct(){
+ let name=document.getElementById("newName").value.trim();
+ let price=Number(document.getElementById("newPrice").value);
+ let category=document.getElementById("newCategory").value;
+ let emoji=document.getElementById("newEmoji").value || "🎁";
+ let description=document.getElementById("newDescription").value;
+
+ if(!name || price<=0){alert("Enter a valid product name and price!");return;}
+
+ products.push({id:Date.now(),name,price,category,emoji,description});
+ saveData();
+ alert("New product added successfully!");
+
+ document.getElementById("newName").value="";
+ document.getElementById("newPrice").value="";
+ document.getElementById("newEmoji").value="";
+ document.getElementById("newDescription").value="";
+ displayAdmin();
+}
+
+function editPrice(id){
+ let p=products.find(x=>x.id===id);
+ let price=prompt("Enter new price:",p.price);
+ if(price!==null && Number(price)>0){
+  p.price=Number(price);
+  saveData();
+  displayAdmin();
+ }
+}
+
+function deleteProduct(id){
+ if(confirm("Are you sure you want to delete this product?")){
+  products=products.filter(p=>p.id!==id);
+  saveData();
+  displayAdmin();
+ }
+}
+
+function updateStatus(id){
+ let o=orders.find(x=>x.id===id);
+ let status=prompt("Enter status: Order Placed / Processing / Shipped / Delivered",o.status);
+ if(status){
+  o.status=status;
+  saveData();
+  displayAdmin();
+ }
+}
+
+function displayAdmin(){
+ if(!isAdmin){showPage("adminLogin");return;}
+
+ document.getElementById("totalProducts").innerText=products.length;
+ document.getElementById("totalCustomers").innerText=customers.length;
+ document.getElementById("totalOrders").innerText=orders.length;
+
+ document.getElementById("adminProducts").innerHTML=`
+ <table><tr><th>Product</th><th>Category</th><th>Price</th><th>Actions</th></tr>
+ ${products.map(p=>`<tr>
+  <td>${p.emoji} ${p.name}</td>
+  <td>${p.category}</td>
+  <td>₹${p.price}</td>
+  <td><button onclick="editPrice(${p.id})">Edit Price</button>
+  <button onclick="deleteProduct(${p.id})">Delete</button></td>
+ </tr>`).join("")}</table>`;
+
+ document.getElementById("customerList").innerHTML=customers.length?`
+ <table><tr><th>Name</th><th>Email</th><th>Phone</th></tr>
+ ${customers.map(c=>`<tr><td>${c.name}</td><td>${c.email}</td><td>${c.phone}</td></tr>`).join("")}</table>`:"No customers registered.";
+
+ document.getElementById("adminOrders").innerHTML=orders.length?`
+ <table><tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Delivery Date</th><th>Status</th><th>Action</th></tr>
+ ${orders.map(o=>`<tr>
+  <td>${o.id}</td><td>${o.customer}</td><td>₹${o.total}</td>
+  <td>${o.date}</td><td>${o.status}</td>
+  <td><button onclick="updateStatus(${o.id})">Update</button></td>
+ </tr>`).join("")}</table>`:"No orders yet.";
+}
+
+function logout(){
+ currentCustomer=null;
+ isAdmin=false;
+ sessionStorage.removeItem("bgUser");
+ alert("Logged out successfully!");
+ showPage("home");
+}
+
+// INITIAL DISPLAY
+displayHome();
+updateCartCount();
+</script>
+
+</body>
+</html>

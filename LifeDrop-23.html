@@ -1,0 +1,1168 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeDrop | Blood Management System</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+ --red:#c62828;
+ --dark:#861b25;
+ --light:#fff0f0;
+ --bg:#f7f8fa;
+ --white:#fff;
+ --text:#263238;
+ --muted:#78838d;
+ --border:#e8e9ed;
+ --green:#188653;
+}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0}
+.hidden{display:none!important}
+.btn{padding:11px 17px;border-radius:8px;font-weight:bold}
+.primary{background:var(--red);color:white}
+.primary:hover{background:var(--dark)}
+.secondary{background:#fff0f0;color:var(--red)}
+.danger{background:#ffeded;color:#c62828}
+.full{width:100%}
+input,select,textarea{
+ width:100%;padding:12px;border:1px solid var(--border);
+ border-radius:8px;outline:none;background:white
+}
+input:focus,select:focus,textarea:focus{border-color:var(--red)}
+textarea{min-height:90px;resize:vertical}
+label{display:block;font-size:13px;font-weight:bold;margin-bottom:7px}
+.form-group{margin-bottom:17px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.full-field{grid-column:1/-1}
+
+/* LOGIN */
+#loginPage{
+ min-height:100vh;display:flex;align-items:center;
+ justify-content:center;padding:20px;
+ background:linear-gradient(130deg,#7f101b,#d32f2f)
+}
+.login-card{
+ background:white;width:100%;max-width:430px;padding:38px;
+ border-radius:18px;box-shadow:0 15px 45px #0003
+}
+.logo{text-align:center;color:var(--red);font-size:29px;font-weight:bold;margin-bottom:8px}
+.logo-icon{font-size:38px;display:block;margin-bottom:8px}
+.login-sub{text-align:center;color:var(--muted);font-size:13px;margin-bottom:28px}
+.demo{background:#fff2f2;padding:14px;border-radius:9px;
+ margin-top:18px;font-size:12px;line-height:1.9;color:#75353a}
+
+/* REGISTER */
+#registerPage{
+ min-height:100vh;display:flex;align-items:center;
+ justify-content:center;padding:20px
+}
+.register-card{
+ background:white;width:100%;max-width:500px;padding:35px;
+ border-radius:16px;box-shadow:0 8px 30px #0000000d
+}
+
+/* SIDEBAR */
+#app{min-height:100vh}
+.sidebar{
+ width:245px;background:#781923;color:white;
+ position:fixed;top:0;bottom:0;left:0;padding:24px 15px;
+ overflow-y:auto;z-index:10
+}
+.brand{font-size:24px;font-weight:bold;padding:5px 10px 30px}
+.brand span{color:#ffb6b6}
+.brand small{display:block;font-size:10px;color:#e8b8bb;
+ font-weight:normal;margin-top:5px;letter-spacing:1px}
+.nav-label{font-size:10px;color:#e5a9ae;padding:15px 12px 9px;letter-spacing:1px}
+.nav-btn{
+ width:100%;text-align:left;padding:13px 12px;background:transparent;
+ color:#f5dfe1;border-radius:8px;margin-bottom:5px;font-size:14px
+}
+.nav-btn:hover,.nav-btn.active{background:#a32c39;color:white}
+.main{margin-left:245px;min-height:100vh}
+.topbar{
+ height:72px;background:white;display:flex;align-items:center;
+ justify-content:space-between;padding:0 30px;border-bottom:1px solid var(--border)
+}
+.topbar h3{font-size:18px}
+.user-info{display:flex;align-items:center;gap:12px;font-size:13px}
+.avatar{
+ width:38px;height:38px;border-radius:50%;display:grid;
+ place-items:center;background:#ffebeb;color:var(--red);font-weight:bold
+}
+.content{padding:28px 30px;max-width:1500px;margin:auto}
+.welcome{margin-bottom:24px}
+.welcome h2{font-size:24px;margin-bottom:7px}
+.welcome p,.muted{font-size:13px;color:var(--muted)}
+.mobile-menu{display:none;background:transparent;font-size:22px}
+
+/* DASHBOARD */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat{
+ background:white;padding:21px;border-radius:12px;
+ border:1px solid var(--border);box-shadow:0 3px 12px #00000005
+}
+.stat-icon{font-size:25px;margin-bottom:14px}
+.stat h2{font-size:28px;margin-bottom:5px}
+.stat p{font-size:12px;color:var(--muted)}
+.panel{
+ background:white;padding:22px;border-radius:12px;
+ border:1px solid var(--border);margin-bottom:22px
+}
+.panel-head{
+ display:flex;align-items:center;justify-content:space-between;
+ flex-wrap:wrap;gap:12px;margin-bottom:18px
+}
+.panel-head h3{font-size:17px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+/* TABLES */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:600px}
+th,td{
+ text-align:left;padding:14px 12px;border-bottom:1px solid #eee;
+ font-size:13px
+}
+th{background:#fafafa;color:#74808a;font-size:12px}
+td{color:#46525a}
+.status{
+ display:inline-block;padding:6px 10px;border-radius:20px;
+ background:#e8f7ef;color:#168653;font-size:11px;font-weight:bold
+}
+.status.unavailable{background:#ffeded;color:#c62828}
+.status.low{background:#fff4df;color:#b77b20}
+.status.progress{background:#eaf0ff;color:#4275bf}
+.small-btn{padding:7px 11px;border-radius:6px;font-size:11px;font-weight:bold}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.empty{text-align:center;padding:30px;color:var(--muted);font-size:13px}
+.notice{background:#fff1f1;color:#9e343b;padding:14px;
+ border-radius:8px;font-size:13px;line-height:1.7;margin-bottom:17px}
+.blood-group{
+ display:inline-flex;align-items:center;justify-content:center;
+ width:43px;height:43px;background:#fff0f0;color:var(--red);
+ border-radius:10px;font-weight:bold;font-size:14px
+}
+.blood-card{
+ padding:17px;border:1px solid var(--border);border-radius:11px;
+ background:white
+}
+.blood-card h3{margin:10px 0 6px;font-size:19px}
+.blood-card p{font-size:12px;color:var(--muted);line-height:1.8}
+.blood-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.page{display:none}
+.page.active{display:block}
+footer{text-align:center;padding:20px;color:#9ba2a9;font-size:11px}
+
+@media(max-width:950px){
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .blood-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:650px){
+ .sidebar{transform:translateX(-100%);transition:.3s}
+ .sidebar.open{transform:translateX(0)}
+ .main{margin-left:0}
+ .mobile-menu{display:block}
+ .topbar{padding:0 15px}
+ .content{padding:20px 14px}
+ .grid-2,.form-grid{grid-template-columns:1fr}
+ .full-field{grid-column:auto}
+ .blood-grid{grid-template-columns:repeat(2,1fr)}
+ .stat{padding:14px}
+ .stat h2{font-size:23px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN PAGE -->
+<section id="loginPage">
+<div class="login-card">
+ <div class="logo">
+  <span class="logo-icon">🩸</span>
+  LifeDrop
+ </div>
+ <p class="login-sub">Blood Donor & Blood Bank Management System</p>
+
+ <form id="loginForm">
+  <div class="form-group">
+   <label>Login As</label>
+   <select id="role">
+    <option value="donor">Donor / User</option>
+    <option value="hospital">Hospital</option>
+   </select>
+  </div>
+
+  <div class="form-group">
+   <label>Email Address</label>
+   <input type="email" id="loginEmail" placeholder="Enter your email" required>
+  </div>
+
+  <div class="form-group">
+   <label>Password</label>
+   <input type="password" id="loginPassword" placeholder="Enter password" required>
+  </div>
+
+  <button class="btn primary full">Login to LifeDrop →</button>
+ </form>
+
+ <p style="text-align:center;font-size:13px;margin-top:18px">
+  New user?
+  <a href="#" onclick="showRegister();return false"
+   style="color:#c62828;font-weight:bold">Register Here</a>
+ </p>
+
+ <div class="demo">
+  <b>Demo Credentials</b><br>
+  Donor: Register a new account<br>
+  Hospital: hospital@lifedrop.com / hospital123
+ </div>
+</div>
+</section>
+
+<!-- REGISTRATION PAGE -->
+<section id="registerPage" class="hidden">
+<div class="register-card">
+ <div class="logo">🩸 LifeDrop</div>
+ <p class="login-sub">Create your LifeDrop account</p>
+
+ <div style="margin-bottom:18px">
+  <label>Registration Type</label>
+  <select id="registerRole" onchange="changeRegisterForm()">
+   <option value="donor">Donor / User</option>
+   <option value="hospital">Hospital</option>
+  </select>
+ </div>
+
+ <form id="donorRegisterForm">
+  <div class="form-grid">
+   <div><label>Full Name</label><input id="regName" required></div>
+   <div><label>Age</label><input id="regAge" type="number" min="18" max="100" required></div>
+   <div><label>Email</label><input id="regEmail" type="email" required></div>
+   <div><label>Phone Number</label><input id="regPhone" type="tel" required></div>
+   <div><label>Blood Group</label>
+    <select id="regBlood" required>
+     <option value="">Select</option>
+     <option>A+</option><option>A-</option>
+     <option>B+</option><option>B-</option>
+     <option>AB+</option><option>AB-</option>
+     <option>O+</option><option>O-</option>
+    </select>
+   </div>
+   <div><label>City</label><input id="regCity" required></div>
+   <div class="full-field"><label>Address</label><textarea id="regAddress" required></textarea></div>
+   <div class="full-field"><label>Password</label><input id="regPassword" type="password" minlength="4" required></div>
+   <div class="full-field"><button class="btn primary full">Register as Donor</button></div>
+  </div>
+ </form>
+
+ <form id="hospitalRegisterForm" class="hidden">
+  <div class="form-grid">
+   <div class="full-field"><label>Hospital Name</label><input id="regHospitalName" required></div>
+   <div><label>Email</label><input id="regHospitalEmail" type="email" required></div>
+   <div><label>Contact Number</label><input id="regHospitalPhone" required></div>
+   <div><label>City</label><input id="regHospitalCity" required></div>
+   <div><label>Hospital Registration ID</label><input id="regHospitalId" required></div>
+   <div class="full-field"><label>Address</label><textarea id="regHospitalAddress" required></textarea></div>
+   <div class="full-field"><label>Password</label><input id="regHospitalPassword" type="password" minlength="4" required></div>
+   <div class="full-field"><button class="btn primary full">Register Hospital</button></div>
+  </div>
+ </form>
+
+ <p style="text-align:center;font-size:13px;margin-top:20px">
+  Already registered?
+  <a href="#" onclick="showLogin();return false" style="color:#c62828">Login</a>
+ </p>
+</div>
+</section>
+
+<!-- MAIN APPLICATION -->
+<div id="app" class="hidden">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">🩸 LifeDrop
+  <small>BLOOD MANAGEMENT SYSTEM</small>
+ </div>
+ <div class="nav-label">MAIN MENU</div>
+ <nav id="navigation"></nav>
+ <div class="nav-label">ACCOUNT</div>
+ <button class="nav-btn" onclick="logout()">↪ Logout</button>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div style="display:flex;align-items:center;gap:14px">
+  <button class="mobile-menu" onclick="toggleMenu()">☰</button>
+  <h3 id="topTitle">Dashboard</h3>
+ </div>
+ <div class="user-info">
+  <div style="text-align:right">
+   <b id="userName">User</b>
+   <p class="muted" id="userRole">Donor</p>
+  </div>
+  <div class="avatar" id="avatar">U</div>
+ </div>
+</header>
+
+<div class="content">
+
+<!-- DONOR DASHBOARD -->
+<section id="donorHome" class="page">
+ <div class="welcome">
+  <h2>Welcome to LifeDrop ❤️</h2>
+  <p>Every drop counts. Your donation can save lives.</p>
+ </div>
+
+ <div class="stats">
+  <div class="stat"><div class="stat-icon">🩸</div>
+   <h2 id="totalDonors">0</h2><p>Registered Donors</p></div>
+  <div class="stat"><div class="stat-icon">🏥</div>
+   <h2 id="totalHospitals">0</h2><p>Registered Hospitals</p></div>
+  <div class="stat"><div class="stat-icon">🔍</div>
+   <h2 id="availableDonors">0</h2><p>Available Donors</p></div>
+  <div class="stat"><div class="stat-icon">🩺</div>
+   <h2 id="availableBanks">0</h2><p>Blood Banks</p></div>
+ </div>
+
+ <div class="panel">
+  <div class="panel-head">
+   <h3>Blood Groups</h3>
+   <button class="btn secondary" onclick="navigate('searchDonors')">Find Donors</button>
+  </div>
+  <div class="blood-grid" id="bloodOverview"></div>
+ </div>
+
+ <div class="grid-2">
+  <div class="panel">
+   <h3 style="margin-bottom:15px">Become a Life Saver</h3>
+   <p class="muted" style="line-height:2">
+    Register your donor information and make it easier for people
+    to find blood donors in their area.
+   </p>
+   <button class="btn primary" style="margin-top:17px"
+    onclick="navigate('postDonor')">+ Post Donor Information</button>
+  </div>
+  <div class="panel">
+   <h3 style="margin-bottom:15px">Find Nearby Blood Banks</h3>
+   <p class="muted" style="line-height:2">
+    Search registered hospitals and view their available blood groups.
+   </p>
+   <button class="btn secondary" style="margin-top:17px"
+    onclick="navigate('searchBanks')">Search Blood Banks</button>
+  </div>
+ </div>
+</section>
+
+<!-- POST DONOR -->
+<section id="postDonor" class="page">
+ <div class="welcome">
+  <h2>Post Donor Information</h2>
+  <p>Enter your details to become a registered blood donor.</p>
+ </div>
+ <div class="panel">
+  <div class="notice">
+   Please provide accurate information. Your contact information may
+   be visible to registered users searching for donors.
+  </div>
+  <form id="donorForm">
+   <div class="form-grid">
+    <div><label>Full Name</label><input id="donorName" required></div>
+    <div><label>Age</label><input id="donorAge" type="number" min="18" required></div>
+    <div><label>Blood Group</label>
+     <select id="donorBlood" required>
+      <option value="">Select blood group</option>
+      <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+      <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+     </select>
+    </div>
+    <div><label>Phone Number</label><input id="donorPhone" required></div>
+    <div><label>City</label><input id="donorCity" required></div>
+    <div><label>Last Donation Date</label><input id="lastDonation" type="date"></div>
+    <div><label>Availability</label>
+     <select id="donorAvailability">
+      <option value="Available">Available</option>
+      <option value="Unavailable">Unavailable</option>
+     </select>
+    </div>
+    <div><label>Email</label><input id="donorEmail" type="email" readonly></div>
+    <div class="full-field"><label>Address</label><textarea id="donorAddress" required></textarea></div>
+    <div class="full-field">
+     <button class="btn primary">Save Donor Information</button>
+    </div>
+   </div>
+  </form>
+ </div>
+</section>
+
+<!-- MY DONOR INFO -->
+<section id="myDonor" class="page">
+ <div class="welcome">
+  <h2>My Donor Information</h2>
+  <p>View and update your registered donor details.</p>
+ </div>
+ <div class="panel">
+  <div id="myDonorDetails"></div>
+ </div>
+</section>
+
+<!-- SEARCH DONORS -->
+<section id="searchDonors" class="page">
+ <div class="welcome">
+  <h2>Search Blood Donors</h2>
+  <p>Find donors according to blood group and location.</p>
+ </div>
+ <div class="panel">
+  <div class="panel-head"><h3>Search Filters</h3></div>
+  <div class="form-grid">
+   <div><label>Blood Group</label>
+    <select id="searchBlood">
+     <option value="">All Blood Groups</option>
+     <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+     <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+    </select>
+   </div>
+   <div><label>City / Location</label>
+    <input id="searchCity" placeholder="Enter city">
+   </div>
+   <div><label>Availability</label>
+    <select id="searchAvailability">
+     <option value="">All</option>
+     <option>Available</option>
+     <option>Unavailable</option>
+    </select>
+   </div>
+   <div style="display:flex;align-items:end;gap:8px">
+    <button class="btn primary" onclick="searchDonors()">Search</button>
+    <button class="btn secondary" onclick="resetDonorSearch()">Clear</button>
+   </div>
+  </div>
+ </div>
+ <div class="panel">
+  <div class="panel-head"><h3>Donor Search Results</h3></div>
+  <div id="donorSearchResults"></div>
+ </div>
+</section>
+
+<!-- SEARCH BLOOD BANKS -->
+<section id="searchBanks" class="page">
+ <div class="welcome">
+  <h2>Search Blood Banks</h2>
+  <p>Find hospitals and check blood group availability.</p>
+ </div>
+ <div class="panel">
+  <div class="form-grid">
+   <div><label>City / Location</label><input id="bankSearchCity" placeholder="Enter city"></div>
+   <div style="display:flex;align-items:end;gap:8px">
+    <button class="btn primary" onclick="searchBanks()">Search</button>
+    <button class="btn secondary" onclick="resetBankSearch()">Clear</button>
+   </div>
+  </div>
+ </div>
+ <div class="panel">
+  <div class="panel-head"><h3>Registered Blood Banks</h3></div>
+  <div id="bankSearchResults"></div>
+ </div>
+</section>
+
+<!-- HOSPITAL DASHBOARD -->
+<section id="hospitalHome" class="page">
+ <div class="welcome">
+  <h2>Hospital Dashboard</h2>
+  <p>Manage your blood bank information and availability.</p>
+ </div>
+ <div class="stats">
+  <div class="stat"><div class="stat-icon">🏥</div>
+   <h2>1</h2><p>Hospital Account</p></div>
+  <div class="stat"><div class="stat-icon">🩸</div>
+   <h2 id="hospitalGroups">0</h2><p>Blood Groups Listed</p></div>
+  <div class="stat"><div class="stat-icon">✅</div>
+   <h2 id="hospitalAvailable">0</h2><p>Available Groups</p></div>
+  <div class="stat"><div class="stat-icon">📦</div>
+   <h2 id="hospitalUnits">0</h2><p>Total Blood Units</p></div>
+ </div>
+ <div class="panel">
+  <div class="panel-head"><h3>Blood Availability Overview</h3>
+   <button class="btn primary" onclick="navigate('updateStock')">Update Status</button>
+  </div>
+  <div id="hospitalBloodOverview" class="blood-grid"></div>
+ </div>
+ <div class="panel">
+  <h3 style="margin-bottom:12px">Hospital Information</h3>
+  <div id="hospitalProfile"></div>
+ </div>
+</section>
+
+<!-- POST BLOOD BANK INFO -->
+<section id="postBank" class="page">
+ <div class="welcome">
+  <h2>Post Blood Bank Information</h2>
+  <p>Publish your hospital and blood bank details.</p>
+ </div>
+ <div class="panel">
+  <form id="bankForm">
+   <div class="form-grid">
+    <div class="full-field"><label>Hospital / Blood Bank Name</label>
+     <input id="bankName" required></div>
+    <div><label>Contact Number</label><input id="bankPhone" required></div>
+    <div><label>Email</label><input id="bankEmail" type="email" required></div>
+    <div><label>City</label><input id="bankCity" required></div>
+    <div><label>Registration Number</label><input id="bankReg" required></div>
+    <div class="full-field"><label>Address</label>
+     <textarea id="bankAddress" required></textarea></div>
+    <div class="full-field"><button class="btn primary">Publish Blood Bank Information</button></div>
+   </div>
+  </form>
+ </div>
+</section>
+
+<!-- UPDATE BLOOD STATUS -->
+<section id="updateStock" class="page">
+ <div class="welcome">
+  <h2>Update Blood Group Status</h2>
+  <p>Update the available blood units in your blood bank.</p>
+ </div>
+ <div class="panel">
+  <form id="stockForm">
+   <div class="form-grid">
+    <div><label>Blood Group</label>
+     <select id="stockBlood" required>
+      <option value="">Select blood group</option>
+      <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+      <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+     </select>
+    </div>
+    <div><label>Available Units</label>
+     <input id="stockUnits" type="number" min="0" required>
+    </div>
+    <div class="full-field"><label>Availability Status</label>
+     <select id="stockStatus">
+      <option>Available</option>
+      <option>Unavailable</option>
+     </select>
+    </div>
+    <div class="full-field"><button class="btn primary">Update Blood Availability</button></div>
+   </div>
+  </form>
+ </div>
+ <div class="panel">
+  <div class="panel-head"><h3>Current Blood Stock</h3></div>
+  <div id="stockTable"></div>
+ </div>
+</section>
+
+<!-- VIEW BLOOD BANK DETAILS -->
+<section id="viewBank" class="page">
+ <div class="welcome">
+  <h2>My Blood Bank Details</h2>
+  <p>View your published hospital information and blood stock.</p>
+ </div>
+ <div class="panel"><div id="myBankDetails"></div></div>
+</section>
+
+<footer>© 2026 LifeDrop | Blood Donor & Blood Bank Management System</footer>
+</div>
+</main>
+</div>
+
+<script>
+// =======================================
+// LOCAL STORAGE DATABASE
+// =======================================
+
+function getData(key,defaultValue=[]){
+ try{return JSON.parse(localStorage.getItem(key))??defaultValue}
+ catch{return defaultValue}
+}
+function saveData(key,value){
+ localStorage.setItem(key,JSON.stringify(value));
+}
+
+let donors=getData('ld_donors',[]);
+let hospitals=getData('ld_hospitals',[]);
+let stocks=getData('ld_stocks',[]);
+let currentUser=null;
+
+function persist(){
+ saveData('ld_donors',donors);
+ saveData('ld_hospitals',hospitals);
+ saveData('ld_stocks',stocks);
+}
+
+// =======================================
+// COMMON FUNCTIONS
+// =======================================
+
+function safe(value){
+ return String(value??'').replace(/[&<>"']/g,c=>({
+ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+ })[c]);
+}
+function emptyTable(message='No records found'){
+ return `<div class="empty">${message}</div>`;
+}
+function table(headers,rows){
+ if(!rows.length)return emptyTable();
+ return `<div class="table-wrap"><table>
+ <thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+ <tbody>${rows.join('')}</tbody></table></div>`;
+}
+function showLogin(){
+ document.getElementById('registerPage').classList.add('hidden');
+ document.getElementById('loginPage').classList.remove('hidden');
+}
+function showRegister(){
+ document.getElementById('loginPage').classList.add('hidden');
+ document.getElementById('registerPage').classList.remove('hidden');
+}
+function toggleMenu(){
+ document.getElementById('sidebar').classList.toggle('open');
+}
+
+// =======================================
+// REGISTRATION
+// =======================================
+
+function changeRegisterForm(){
+ const role=document.getElementById('registerRole').value;
+ document.getElementById('donorRegisterForm').classList.toggle('hidden',role!=='donor');
+ document.getElementById('hospitalRegisterForm').classList.toggle('hidden',role!=='hospital');
+}
+
+document.getElementById('donorRegisterForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const email=document.getElementById('regEmail').value.trim().toLowerCase();
+
+ if(donors.some(d=>d.email===email)||hospitals.some(h=>h.email===email)){
+  alert('Email already registered!');return;
+ }
+
+ donors.push({
+  id:Date.now(),
+  name:document.getElementById('regName').value,
+  age:Number(document.getElementById('regAge').value),
+  email,
+  phone:document.getElementById('regPhone').value,
+  blood:document.getElementById('regBlood').value,
+  city:document.getElementById('regCity').value,
+  address:document.getElementById('regAddress').value,
+  password:document.getElementById('regPassword').value,
+  availability:'Available',
+  lastDonation:'',
+  posted:true
+ });
+
+ persist();
+ e.target.reset();
+ alert('Donor registration successful! Please login.');
+ showLogin();
+});
+
+document.getElementById('hospitalRegisterForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const email=document.getElementById('regHospitalEmail').value.trim().toLowerCase();
+
+ if(donors.some(d=>d.email===email)||hospitals.some(h=>h.email===email)){
+  alert('Email already registered!');return;
+ }
+
+ hospitals.push({
+  id:Date.now(),
+  name:document.getElementById('regHospitalName').value,
+  email,
+  phone:document.getElementById('regHospitalPhone').value,
+  city:document.getElementById('regHospitalCity').value,
+  registration:document.getElementById('regHospitalId').value,
+  address:document.getElementById('regHospitalAddress').value,
+  password:document.getElementById('regHospitalPassword').value,
+  published:false
+ });
+
+ persist();
+ e.target.reset();
+ alert('Hospital registration successful! Please login.');
+ showLogin();
+});
+
+// =======================================
+// LOGIN AND LOGOUT
+// =======================================
+
+document.getElementById('loginForm').addEventListener('submit',e=>{
+ e.preventDefault();
+
+ const role=document.getElementById('role').value;
+ const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+ const password=document.getElementById('loginPassword').value;
+
+ if(role==='donor'){
+  const user=donors.find(d=>d.email===email&&d.password===password);
+  if(user){
+   login({...user,role:'donor'});
+   return;
+  }
+ }
+
+ if(role==='hospital'){
+  const hospital=hospitals.find(h=>h.email===email&&h.password===password);
+  if(hospital){
+   login({...hospital,role:'hospital'});
+   return;
+  }
+ }
+
+ alert('Invalid email or password!');
+});
+
+function login(user){
+ currentUser=user;
+
+ document.getElementById('loginPage').classList.add('hidden');
+ document.getElementById('registerPage').classList.add('hidden');
+ document.getElementById('app').classList.remove('hidden');
+
+ document.getElementById('userName').textContent=user.name;
+ document.getElementById('userRole').textContent=
+  user.role==='donor'?'Donor / User':'Hospital';
+ document.getElementById('avatar').textContent=user.name.charAt(0).toUpperCase();
+
+ buildNavigation();
+ renderAll();
+
+ navigate(user.role==='donor'?'donorHome':'hospitalHome');
+}
+
+function logout(){
+ currentUser=null;
+ document.getElementById('app').classList.add('hidden');
+ document.getElementById('loginPage').classList.remove('hidden');
+ document.getElementById('loginForm').reset();
+}
+
+// =======================================
+// NAVIGATION
+// =======================================
+
+const menus={
+ donor:[
+  ['donorHome','▦','Dashboard'],
+  ['postDonor','＋','Post Donor Information'],
+  ['myDonor','👤','My Donor Info'],
+  ['searchDonors','🔍','Search Donors'],
+  ['searchBanks','🏥','Search Blood Banks']
+ ],
+ hospital:[
+  ['hospitalHome','▦','Dashboard'],
+  ['postBank','＋','Post Blood Bank Info'],
+  ['updateStock','🩸','Update Blood Status'],
+  ['viewBank','🏥','View Blood Bank Details']
+ ]
+};
+
+function buildNavigation(){
+ const nav=document.getElementById('navigation');
+ nav.innerHTML='';
+
+ menus[currentUser.role].forEach(item=>{
+  const button=document.createElement('button');
+  button.className='nav-btn';
+  button.textContent=item[1]+'  '+item[2];
+  button.onclick=()=>navigate(item[0]);
+  nav.appendChild(button);
+ });
+}
+
+function navigate(page){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(page).classList.add('active');
+
+ const menu=menus[currentUser.role].find(m=>m[0]===page);
+ document.getElementById('topTitle').textContent=menu?menu[2]:'Dashboard';
+
+ document.querySelectorAll('#navigation .nav-btn').forEach((b,i)=>{
+  b.classList.toggle('active',menus[currentUser.role][i]?.[0]===page);
+ });
+
+ document.getElementById('sidebar').classList.remove('open');
+ renderAll();
+}
+
+// =======================================
+// DONOR INFORMATION
+// =======================================
+
+function renderDonorHome(){
+ document.getElementById('totalDonors').textContent=donors.filter(d=>d.posted).length;
+ document.getElementById('totalHospitals').textContent=hospitals.filter(h=>h.published).length;
+ document.getElementById('availableDonors').textContent=
+  donors.filter(d=>d.posted&&d.availability==='Available').length;
+ document.getElementById('availableBanks').textContent=hospitals.filter(h=>h.published).length;
+
+ const groups=['A+','A-','B+','B-','AB+','AB-','O+','O-'];
+
+ document.getElementById('bloodOverview').innerHTML=groups.map(g=>{
+  const count=donors.filter(d=>d.blood===g&&d.availability==='Available').length;
+  return `<div class="blood-card">
+   <span class="blood-group">${g}</span>
+   <h3>${count}</h3>
+   <p>Available donors</p>
+  </div>`;
+ }).join('');
+}
+
+function renderMyDonor(){
+ const d=donors.find(x=>x.email===currentUser.email);
+ const container=document.getElementById('myDonorDetails');
+
+ if(!d){
+  container.innerHTML=emptyTable('Donor information not found.');
+  return;
+ }
+
+ container.innerHTML=`
+ <div class="panel-head">
+  <h3>Personal Donor Profile</h3>
+  <button class="btn secondary" onclick="editMyDonor()">Edit Information</button>
+ </div>
+ <div class="form-grid">
+  <div><label>Full Name</label><p>${safe(d.name)}</p></div>
+  <div><label>Age</label><p>${d.age}</p></div>
+  <div><label>Blood Group</label><p><span class="blood-group">${safe(d.blood)}</span></p></div>
+  <div><label>Phone Number</label><p>${safe(d.phone)}</p></div>
+  <div><label>Email</label><p>${safe(d.email)}</p></div>
+  <div><label>City</label><p>${safe(d.city)}</p></div>
+  <div><label>Address</label><p>${safe(d.address)}</p></div>
+  <div><label>Last Donation</label><p>${safe(d.lastDonation||'Not provided')}</p></div>
+  <div><label>Availability</label><p>${safe(d.availability)}</p></div>
+ </div>
+ <div style="margin-top:25px">
+  <button class="btn secondary" onclick="toggleAvailability()">
+   Change Availability
+  </button>
+ </div>`;
+}
+
+function editMyDonor(){
+ const d=donors.find(x=>x.email===currentUser.email);
+ if(!d)return;
+
+ document.getElementById('donorName').value=d.name;
+ document.getElementById('donorAge').value=d.age;
+ document.getElementById('donorBlood').value=d.blood;
+ document.getElementById('donorPhone').value=d.phone;
+ document.getElementById('donorCity').value=d.city;
+ document.getElementById('donorAddress').value=d.address;
+ document.getElementById('donorEmail').value=d.email;
+ document.getElementById('lastDonation').value=d.lastDonation||'';
+ document.getElementById('donorAvailability').value=d.availability;
+ navigate('postDonor');
+}
+
+document.getElementById('donorForm').addEventListener('submit',e=>{
+ e.preventDefault();
+
+ const d=donors.find(x=>x.email===currentUser.email);
+ if(!d){alert('Donor account not found!');return}
+
+ Object.assign(d,{
+  name:document.getElementById('donorName').value,
+  age:Number(document.getElementById('donorAge').value),
+  blood:document.getElementById('donorBlood').value,
+  phone:document.getElementById('donorPhone').value,
+  city:document.getElementById('donorCity').value,
+  address:document.getElementById('donorAddress').value,
+  lastDonation:document.getElementById('lastDonation').value,
+  availability:document.getElementById('donorAvailability').value,
+  posted:true
+ });
+
+ currentUser={...currentUser,...d};
+ persist();
+ alert('Donor information saved successfully!');
+ e.target.reset();
+ renderAll();
+ navigate('myDonor');
+});
+
+function toggleAvailability(){
+ const d=donors.find(x=>x.email===currentUser.email);
+ if(!d)return;
+ d.availability=d.availability==='Available'?'Unavailable':'Available';
+ persist();
+ renderAll();
+ alert('Availability updated successfully!');
+}
+
+// =======================================
+// SEARCH DONORS
+// =======================================
+
+function searchDonors(){
+ const blood=document.getElementById('searchBlood').value;
+ const city=document.getElementById('searchCity').value.trim().toLowerCase();
+ const availability=document.getElementById('searchAvailability').value;
+
+ const result=donors.filter(d=>
+  d.posted &&
+  (!blood||d.blood===blood) &&
+  (!city||d.city.toLowerCase().includes(city)) &&
+  (!availability||d.availability===availability)
+ );
+
+ document.getElementById('donorSearchResults').innerHTML=table(
+ ['Donor Name','Blood Group','Age','City','Phone','Availability'],
+ result.map(d=>`<tr>
+  <td><b>${safe(d.name)}</b></td>
+  <td><span class="blood-group">${safe(d.blood)}</span></td>
+  <td>${d.age}</td>
+  <td>${safe(d.city)}</td>
+  <td>${safe(d.phone)}</td>
+  <td><span class="status ${d.availability==='Unavailable'?'unavailable':''}">
+   ${d.availability}</span></td>
+ </tr>`)
+ );
+}
+
+function resetDonorSearch(){
+ document.getElementById('searchBlood').value='';
+ document.getElementById('searchCity').value='';
+ document.getElementById('searchAvailability').value='';
+ searchDonors();
+}
+
+// =======================================
+// HOSPITAL INFORMATION
+// =======================================
+
+document.getElementById('bankForm').addEventListener('submit',e=>{
+ e.preventDefault();
+
+ const h=hospitals.find(x=>x.email===currentUser.email);
+ if(!h)return;
+
+ Object.assign(h,{
+  name:document.getElementById('bankName').value,
+  phone:document.getElementById('bankPhone').value,
+  email:document.getElementById('bankEmail').value,
+  city:document.getElementById('bankCity').value,
+  registration:document.getElementById('bankReg').value,
+  address:document.getElementById('bankAddress').value,
+  published:true
+ });
+
+ currentUser={...currentUser,...h};
+ persist();
+ alert('Blood bank information published successfully!');
+ renderAll();
+ navigate('viewBank');
+});
+
+// =======================================
+// BLOOD STOCK MANAGEMENT
+// =======================================
+
+document.getElementById('stockForm').addEventListener('submit',e=>{
+ e.preventDefault();
+
+ const h=hospitals.find(x=>x.email===currentUser.email);
+ if(!h)return;
+
+ const blood=document.getElementById('stockBlood').value;
+ const units=Number(document.getElementById('stockUnits').value);
+ const status=document.getElementById('stockStatus').value;
+
+ let stock=stocks.find(s=>s.hospitalId===h.id&&s.blood===blood);
+
+ if(stock){
+  stock.units=units;
+  stock.status=status;
+  stock.updated=new Date().toLocaleDateString('en-IN');
+ }else{
+  stocks.push({
+   id:Date.now(),
+   hospitalId:h.id,
+   blood,
+   units,
+   status,
+   updated:new Date().toLocaleDateString('en-IN')
+  });
+ }
+
+ persist();
+ e.target.reset();
+ renderAll();
+ alert('Blood group availability updated successfully!');
+});
+
+function renderStock(){
+ const h=hospitals.find(x=>x.email===currentUser.email);
+ if(!h)return;
+
+ const own=stocks.filter(s=>s.hospitalId===h.id);
+
+ document.getElementById('stockTable').innerHTML=table(
+ ['Blood Group','Available Units','Status','Last Updated','Action'],
+ own.map(s=>`<tr>
+  <td><span class="blood-group">${safe(s.blood)}</span></td>
+  <td>${s.units} units</td>
+  <td><span class="status ${s.status==='Unavailable'?'unavailable':''}">
+   ${safe(s.status)}</span></td>
+  <td>${safe(s.updated)}</td>
+  <td><button class="small-btn danger" onclick="deleteStock(${s.id})">Delete</button></td>
+ </tr>`)
+ );
+}
+
+function deleteStock(id){
+ if(!confirm('Delete this blood stock record?'))return;
+ stocks=stocks.filter(s=>s.id!==id);
+ persist();
+ renderAll();
+}
+
+// =======================================
+// HOSPITAL DASHBOARD
+// =======================================
+
+function renderHospital(){
+ const h=hospitals.find(x=>x.email===currentUser.email);
+ if(!h)return;
+
+ const own=stocks.filter(s=>s.hospitalId===h.id);
+ const available=own.filter(s=>s.status==='Available');
+
+ document.getElementById('hospitalGroups').textContent=own.length;
+ document.getElementById('hospitalAvailable').textContent=available.length;
+ document.getElementById('hospitalUnits').textContent=
+  available.reduce((a,s)=>a+Number(s.units),0);
+
+ document.getElementById('hospitalBloodOverview').innerHTML=
+  own.map(s=>`<div class="blood-card">
+   <span class="blood-group">${safe(s.blood)}</span>
+   <h3>${s.units} Units</h3>
+   <p>${safe(s.status)}</p>
+  </div>`).join('')||emptyTable('No blood stock information available.');
+
+ document.getElementById('hospitalProfile').innerHTML=`
+ <div class="form-grid">
+  <div><label>Hospital Name</label><p>${safe(h.name)}</p></div>
+  <div><label>Email</label><p>${safe(h.email)}</p></div>
+  <div><label>Phone</label><p>${safe(h.phone)}</p></div>
+  <div><label>City</label><p>${safe(h.city)}</p></div>
+ </div>`;
+}
+
+// =======================================
+// SEARCH BLOOD BANKS
+// =======================================
+
+function searchBanks(){
+ const city=document.getElementById('bankSearchCity').value.trim().toLowerCase();
+
+ const result=hospitals.filter(h=>
+  h.published&&(!city||h.city.toLowerCase().includes(city))
+ );
+
+ document.getElementById('bankSearchResults').innerHTML=result.map(h=>{
+  const own=stocks.filter(s=>s.hospitalId===h.id);
+  return `<div class="panel" style="border:1px solid #eee">
+   <div class="panel-head">
+    <h3>🏥 ${safe(h.name)}</h3>
+    <span class="status">Registered</span>
+   </div>
+   <p class="muted" style="line-height:2">
+    📍 ${safe(h.address)}, ${safe(h.city)}<br>
+    ☎ ${safe(h.phone)}<br>
+    ✉ ${safe(h.email)}
+   </p>
+   <h4 style="margin:17px 0 12px">Blood Group Availability</h4>
+   <div class="blood-grid">
+    ${own.map(s=>`<div class="blood-card">
+     <span class="blood-group">${safe(s.blood)}</span>
+     <h3>${s.units} Units</h3>
+     <p>${safe(s.status)}</p>
+    </div>`).join('')||'<p class="muted">No stock information published.</p>'}
+   </div>
+  </div>`;
+ }).join('')||emptyTable('No registered blood banks found.');
+}
+
+function resetBankSearch(){
+ document.getElementById('bankSearchCity').value='';
+ searchBanks();
+}
+
+// =======================================
+// VIEW HOSPITAL DETAILS
+// =======================================
+
+function renderMyBank(){
+ const h=hospitals.find(x=>x.email===currentUser.email);
+ if(!h)return;
+
+ const own=stocks.filter(s=>s.hospitalId===h.id);
+
+ document.getElementById('myBankDetails').innerHTML=`
+ <div class="panel-head">
+  <h3>${safe(h.name)}</h3>
+  <button class="btn secondary" onclick="editBank()">Edit Information</button>
+ </div>
+ <div class="form-grid">
+  <div><label>Hospital Name</label><p>${safe(h.name)}</p></div>
+  <div><label>Email</label><p>${safe(h.email)}</p></div>
+  <div><label>Phone</label><p>${safe(h.phone)}</p></div>
+  <div><label>City</label><p>${safe(h.city)}</p></div>
+  <div><label>Registration Number</label><p>${safe(h.registration)}</p></div>
+  <div><label>Address</label><p>${safe(h.address)}</p></div>
+ </div>
+ <h3 style="margin:25px 0 15px">Published Blood Stock</h3>
+ ${table(['Blood Group','Units','Status'],
+ own.map(s=>`<tr><td>${safe(s.blood)}</td><td>${s.units}</td>
+ <td>${safe(s.status)}</td></tr>`))}
+ `;
+}
+
+function editBank(){
+ const h=hospitals.find(x=>x.email===currentUser.email);
+ if(!h)return;
+ document.getElementById('bankName').value=h.name;
+ document.getElementById('bankPhone').value=h.phone;
+ document.getElementById('bankEmail').value=h.email;
+ document.getElementById('bankCity').value=h.city;
+ document.getElementById('bankReg').value=h.registration;
+ document.getElementById('bankAddress').value=h.address;
+ navigate('postBank');
+}
+
+// =======================================
+// RENDER ALL
+// =======================================
+
+function renderAll(){
+ if(!currentUser)return;
+ persist();
+
+ if(currentUser.role==='donor'){
+  const d=donors.find(x=>x.email===currentUser.email);
+  if(d){
+   document.getElementById('donorEmail').value=d.email;
+  }
+  renderDonorHome();
+  renderMyDonor();
+  searchDonors();
+  searchBanks();
+ }
+
+ if(currentUser.role==='hospital'){
+  renderHospital();
+  renderStock();
+  renderMyBank();
+ }
+}
+</script>
+
+</body>
+</html>

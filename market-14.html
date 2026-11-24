@@ -1,0 +1,711 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReNewMarket - Second Hand Marketplace</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f5f7f4;color:#26352b}
+header{background:#173d2b;color:white;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
+.logo{font-size:26px;font-weight:bold;color:#a9e5b8}
+nav{display:flex;flex-wrap:wrap;gap:15px}
+nav a{color:white;text-decoration:none;cursor:pointer;font-weight:bold}
+nav a:hover{color:#a9e5b8}
+button{background:#27834b;color:white;border:0;padding:11px 16px;border-radius:7px;cursor:pointer;margin:3px}
+button:hover{background:#175d32}
+input,select,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #d5ded6;border-radius:7px}
+section{padding:40px 7%}
+h2{color:#21633b;margin-bottom:20px}
+.hero{padding:75px 8%;background:linear-gradient(110deg,#d9f1df,#f2f9ef);display:flex;align-items:center;justify-content:space-between;gap:25px}
+.hero h1{font-size:43px;color:#174d2d;margin-bottom:15px}
+.hero p{font-size:17px;line-height:1.7;margin-bottom:20px}
+.hero img{width:42%;height:290px;object-fit:cover;border-radius:18px}
+.categories,.products,.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:20px}
+.category,.product,.panel{background:white;padding:20px;border-radius:12px;box-shadow:0 3px 12px #dfe8df}
+.category{text-align:center;cursor:pointer;font-size:18px}
+.category span{display:block;font-size:40px;margin-bottom:10px}
+.category:hover,.product:hover{transform:translateY(-4px);transition:.2s}
+.product{text-align:center}
+.product .photo{font-size:65px;background:#eff7ef;padding:22px;border-radius:10px}
+.product h3{margin:12px 0}
+.price{color:#27834b;font-size:19px;font-weight:bold;margin:10px}
+.page{display:none;min-height:65vh}
+.page.active{display:block}
+.form-box{max-width:460px;margin:35px auto;background:white;padding:30px;border-radius:12px;box-shadow:0 3px 15px #ddd}
+.form-box h2{text-align:center}
+.stats .panel{text-align:center}
+.stats h3{color:#555}
+.stats h2{font-size:30px;margin-top:10px}
+table{width:100%;border-collapse:collapse;background:white;margin-top:15px}
+th,td{padding:12px;border:1px solid #e1e8e1;text-align:left}
+th{background:#e4f3e7}
+.cart-item{background:white;padding:15px;margin:10px 0;border-radius:8px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+footer{background:#173d2b;color:white;text-align:center;padding:25px;margin-top:30px}
+footer h3{color:#a9e5b8;margin-bottom:8px}
+.small{font-size:13px;color:#777}
+@media(max-width:700px){
+ header{flex-direction:column}
+ .hero{flex-direction:column;text-align:center}
+ .hero h1{font-size:32px}
+ .hero img{width:100%}
+ table{font-size:12px}
+ th,td{padding:7px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">♻ ReNewMarket</div>
+ <nav>
+  <a onclick="showPage('home')">Home</a>
+  <a onclick="showPage('shop')">Shop</a>
+  <a onclick="showPage('sell')">Sell Item</a>
+  <a onclick="showPage('cart')">Cart (<span id="cartCount">0</span>)</a>
+  <a onclick="showPage('orders')">My Orders</a>
+  <a onclick="showPage('login')">Login</a>
+  <a onclick="showPage('adminLogin')">Admin</a>
+ </nav>
+</header>
+
+<!-- HOME -->
+<div id="home" class="page active">
+ <div class="hero">
+  <div>
+   <h1>Give Pre-Loved Items a New Life! ♻</h1>
+   <p>Buy and sell second-hand products at affordable prices. Discover electronics, furniture, clothing and more.</p>
+   <button onclick="showPage('shop')">Explore Products</button>
+   <button onclick="showPage('sell')">Start Selling</button>
+  </div>
+  <img src="https://images.unsplash.com/photo-1531058020387-3be344556be6?w=700" alt="Second hand marketplace">
+ </div>
+
+ <section>
+  <h2>Shop by Category</h2>
+  <div class="categories">
+   <div class="category" onclick="filterCategory('Electronics')"><span>📱</span>Electronics</div>
+   <div class="category" onclick="filterCategory('Furniture')"><span>🪑</span>Furniture</div>
+   <div class="category" onclick="filterCategory('Clothing')"><span>👕</span>Clothing</div>
+   <div class="category" onclick="filterCategory('Books')"><span>📚</span>Books</div>
+   <div class="category" onclick="filterCategory('Collectibles')"><span>🏆</span>Collectibles</div>
+   <div class="category" onclick="filterCategory('Accessories')"><span>🎒</span>Accessories</div>
+  </div>
+ </section>
+
+ <section>
+  <h2>Featured Products</h2>
+  <div class="products" id="homeProducts"></div>
+ </section>
+</div>
+
+<!-- SHOP -->
+<div id="shop" class="page">
+ <section>
+  <h2>Explore Second-Hand Products</h2>
+  <input id="search" placeholder="Search products..." oninput="displayProducts()">
+  <select id="categoryFilter" onchange="displayProducts()">
+   <option value="All">All Categories</option>
+   <option>Electronics</option>
+   <option>Furniture</option>
+   <option>Clothing</option>
+   <option>Books</option>
+   <option>Collectibles</option>
+   <option>Accessories</option>
+  </select>
+  <div class="products" id="shopProducts"></div>
+ </section>
+</div>
+
+<!-- PRODUCT DETAILS -->
+<div id="details" class="page">
+ <section id="productDetails"></section>
+</div>
+
+<!-- SELL ITEM -->
+<div id="sell" class="page">
+ <div class="form-box">
+  <h2>Sell Your Item</h2>
+  <form onsubmit="addListing(event)">
+   <input id="itemName" placeholder="Product Name" required>
+   <select id="itemCategory">
+    <option>Electronics</option>
+    <option>Furniture</option>
+    <option>Clothing</option>
+    <option>Books</option>
+    <option>Collectibles</option>
+    <option>Accessories</option>
+   </select>
+   <input id="itemPrice" type="number" placeholder="Selling Price" required>
+   <input id="itemEmoji" placeholder="Product Emoji (e.g. 📱)">
+   <textarea id="itemDescription" placeholder="Product Description"></textarea>
+   <button type="submit">Publish Listing</button>
+  </form>
+ </div>
+</div>
+
+<!-- CART -->
+<div id="cart" class="page">
+ <section>
+  <h2>🛒 Shopping Cart</h2>
+  <div id="cartItems"></div>
+  <h3 id="cartTotal">Total: ₹0</h3>
+  <button onclick="showPage('checkout')">Proceed to Checkout</button>
+ </section>
+</div>
+
+<!-- CHECKOUT -->
+<div id="checkout" class="page">
+ <div class="form-box">
+  <h2>Place Your Order</h2>
+  <form onsubmit="placeOrder(event)">
+   <input id="buyerName" placeholder="Your Name" required>
+   <input id="buyerPhone" placeholder="Phone Number" required>
+   <textarea id="buyerAddress" placeholder="Delivery Address" required></textarea>
+   <select id="paymentMethod">
+    <option>Cash on Delivery</option>
+    <option>UPI (Demo)</option>
+    <option>Card (Demo)</option>
+   </select>
+   <button type="submit">Confirm Order</button>
+  </form>
+ </div>
+</div>
+
+<!-- LOGIN -->
+<div id="login" class="page">
+ <div class="form-box">
+  <h2>User Login</h2>
+  <form onsubmit="userLogin(event)">
+   <input id="loginEmail" type="email" placeholder="Email" required>
+   <input id="loginPassword" type="password" placeholder="Password" required>
+   <button type="submit">Login</button>
+  </form>
+  <p class="small">New user? <a onclick="showPage('register')">Register here</a></p>
+ </div>
+</div>
+
+<!-- REGISTER -->
+<div id="register" class="page">
+ <div class="form-box">
+  <h2>Create Account</h2>
+  <form onsubmit="registerUser(event)">
+   <input id="regName" placeholder="Full Name" required>
+   <input id="regEmail" type="email" placeholder="Email" required>
+   <input id="regPhone" placeholder="Phone Number" required>
+   <input id="regPassword" type="password" placeholder="Password" required>
+   <button type="submit">Register</button>
+  </form>
+ </div>
+</div>
+
+<!-- PROFILE -->
+<div id="profile" class="page">
+ <section>
+  <h2>My Profile</h2>
+  <div id="profileInfo" class="panel"></div>
+  <h2 style="margin-top:25px">My Favourite Items ❤️</h2>
+  <div id="favorites" class="products"></div>
+  <h2 style="margin-top:25px">My Listings</h2>
+  <div id="myListings"></div>
+  <button onclick="logout()">Logout</button>
+ </section>
+</div>
+
+<!-- ORDERS -->
+<div id="orders" class="page">
+ <section>
+  <h2>My Orders & Transactions</h2>
+  <div id="myOrders"></div>
+ </section>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div id="adminLogin" class="page">
+ <div class="form-box">
+  <h2>Administrator Login</h2>
+  <form onsubmit="adminLogin(event)">
+   <input id="adminEmail" type="email" placeholder="Admin Email" required>
+   <input id="adminPassword" type="password" placeholder="Password" required>
+   <button type="submit">Login as Admin</button>
+  </form>
+  <p class="small">Demo: admin@renew.com / admin123</p>
+ </div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div id="admin" class="page">
+ <section>
+  <h2>♻ Administrator Dashboard</h2>
+
+  <div class="stats">
+   <div class="panel"><h3>Total Users</h3><h2 id="userCount">0</h2></div>
+   <div class="panel"><h3>Products</h3><h2 id="productCount">0</h2></div>
+   <div class="panel"><h3>Orders</h3><h2 id="orderCount">0</h2></div>
+  </div>
+
+  <h2 style="margin-top:30px">Category Management</h2>
+  <div class="panel">
+   <input id="newCategory" placeholder="Enter new category">
+   <button onclick="addCategory()">Add Category</button>
+   <div id="categoryList"></div>
+  </div>
+
+  <h2 style="margin-top:30px">User Management</h2>
+  <div id="adminUsers"></div>
+
+  <h2 style="margin-top:30px">Commodity Management</h2>
+  <div id="adminProducts"></div>
+
+  <h2 style="margin-top:30px">Order Management</h2>
+  <div id="adminOrders"></div>
+
+  <button onclick="logout()">Logout</button>
+ </section>
+</div>
+
+<footer>
+ <h3>♻ ReNewMarket</h3>
+ <p>Buy Smart. Sell Easy. Reuse More.</p>
+ <p>Promoting a sustainable future through second-hand shopping.</p>
+ <p>© 2026 ReNewMarket. All Rights Reserved.</p>
+</footer>
+
+<script>
+// INITIAL DATA
+let products=JSON.parse(localStorage.getItem("rnProducts"))||[
+ {id:1,name:"Smartphone",price:6500,category:"Electronics",emoji:"📱",description:"Good condition smartphone with charger.",seller:"Demo Seller"},
+ {id:2,name:"Wooden Chair",price:1200,category:"Furniture",emoji:"🪑",description:"Strong wooden chair in good condition.",seller:"Demo Seller"},
+ {id:3,name:"Denim Jacket",price:500,category:"Clothing",emoji:"🧥",description:"Gently used denim jacket.",seller:"Demo Seller"},
+ {id:4,name:"Programming Books",price:350,category:"Books",emoji:"📚",description:"Collection of useful programming books.",seller:"Demo Seller"},
+ {id:5,name:"Vintage Watch",price:1800,category:"Collectibles",emoji:"⌚",description:"Vintage-style collectible watch.",seller:"Demo Seller"},
+ {id:6,name:"Travel Backpack",price:700,category:"Accessories",emoji:"🎒",description:"Used backpack in good condition.",seller:"Demo Seller"}
+];
+
+let users=JSON.parse(localStorage.getItem("rnUsers"))||[];
+let categories=JSON.parse(localStorage.getItem("rnCategories"))||
+ ["Electronics","Furniture","Clothing","Books","Collectibles","Accessories"];
+let orders=JSON.parse(localStorage.getItem("rnOrders"))||[];
+let cart=[];
+let favourites=[];
+let currentUser=JSON.parse(sessionStorage.getItem("rnUser"))||null;
+let isAdmin=false;
+
+function saveData(){
+ localStorage.setItem("rnProducts",JSON.stringify(products));
+ localStorage.setItem("rnUsers",JSON.stringify(users));
+ localStorage.setItem("rnCategories",JSON.stringify(categories));
+ localStorage.setItem("rnOrders",JSON.stringify(orders));
+}
+
+function showPage(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+
+ if(id==="shop")displayProducts();
+ if(id==="cart")displayCart();
+ if(id==="orders")displayMyOrders();
+ if(id==="profile")displayProfile();
+ if(id==="admin")displayAdmin();
+ window.scrollTo(0,0);
+}
+
+function displayHome(){
+ document.getElementById("homeProducts").innerHTML=products.slice(0,4).map(p=>`
+ <div class="product">
+  <div class="photo">${p.emoji}</div>
+  <h3>${p.name}</h3>
+  <p class="price">₹${p.price}</p>
+  <button onclick="viewDetails(${p.id})">View Details</button>
+  <button onclick="addToCart(${p.id})">Add to Cart</button>
+ </div>`).join("");
+}
+
+function displayProducts(){
+ let search=document.getElementById("search").value.toLowerCase();
+ let category=document.getElementById("categoryFilter").value;
+
+ let list=products.filter(p=>
+  p.name.toLowerCase().includes(search)&&
+  (category==="All"||p.category===category)
+ );
+
+ document.getElementById("shopProducts").innerHTML=list.map(p=>`
+ <div class="product">
+  <div class="photo">${p.emoji}</div>
+  <h3>${p.name}</h3>
+  <p>${p.category}</p>
+  <p class="price">₹${p.price}</p>
+  <button onclick="viewDetails(${p.id})">Details</button>
+  <button onclick="addToCart(${p.id})">Add to Cart</button>
+  <button onclick="negotiate(${p.id})">Negotiate</button>
+  <button onclick="addFavourite(${p.id})">❤️</button>
+ </div>`).join("")||"<p>No products found.</p>";
+}
+
+function filterCategory(category){
+ document.getElementById("categoryFilter").value=category;
+ showPage("shop");
+}
+
+function viewDetails(id){
+ let p=products.find(x=>x.id===id);
+ document.getElementById("productDetails").innerHTML=`
+ <div class="panel" style="text-align:center">
+  <div style="font-size:100px">${p.emoji}</div>
+  <h2>${p.name}</h2>
+  <p>${p.description}</p>
+  <p>Category: ${p.category}</p>
+  <p>Seller: ${p.seller}</p>
+  <h3 class="price">₹${p.price}</h3>
+  <button onclick="addToCart(${p.id})">Add to Cart</button>
+  <button onclick="negotiate(${p.id})">Negotiate Price</button>
+  <button onclick="showPage('shop')">Back</button>
+ </div>`;
+ showPage("details");
+}
+
+function addToCart(id){
+ let item=cart.find(x=>x.id===id);
+ if(item)item.qty++;
+ else cart.push({id:id,qty:1});
+ updateCartCount();
+ alert("Product added to cart!");
+}
+
+function updateCartCount(){
+ document.getElementById("cartCount").innerText=
+ cart.reduce((sum,x)=>sum+x.qty,0);
+}
+
+function displayCart(){
+ let total=0;
+ document.getElementById("cartItems").innerHTML=cart.map(item=>{
+  let p=products.find(x=>x.id===item.id);
+  if(!p)return "";
+  total+=p.price*item.qty;
+  return `<div class="cart-item">
+   <b>${p.emoji} ${p.name} - ₹${p.price}</b>
+   <div>
+    <button onclick="changeQty(${p.id},-1)">-</button>
+    ${item.qty}
+    <button onclick="changeQty(${p.id},1)">+</button>
+    <button onclick="removeItem(${p.id})">Remove</button>
+   </div>
+  </div>`;
+ }).join("")||( "<p>Your cart is empty.</p>");
+ document.getElementById("cartTotal").innerText="Total: ₹"+total;
+}
+
+function changeQty(id,n){
+ let item=cart.find(x=>x.id===id);
+ if(item){
+  item.qty+=n;
+  if(item.qty<=0)removeItem(id);
+  else displayCart();
+ }
+ updateCartCount();
+}
+
+function removeItem(id){
+ cart=cart.filter(x=>x.id!==id);
+ updateCartCount();
+ displayCart();
+}
+
+function addFavourite(id){
+ if(!favourites.includes(id))favourites.push(id);
+ alert("Added to favourites!");
+ if(currentUser)displayProfile();
+}
+
+function negotiate(id){
+ let p=products.find(x=>x.id===id);
+ let offer=prompt("Enter your offer price for "+p.name+" (₹"+p.price+")");
+ if(offer!==null&&Number(offer)>0){
+  alert("Your offer of ₹"+offer+" has been submitted to "+p.seller+". (Demo only)");
+ }
+}
+
+function registerUser(e){
+ e.preventDefault();
+ let email=document.getElementById("regEmail").value;
+ if(users.some(u=>u.email===email)){
+  alert("Email already registered!");
+  return;
+ }
+ users.push({
+  id:Date.now(),
+  name:document.getElementById("regName").value,
+  email:email,
+  phone:document.getElementById("regPhone").value,
+  password:document.getElementById("regPassword").value
+ });
+ saveData();
+ alert("Registration successful!");
+ e.target.reset();
+ showPage("login");
+}
+
+function userLogin(e){
+ e.preventDefault();
+ let email=document.getElementById("loginEmail").value;
+ let password=document.getElementById("loginPassword").value;
+ let user=users.find(u=>u.email===email&&u.password===password);
+ if(!user){alert("Invalid email or password!");return;}
+ currentUser=user;
+ sessionStorage.setItem("rnUser",JSON.stringify(user));
+ alert("Login successful!");
+ showPage("profile");
+}
+
+function displayProfile(){
+ if(!currentUser){showPage("login");return;}
+ document.getElementById("profileInfo").innerHTML=`
+  <h3>${currentUser.name}</h3>
+  <p>Email: ${currentUser.email}</p>
+  <p>Phone: ${currentUser.phone}</p>`;
+
+ document.getElementById("favorites").innerHTML=favourites.map(id=>{
+  let p=products.find(x=>x.id===id);
+  return p?`<div class="product">${p.emoji} ${p.name} - ₹${p.price}</div>`:"";
+ }).join("")||"<p>No favourites added.</p>";
+
+ let mine=products.filter(p=>p.seller===currentUser.email);
+ document.getElementById("myListings").innerHTML=mine.map(p=>`
+  <div class="panel" style="margin:10px 0">
+   ${p.emoji} ${p.name} - ₹${p.price}
+   <button onclick="editListing(${p.id})">Edit</button>
+   <button onclick="deleteListing(${p.id})">Delete</button>
+  </div>`).join("")||"<p>No listings yet.</p>";
+}
+
+function addListing(e){
+ e.preventDefault();
+ if(!currentUser){
+  alert("Please login before selling an item.");
+  showPage("login");
+  return;
+ }
+ products.push({
+  id:Date.now(),
+  name:document.getElementById("itemName").value,
+  category:document.getElementById("itemCategory").value,
+  price:Number(document.getElementById("itemPrice").value),
+  emoji:document.getElementById("itemEmoji").value||"📦",
+  description:document.getElementById("itemDescription").value,
+  seller:currentUser.email
+ });
+ saveData();
+ e.target.reset();
+ alert("Your item has been listed!");
+ showPage("profile");
+}
+
+function editListing(id){
+ let p=products.find(x=>x.id===id);
+ let name=prompt("Enter product name:",p.name);
+ let price=prompt("Enter product price:",p.price);
+ if(name&&Number(price)>0){
+  p.name=name;
+  p.price=Number(price);
+  saveData();
+  displayProfile();
+ }
+}
+
+function deleteListing(id){
+ if(confirm("Delete your listing?")){
+  products=products.filter(p=>p.id!==id);
+  saveData();
+  displayProfile();
+ }
+}
+
+function placeOrder(e){
+ e.preventDefault();
+ if(cart.length===0){alert("Your cart is empty!");return;}
+
+ let total=cart.reduce((sum,item)=>{
+  let p=products.find(x=>x.id===item.id);
+  return sum+(p?p.price*item.qty:0);
+ },0);
+
+ orders.push({
+  id:Date.now(),
+  user:currentUser?currentUser.email:"",
+  customer:document.getElementById("buyerName").value,
+  phone:document.getElementById("buyerPhone").value,
+  address:document.getElementById("buyerAddress").value,
+  payment:document.getElementById("paymentMethod").value,
+  items:cart.map(item=>{
+   let p=products.find(x=>x.id===item.id);
+   return {name:p.name,qty:item.qty,price:p.price};
+  }),
+  total:total,
+  status:"Shipped"
+ });
+
+ saveData();
+ cart=[];
+ updateCartCount();
+ e.target.reset();
+ alert("Order placed successfully!");
+ showPage("orders");
+}
+
+function displayMyOrders(){
+ let mine=orders.filter(o=>currentUser&&o.user===currentUser.email);
+ document.getElementById("myOrders").innerHTML=mine.map(o=>`
+ <div class="panel" style="margin:12px 0">
+  <h3>Order #${o.id}</h3>
+  <p>Total: ₹${o.total}</p>
+  <p>Delivery Address: ${o.address}</p>
+  <p>Status: <b>${o.status}</b></p>
+  <p>Items: ${o.items.map(i=>i.name+" × "+i.qty).join(", ")}</p>
+ </div>`).join("")||"<p>No orders found. Login to view your orders.</p>";
+}
+
+function adminLogin(e){
+ e.preventDefault();
+ let email=document.getElementById("adminEmail").value;
+ let password=document.getElementById("adminPassword").value;
+
+ if(email==="admin@renew.com"&&password==="admin123"){
+  isAdmin=true;
+  alert("Admin login successful!");
+  showPage("admin");
+ }else alert("Invalid admin login!");
+}
+
+function addCategory(){
+ let name=document.getElementById("newCategory").value.trim();
+ if(!name)return;
+ if(categories.includes(name)){alert("Category already exists!");return;}
+ categories.push(name);
+ saveData();
+ document.getElementById("newCategory").value="";
+ displayAdmin();
+}
+
+function deleteCategory(name){
+ if(!confirm("Delete category "+name+"?"))return;
+ if(products.some(p=>p.category===name)){
+  alert("Cannot delete: products still use this category.");
+  return;
+ }
+ categories=categories.filter(c=>c!==name);
+ saveData();
+ displayAdmin();
+}
+
+function editUser(id){
+ let u=users.find(x=>x.id===id);
+ let name=prompt("Edit user name:",u.name);
+ if(name){
+  u.name=name;
+  saveData();
+  displayAdmin();
+ }
+}
+
+function deleteUser(id){
+ if(confirm("Delete this user?")){
+  users=users.filter(u=>u.id!==id);
+  saveData();
+  displayAdmin();
+ }
+}
+
+function editCommodity(id){
+ let p=products.find(x=>x.id===id);
+ let name=prompt("Product name:",p.name);
+ let price=prompt("Product price:",p.price);
+ if(name&&Number(price)>0){
+  p.name=name;
+  p.price=Number(price);
+  saveData();
+  displayAdmin();
+ }
+}
+
+function deleteCommodity(id){
+ if(confirm("Delete this commodity?")){
+  products=products.filter(p=>p.id!==id);
+  saveData();
+  displayAdmin();
+ }
+}
+
+function updateLogistics(id,status){
+ let o=orders.find(x=>x.id===id);
+ o.status=status;
+ saveData();
+ displayAdmin();
+}
+
+function deleteOrder(id){
+ if(confirm("Delete this order?")){
+  orders=orders.filter(o=>o.id!==id);
+  saveData();
+  displayAdmin();
+ }
+}
+
+function displayAdmin(){
+ if(!isAdmin){showPage("adminLogin");return;}
+
+ document.getElementById("userCount").innerText=users.length;
+ document.getElementById("productCount").innerText=products.length;
+ document.getElementById("orderCount").innerText=orders.length;
+
+ document.getElementById("categoryList").innerHTML=categories.map(c=>`
+  <p>${c} <button onclick="deleteCategory('${c}')">Delete</button></p>
+ `).join("");
+
+ document.getElementById("adminUsers").innerHTML=`
+ <table><tr><th>Name</th><th>Email</th><th>Phone</th><th>Actions</th></tr>
+ ${users.map(u=>`<tr>
+  <td>${u.name}</td><td>${u.email}</td><td>${u.phone}</td>
+  <td><button onclick="editUser(${u.id})">Edit</button>
+  <button onclick="deleteUser(${u.id})">Delete</button></td>
+ </tr>`).join("")}</table>`;
+
+ document.getElementById("adminProducts").innerHTML=`
+ <table><tr><th>Commodity</th><th>Category</th><th>Price</th><th>Actions</th></tr>
+ ${products.map(p=>`<tr>
+  <td>${p.emoji} ${p.name}</td><td>${p.category}</td><td>₹${p.price}</td>
+  <td><button onclick="editCommodity(${p.id})">Edit</button>
+  <button onclick="deleteCommodity(${p.id})">Delete</button></td>
+ </tr>`).join("")}</table>`;
+
+ document.getElementById("adminOrders").innerHTML=`
+ <table><tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Status</th><th>Logistics</th><th>Action</th></tr>
+ ${orders.map(o=>`<tr>
+  <td>${o.id}</td><td>${o.customer}</td><td>₹${o.total}</td><td>${o.status}</td>
+  <td>
+   <button onclick="updateLogistics(${o.id},'Shipped')">Shipped</button>
+   <button onclick="updateLogistics(${o.id},'Received')">Received</button>
+  </td>
+  <td><button onclick="deleteOrder(${o.id})">Delete</button></td>
+ </tr>`).join("")}</table>`;
+}
+
+function logout(){
+ currentUser=null;
+ isAdmin=false;
+ sessionStorage.removeItem("rnUser");
+ alert("Logged out successfully!");
+ showPage("home");
+}
+
+// START WEBSITE
+displayHome();
+updateCartCount();
+</script>
+
+</body>
+</html>

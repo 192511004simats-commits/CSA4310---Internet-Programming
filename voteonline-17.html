@@ -1,0 +1,1716 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoteOnline | Digital Elections</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+:root {
+    --cream: #f6f0e8;
+    --paper: #fffdf9;
+    --peach: #ead0bb;
+    --terracotta: #b97854;
+    --terracotta-dark: #965c40;
+    --brown: #49372e;
+    --muted: #82766c;
+    --line: #e8ded3;
+    --green: #59785d;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--cream);
+    color: var(--brown);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+}
+
+button, input, select, textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+}
+
+header {
+    width: 100%;
+    background: rgba(255,253,249,.96);
+    border-bottom: 1px solid var(--line);
+    padding: 19px 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 29px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: var(--terracotta);
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.nav-btn {
+    background: transparent;
+    color: var(--brown);
+    padding: 11px 17px;
+    border-radius: 30px;
+    transition: .2s;
+}
+
+.nav-btn:hover {
+    background: var(--cream);
+}
+
+.nav-primary {
+    background: var(--terracotta);
+    color: white;
+}
+
+.nav-primary:hover {
+    background: var(--terracotta-dark);
+}
+
+.container {
+    width: 88%;
+    max-width: 1180px;
+    margin: 42px auto;
+}
+
+.hero {
+    min-height: 410px;
+    background: linear-gradient(115deg, #ead1bd, #f2dfce);
+    border-radius: 22px;
+    padding: 65px 7%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.hero-content {
+    max-width: 650px;
+    position: relative;
+    z-index: 2;
+}
+
+.eyebrow {
+    color: var(--terracotta-dark);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(38px, 5vw, 64px);
+    font-weight: 500;
+    line-height: 1.12;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    max-width: 510px;
+    color: #66554a;
+    line-height: 1.9;
+    font-size: 15px;
+}
+
+.hero-decoration {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 250px;
+    height: 250px;
+    border: 1px solid rgba(150,92,64,.35);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 90px;
+    color: rgba(150,92,64,.55);
+}
+
+.hero-decoration::before {
+    content: "";
+    position: absolute;
+    width: 185px;
+    height: 185px;
+    border: 1px solid rgba(150,92,64,.35);
+    border-radius: 50%;
+}
+
+.btn {
+    display: inline-block;
+    background: var(--terracotta);
+    color: white;
+    padding: 13px 23px;
+    border-radius: 5px;
+    margin: 22px 7px 0 0;
+    transition: .2s;
+}
+
+.btn:hover {
+    background: var(--terracotta-dark);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--brown);
+    border: 1px solid var(--terracotta);
+}
+
+.btn-outline:hover {
+    color: white;
+}
+
+.section-heading {
+    text-align: center;
+    margin: 65px 0 30px;
+}
+
+.section-heading small {
+    color: var(--terracotta);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.section-heading h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.feature-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    padding: 28px;
+    min-height: 185px;
+    transition: .25s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(73,55,46,.08);
+}
+
+.feature-icon {
+    font-size: 27px;
+    margin-bottom: 17px;
+}
+
+.feature-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    color: var(--muted);
+    line-height: 1.8;
+    font-size: 14px;
+}
+
+.stats-panel {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 28px;
+    margin-top: 35px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    text-align: center;
+}
+
+.stat strong {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: var(--terracotta-dark);
+}
+
+.stat span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 37px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.page-subtitle {
+    color: var(--muted);
+    margin-bottom: 28px;
+    line-height: 1.7;
+}
+
+.form-box {
+    max-width: 620px;
+    margin: 35px auto;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 15px;
+    padding: 35px;
+    box-shadow: 0 10px 30px rgba(73,55,46,.05);
+}
+
+.form-box h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.form-box .page-subtitle {
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 14px 0 7px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 13px 14px;
+    background: #fffefa;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    outline: none;
+    color: var(--brown);
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--terracotta);
+    box-shadow: 0 0 0 3px rgba(185,120,84,.1);
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-box .btn {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.note {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+    margin-top: 15px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 17px;
+    margin-bottom: 28px;
+}
+
+.dash-stat {
+    background: var(--paper);
+    padding: 23px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+}
+
+.dash-stat span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.dash-stat h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    margin-top: 8px;
+}
+
+.dashboard-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    padding: 25px;
+}
+
+.dashboard-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.dashboard-card p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.dashboard-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.candidate {
+    border: 1px solid var(--line);
+    background: #fffefa;
+    padding: 17px;
+    border-radius: 9px;
+    margin: 13px 0;
+}
+
+.candidate label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.candidate input {
+    width: auto;
+}
+
+.candidate p {
+    color: var(--muted);
+    margin: 7px 0 0 27px;
+    font-size: 13px;
+}
+
+.table-wrap {
+    overflow-x: auto;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+}
+
+th {
+    background: #efe2d6;
+    color: var(--brown);
+    font-weight: 700;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.status {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 20px;
+    background: #e6eee3;
+    color: var(--green);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.status.closed {
+    background: #f4e4df;
+    color: #9a5845;
+}
+
+.status.upcoming {
+    background: #f5eddc;
+    color: #98743d;
+}
+
+.message {
+    padding: 15px;
+    border-radius: 8px;
+    background: #edf2e9;
+    color: var(--green);
+    margin: 15px 0;
+    line-height: 1.7;
+}
+
+.empty {
+    background: var(--paper);
+    border: 1px dashed var(--peach);
+    padding: 30px;
+    text-align: center;
+    color: var(--muted);
+    border-radius: 10px;
+}
+
+footer {
+    margin-top: 75px;
+    background: #49372e;
+    color: #f8eee5;
+    text-align: center;
+    padding: 30px 15px;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media(max-width:850px) {
+    .features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero-decoration {
+        opacity: .25;
+        right: -30px;
+    }
+}
+
+@media(max-width:560px) {
+    header {
+        padding: 15px 5%;
+        flex-direction: column;
+    }
+
+    nav {
+        justify-content: center;
+    }
+
+    .container {
+        width: 92%;
+        margin: 25px auto;
+    }
+
+    .hero {
+        padding: 45px 25px;
+        min-height: 380px;
+    }
+
+    .hero-decoration {
+        display: none;
+    }
+
+    .features,
+    .dashboard-grid,
+    .dashboard-actions,
+    .stats-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .form-box {
+        padding: 23px;
+    }
+
+    .section-heading h2 {
+        font-size: 29px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Vote<span>Online.</span></div>
+    <nav id="navigation">
+        <button class="nav-btn" onclick="home()">Home</button>
+        <button class="nav-btn" onclick="voterLogin()">Voter Login</button>
+        <button class="nav-btn nav-primary" onclick="adminLoginPage()">Admin</button>
+    </nav>
+</header>
+
+<main class="container" id="app"></main>
+
+<footer>
+    <h3 style="font-family:'Playfair Display';font-size:22px">VoteOnline</h3>
+    <p>Making elections simple, accessible and transparent.</p>
+    <p>© 2026 VoteOnline. College demonstration project.</p>
+</footer>
+
+<script>
+// ---------------- DATA ----------------
+
+let elections = JSON.parse(localStorage.getItem("vo_elections")) || [];
+let candidates = JSON.parse(localStorage.getItem("vo_candidates")) || [];
+let voters = JSON.parse(localStorage.getItem("vo_voters")) || [];
+let votes = JSON.parse(localStorage.getItem("vo_votes")) || [];
+
+let currentUser = JSON.parse(sessionStorage.getItem("vo_user")) || null;
+let loginOTP = "";
+let votingOTP = "";
+let selectedElection = "";
+
+function save() {
+    localStorage.setItem("vo_elections", JSON.stringify(elections));
+    localStorage.setItem("vo_candidates", JSON.stringify(candidates));
+    localStorage.setItem("vo_voters", JSON.stringify(voters));
+    localStorage.setItem("vo_votes", JSON.stringify(votes));
+}
+
+function id(prefix) {
+    return prefix + Date.now().toString().slice(-7) +
+        Math.floor(Math.random() * 90 + 10);
+}
+
+function safe(value) {
+    return String(value ?? "").replace(/[&<>"']/g, c => ({
+        "&":"&amp;", "<":"&lt;", ">":"&gt;",
+        '"':"&quot;", "'":"&#39;"
+    })[c]);
+}
+
+function setUser(user) {
+    currentUser = user;
+    sessionStorage.setItem("vo_user", JSON.stringify(user));
+}
+
+function updateNav() {
+    const nav = document.getElementById("navigation");
+
+    if (!currentUser) {
+        nav.innerHTML = `
+            <button class="nav-btn" onclick="home()">Home</button>
+            <button class="nav-btn" onclick="voterLogin()">Voter Login</button>
+            <button class="nav-btn nav-primary" onclick="adminLoginPage()">Admin</button>
+        `;
+    } else {
+        nav.innerHTML = `
+            <button class="nav-btn" onclick="dashboard()">Dashboard</button>
+            <button class="nav-btn nav-primary" onclick="logout()">Logout</button>
+        `;
+    }
+}
+
+function home() {
+    currentUser = null;
+    sessionStorage.removeItem("vo_user");
+    updateNav();
+
+    document.getElementById("app").innerHTML = `
+        <section class="hero">
+            <div class="hero-content">
+                <div class="eyebrow">Your voice. Your choice.</div>
+                <h1>Every vote<br>makes a difference.</h1>
+                <p>
+                    Welcome to VoteOnline, a simple digital voting
+                    platform designed to make the election process
+                    convenient, accessible and transparent.
+                </p>
+                <button class="btn" onclick="voterLogin()">Start Voting</button>
+                <button class="btn btn-outline" onclick="adminLoginPage()">Admin Portal</button>
+            </div>
+            <div class="hero-decoration">V</div>
+        </section>
+
+        <div class="section-heading">
+            <small>Our platform</small>
+            <h2>A better way to participate</h2>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3>Secure Login</h3>
+                <p>Voters can access their account using a unique Voter ID and OTP verification.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🗳️</div>
+                <h3>Online Voting</h3>
+                <p>View available candidates and submit your vote through a simple interface.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Election Results</h3>
+                <p>Administrators can view candidate-wise vote counts and election results.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✓</div>
+                <h3>Vote Confirmation</h3>
+                <p>Get an on-screen confirmation after successfully submitting your vote.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3>Voter Management</h3>
+                <p>Administrators can create, import, view and update voter records.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📋</div>
+                <h3>Election Management</h3>
+                <p>Create elections, add candidates and allocate voters to their wards.</p>
+            </div>
+        </div>
+
+        <div class="stats-panel">
+            <div class="stat">
+                <strong>${elections.length}</strong>
+                <span>Elections Created</span>
+            </div>
+            <div class="stat">
+                <strong>${voters.length}</strong>
+                <span>Registered Voters</span>
+            </div>
+            <div class="stat">
+                <strong>${votes.length}</strong>
+                <span>Votes Recorded</span>
+            </div>
+        </div>
+    `;
+}
+
+// ---------------- ADMIN LOGIN ----------------
+
+function adminLoginPage() {
+    updateNav();
+
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <div class="eyebrow">Administration</div>
+            <h2>Welcome back.</h2>
+            <p class="page-subtitle">Sign in to manage elections and voter information.</p>
+
+            <form onsubmit="adminLogin(event)">
+                <label>Email Address</label>
+                <input type="email" id="adminEmail" placeholder="admin@voteonline.com" required>
+
+                <label>Password</label>
+                <input type="password" id="adminPassword" placeholder="Enter password" required>
+
+                <button class="btn" type="submit">Login to Dashboard</button>
+            </form>
+
+            <p class="note">Demo email: admin@voteonline.com<br>Demo password: admin123</p>
+        </div>
+    `;
+}
+
+function adminLogin(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("adminEmail").value;
+    const password = document.getElementById("adminPassword").value;
+    const saved = localStorage.getItem("vo_admin_password") || "admin123";
+
+    if (email === "admin@voteonline.com" && password === saved) {
+        setUser({role:"admin", name:"Administrator"});
+        updateNav();
+        dashboard();
+    } else {
+        alert("Invalid admin email or password.");
+    }
+}
+
+// ---------------- VOTER LOGIN ----------------
+
+function voterLogin() {
+    updateNav();
+
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <div class="eyebrow">Voter access</div>
+            <h2>Login to VoteOnline.</h2>
+            <p class="page-subtitle">Enter your registered Voter ID to continue.</p>
+
+            <form onsubmit="getLoginOTP(event)">
+                <label>Voter ID</label>
+                <input id="voterId" placeholder="Example: VOTER001" required>
+                <button class="btn" type="submit">Get Login OTP</button>
+            </form>
+
+            <div id="loginVerify" class="hidden">
+                <label>Enter OTP</label>
+                <input id="loginOTPInput" maxlength="6" placeholder="Six digit OTP">
+                <button class="btn" onclick="verifyLoginOTP()">Verify and Login</button>
+            </div>
+
+            <p class="note">Your Voter ID must be registered by the administrator.</p>
+        </div>
+    `;
+}
+
+function getLoginOTP(event) {
+    event.preventDefault();
+
+    const voterId = document.getElementById("voterId").value.trim();
+    const voter = voters.find(v =>
+        v.id.toLowerCase() === voterId.toLowerCase() && v.active
+    );
+
+    if (!voter) {
+        alert("Voter ID not found or account is inactive.");
+        return;
+    }
+
+    loginOTP = String(Math.floor(100000 + Math.random() * 900000));
+    document.getElementById("loginVerify").classList.remove("hidden");
+
+    alert("Demo Login OTP: " + loginOTP);
+}
+
+function verifyLoginOTP() {
+    const entered = document.getElementById("loginOTPInput").value;
+    const voterId = document.getElementById("voterId").value.trim();
+
+    if (!loginOTP || entered !== loginOTP) {
+        alert("Incorrect OTP.");
+        return;
+    }
+
+    const voter = voters.find(v => v.id.toLowerCase() === voterId.toLowerCase());
+
+    if (!voter || !voter.active) {
+        alert("Voter account is inactive.");
+        return;
+    }
+
+    loginOTP = "";
+    setUser({role:"voter", id:voter.id, name:voter.name, ward:voter.ward});
+    updateNav();
+    dashboard();
+}
+
+// ---------------- DASHBOARD ----------------
+
+function dashboard() {
+    if (!currentUser) return home();
+    updateNav();
+
+    if (currentUser.role === "admin") adminDashboard();
+    else voterDashboard();
+}
+
+function logout() {
+    currentUser = null;
+    sessionStorage.removeItem("vo_user");
+    loginOTP = "";
+    votingOTP = "";
+    home();
+}
+
+function adminDashboard() {
+    document.getElementById("app").innerHTML = `
+        <div class="dashboard-header">
+            <div>
+                <div class="eyebrow">Administration panel</div>
+                <h1 class="page-title">Welcome, Administrator</h1>
+                <p class="page-subtitle">Manage elections, candidates and registered voters.</p>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="dash-stat"><span>Total Elections</span><h2>${elections.length}</h2></div>
+            <div class="dash-stat"><span>Total Candidates</span><h2>${candidates.length}</h2></div>
+            <div class="dash-stat"><span>Registered Voters</span><h2>${voters.length}</h2></div>
+            <div class="dash-stat"><span>Votes Recorded</span><h2>${votes.length}</h2></div>
+        </div>
+
+        <div class="dashboard-actions">
+            <div class="dashboard-card">
+                <h3>Create Election</h3>
+                <p>Create a new election and allocate it to a ward.</p>
+                <button class="btn" onclick="createElectionForm()">Create</button>
+            </div>
+            <div class="dashboard-card">
+                <h3>Manage Candidates</h3>
+                <p>Add candidates and assign them to an election.</p>
+                <button class="btn" onclick="candidateForm()">Add Candidate</button>
+            </div>
+            <div class="dashboard-card">
+                <h3>Manage Elections</h3>
+                <p>View elections and update their status.</p>
+                <button class="btn" onclick="manageElections()">View Elections</button>
+            </div>
+            <div class="dashboard-card">
+                <h3>Create Voter List</h3>
+                <p>Register a voter and assign a ward.</p>
+                <button class="btn" onclick="voterForm()">Add Voter</button>
+            </div>
+            <div class="dashboard-card">
+                <h3>Import Voter List</h3>
+                <p>Upload voter information using a CSV file.</p>
+                <button class="btn" onclick="importForm()">Import CSV</button>
+            </div>
+            <div class="dashboard-card">
+                <h3>View Voter List</h3>
+                <p>View, edit and delete voter records.</p>
+                <button class="btn" onclick="manageVoters()">View Voters</button>
+            </div>
+            <div class="dashboard-card">
+                <h3>Election Results</h3>
+                <p>Check candidate-wise election results.</p>
+                <button class="btn" onclick="resultsPage()">View Results</button>
+            </div>
+            <div class="dashboard-card">
+                <h3>Change Password</h3>
+                <p>Update the administrator login password.</p>
+                <button class="btn" onclick="passwordForm()">Change Password</button>
+            </div>
+        </div>
+    `;
+}
+
+// ---------------- VOTER DASHBOARD ----------------
+
+function voterDashboard() {
+    const voter = voters.find(v => v.id === currentUser.id);
+    const myVotes = votes.filter(v => v.voterId === currentUser.id);
+
+    document.getElementById("app").innerHTML = `
+        <div class="eyebrow">Voter portal</div>
+        <h1 class="page-title">Welcome, ${safe(currentUser.name)}.</h1>
+        <p class="page-subtitle">Your participation matters. Explore the available elections below.</p>
+
+        <div class="dashboard-grid">
+            <div class="dash-stat"><span>Your Voter ID</span><h2 style="font-size:22px">${safe(currentUser.id)}</h2></div>
+            <div class="dash-stat"><span>Your Ward</span><h2 style="font-size:22px">${safe(voter?.ward || "-")}</h2></div>
+            <div class="dash-stat"><span>Votes Submitted</span><h2>${myVotes.length}</h2></div>
+            <div class="dash-stat"><span>Account Status</span><h2 style="font-size:22px">Active</h2></div>
+        </div>
+
+        <div class="dashboard-actions">
+            <div class="dashboard-card">
+                <h3>Cast Your Vote</h3>
+                <p>View active elections and select your preferred candidate.</p>
+                <button class="btn" onclick="activeElections()">Vote Now</button>
+            </div>
+            <div class="dashboard-card">
+                <h3>Voting History</h3>
+                <p>View your previous voting confirmations.</p>
+                <button class="btn" onclick="votingHistory()">View History</button>
+            </div>
+            <div class="dashboard-card">
+                <h3>My Profile</h3>
+                <p>View your registered voter details.</p>
+                <button class="btn" onclick="voterProfile()">View Profile</button>
+            </div>
+        </div>
+    `;
+}
+
+function voterProfile() {
+    const v = voters.find(x => x.id === currentUser.id);
+
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2>My Profile</h2>
+            <p class="page-subtitle">Your registered voter information.</p>
+            <p><b>Voter ID:</b> ${safe(v.id)}</p><br>
+            <p><b>Name:</b> ${safe(v.name)}</p><br>
+            <p><b>Email:</b> ${safe(v.email)}</p><br>
+            <p><b>Phone:</b> ${safe(v.phone)}</p><br>
+            <p><b>Ward:</b> ${safe(v.ward)}</p>
+            <button class="btn" onclick="dashboard()">Back</button>
+        </div>
+    `;
+}
+
+// ---------------- ELECTION CREATION ----------------
+
+function createElectionForm() {
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2>Create Election</h2>
+            <p class="page-subtitle">Enter the details of the new election.</p>
+
+            <form onsubmit="createElection(event)">
+                <label>Election Name</label>
+                <input id="eName" required>
+
+                <label>Description</label>
+                <textarea id="eDescription" required></textarea>
+
+                <label>Election Ward</label>
+                <input id="eWard" placeholder="Ward 1 or All Wards" required>
+
+                <label>Election Date</label>
+                <input type="date" id="eDate" required>
+
+                <label>Status</label>
+                <select id="eStatus">
+                    <option>Upcoming</option>
+                    <option>Active</option>
+                    <option>Closed</option>
+                </select>
+
+                <button class="btn" type="submit">Create Election</button>
+            </form>
+            <button class="btn btn-outline" onclick="adminDashboard()">Back</button>
+        </div>
+    `;
+}
+
+function createElection(event) {
+    event.preventDefault();
+
+    elections.push({
+        id:id("ELE"),
+        name:document.getElementById("eName").value.trim(),
+        description:document.getElementById("eDescription").value.trim(),
+        ward:document.getElementById("eWard").value.trim(),
+        date:document.getElementById("eDate").value,
+        status:document.getElementById("eStatus").value
+    });
+
+    save();
+    alert("Election created successfully.");
+    adminDashboard();
+}
+
+// ---------------- CANDIDATE CREATION ----------------
+
+function candidateForm() {
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2>Add Election Candidate</h2>
+            <p class="page-subtitle">Assign a candidate to an existing election.</p>
+
+            <form onsubmit="addCandidate(event)">
+                <label>Select Election</label>
+                <select id="cElection" required>
+                    <option value="">Choose election</option>
+                    ${elections.map(e => `<option value="${e.id}">${safe(e.name)}</option>`).join("")}
+                </select>
+
+                <label>Candidate Name</label>
+                <input id="cName" required>
+
+                <label>Party / Group</label>
+                <input id="cParty" required>
+
+                <label>Election Symbol</label>
+                <input id="cSymbol" required>
+
+                <label>Candidate Description</label>
+                <textarea id="cDescription" required></textarea>
+
+                <button class="btn" type="submit">Add Candidate</button>
+            </form>
+            <button class="btn btn-outline" onclick="adminDashboard()">Back</button>
+        </div>
+    `;
+}
+
+function addCandidate(event) {
+    event.preventDefault();
+
+    const electionId = document.getElementById("cElection").value;
+
+    if (!elections.some(e => e.id === electionId)) {
+        alert("Select a valid election.");
+        return;
+    }
+
+    candidates.push({
+        id:id("CAN"),
+        electionId,
+        name:document.getElementById("cName").value.trim(),
+        party:document.getElementById("cParty").value.trim(),
+        symbol:document.getElementById("cSymbol").value.trim(),
+        description:document.getElementById("cDescription").value.trim()
+    });
+
+    save();
+    alert("Candidate added successfully.");
+    adminDashboard();
+}
+
+// ---------------- MANAGE ELECTIONS ----------------
+
+function manageElections() {
+    document.getElementById("app").innerHTML = `
+        <h1 class="page-title">Manage Elections</h1>
+        <p class="page-subtitle">View and update election information.</p>
+
+        <div class="table-wrap">
+            <table>
+                <tr><th>ID</th><th>Election</th><th>Ward</th><th>Date</th><th>Status</th><th>Actions</th></tr>
+                ${elections.map(e => `
+                    <tr>
+                        <td>${safe(e.id)}</td>
+                        <td>${safe(e.name)}</td>
+                        <td>${safe(e.ward)}</td>
+                        <td>${safe(e.date)}</td>
+                        <td>${safe(e.status)}</td>
+                        <td>
+                            <button class="btn" onclick="changeStatus('${e.id}')">Update</button>
+                            <button class="btn btn-outline" onclick="deleteElection('${e.id}')">Delete</button>
+                        </td>
+                    </tr>
+                `).join("") || `<tr><td colspan="6">No elections created.</td></tr>`}
+            </table>
+        </div>
+        <button class="btn" onclick="createElectionForm()">Create Election</button>
+        <button class="btn btn-outline" onclick="adminDashboard()">Back</button>
+    `;
+}
+
+function changeStatus(electionId) {
+    const e = elections.find(x => x.id === electionId);
+    const value = prompt("Enter Upcoming, Active or Closed:", e.status);
+
+    if (!["Upcoming","Active","Closed"].includes(value)) {
+        alert("Invalid status.");
+        return;
+    }
+
+    e.status = value;
+    save();
+    manageElections();
+}
+
+function deleteElection(electionId) {
+    if (votes.some(v => v.electionId === electionId)) {
+        alert("This election has votes and cannot be deleted.");
+        return;
+    }
+
+    if (!confirm("Delete this election?")) return;
+
+    elections = elections.filter(e => e.id !== electionId);
+    candidates = candidates.filter(c => c.electionId !== electionId);
+    save();
+    manageElections();
+}
+
+// ---------------- VOTER CREATION ----------------
+
+function voterForm() {
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2>Create Voter Account</h2>
+            <p class="page-subtitle">Register a voter and allocate a ward.</p>
+
+            <form onsubmit="createVoter(event)">
+                <label>Voter ID</label>
+                <input id="vId" placeholder="VOTER001" required>
+
+                <label>Full Name</label>
+                <input id="vName" required>
+
+                <label>Email</label>
+                <input type="email" id="vEmail" required>
+
+                <label>Phone Number</label>
+                <input id="vPhone" required>
+
+                <label>Ward</label>
+                <input id="vWard" placeholder="Ward 1" required>
+
+                <label>Account Status</label>
+                <select id="vStatus">
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+
+                <button class="btn" type="submit">Create Voter</button>
+            </form>
+            <button class="btn btn-outline" onclick="adminDashboard()">Back</button>
+        </div>
+    `;
+}
+
+function createVoter(event) {
+    event.preventDefault();
+
+    const voterId = document.getElementById("vId").value.trim();
+
+    if (voters.some(v => v.id.toLowerCase() === voterId.toLowerCase())) {
+        alert("Voter ID already exists.");
+        return;
+    }
+
+    voters.push({
+        id:voterId,
+        name:document.getElementById("vName").value.trim(),
+        email:document.getElementById("vEmail").value.trim(),
+        phone:document.getElementById("vPhone").value.trim(),
+        ward:document.getElementById("vWard").value.trim(),
+        active:document.getElementById("vStatus").value === "true"
+    });
+
+    save();
+    alert("Voter account created successfully.");
+    adminDashboard();
+}
+
+// ---------------- IMPORT CSV ----------------
+
+function importForm() {
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2>Import Voter List</h2>
+            <p class="page-subtitle">Upload a CSV file to register multiple voters.</p>
+            <p class="note">CSV columns: VoterID,Name,Email,Phone,Ward</p>
+
+            <label>Select CSV file</label>
+            <input type="file" id="csvFile" accept=".csv">
+
+            <button class="btn" onclick="importCSV()">Import Voters</button>
+            <button class="btn btn-outline" onclick="adminDashboard()">Back</button>
+        </div>
+    `;
+}
+
+function importCSV() {
+    const file = document.getElementById("csvFile").files[0];
+
+    if (!file) {
+        alert("Please select a CSV file.");
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+        const rows = event.target.result.split(/\r?\n/);
+        let count = 0;
+
+        for (let i = 1; i < rows.length; i++) {
+            if (!rows[i].trim()) continue;
+
+            const cols = rows[i].split(",").map(x => x.trim());
+
+            if (cols.length < 5) continue;
+
+            const [voterId, name, email, phone, ward] = cols;
+
+            if (!voterId || !name ||
+                voters.some(v => v.id.toLowerCase() === voterId.toLowerCase())) {
+                continue;
+            }
+
+            voters.push({
+                id:voterId,
+                name,
+                email,
+                phone,
+                ward,
+                active:true
+            });
+
+            count++;
+        }
+
+        save();
+        alert(count + " voter(s) imported.");
+        manageVoters();
+    };
+
+    reader.readAsText(file);
+}
+
+// ---------------- MANAGE VOTERS ----------------
+
+function manageVoters() {
+    document.getElementById("app").innerHTML = `
+        <h1 class="page-title">Voter List</h1>
+        <p class="page-subtitle">View and update registered voter information.</p>
+
+        <div class="table-wrap">
+            <table>
+                <tr><th>Voter ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Ward</th><th>Status</th><th>Actions</th></tr>
+                ${voters.map(v => `
+                    <tr>
+                        <td>${safe(v.id)}</td>
+                        <td>${safe(v.name)}</td>
+                        <td>${safe(v.email)}</td>
+                        <td>${safe(v.phone)}</td>
+                        <td>${safe(v.ward)}</td>
+                        <td>${v.active ? "Active" : "Inactive"}</td>
+                        <td>
+                            <button class="btn" onclick="editVoter('${v.id}')">Edit</button>
+                            <button class="btn btn-outline" onclick="deleteVoter('${v.id}')">Delete</button>
+                        </td>
+                    </tr>
+                `).join("") || `<tr><td colspan="7">No voters registered.</td></tr>`}
+            </table>
+        </div>
+
+        <button class="btn" onclick="voterForm()">Add Voter</button>
+        <button class="btn btn-outline" onclick="adminDashboard()">Back</button>
+    `;
+}
+
+function editVoter(voterId) {
+    const v = voters.find(x => x.id === voterId);
+
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2>Update Voter</h2>
+            <form onsubmit="updateVoter(event, '${voterId}')">
+                <label>Name</label>
+                <input id="editName" value="${safe(v.name)}" required>
+
+                <label>Email</label>
+                <input type="email" id="editEmail" value="${safe(v.email)}" required>
+
+                <label>Phone</label>
+                <input id="editPhone" value="${safe(v.phone)}" required>
+
+                <label>Ward</label>
+                <input id="editWard" value="${safe(v.ward)}" required>
+
+                <label>Status</label>
+                <select id="editStatus">
+                    <option value="true" ${v.active ? "selected" : ""}>Active</option>
+                    <option value="false" ${!v.active ? "selected" : ""}>Inactive</option>
+                </select>
+
+                <button class="btn" type="submit">Save Changes</button>
+            </form>
+            <button class="btn btn-outline" onclick="manageVoters()">Back</button>
+        </div>
+    `;
+}
+
+function updateVoter(event, voterId) {
+    event.preventDefault();
+
+    const v = voters.find(x => x.id === voterId);
+
+    v.name = document.getElementById("editName").value.trim();
+    v.email = document.getElementById("editEmail").value.trim();
+    v.phone = document.getElementById("editPhone").value.trim();
+    v.ward = document.getElementById("editWard").value.trim();
+    v.active = document.getElementById("editStatus").value === "true";
+
+    save();
+    alert("Voter updated successfully.");
+    manageVoters();
+}
+
+function deleteVoter(voterId) {
+    if (votes.some(v => v.voterId === voterId)) {
+        alert("Cannot delete a voter who has already voted.");
+        return;
+    }
+
+    if (!confirm("Delete this voter?")) return;
+
+    voters = voters.filter(v => v.id !== voterId);
+    save();
+    manageVoters();
+}
+
+// ---------------- VOTER ELECTION LIST ----------------
+
+function activeElections() {
+    const active = elections.filter(e => e.status === "Active");
+
+    document.getElementById("app").innerHTML = `
+        <h1 class="page-title">Available Elections</h1>
+        <p class="page-subtitle">Choose an election in which you are eligible to vote.</p>
+
+        <div class="features">
+            ${active.map(e => {
+                const voted = votes.some(v =>
+                    v.voterId === currentUser.id && v.electionId === e.id
+                );
+
+                return `
+                    <div class="feature-card">
+                        <div class="eyebrow">${safe(e.date)}</div>
+                        <h3>${safe(e.name)}</h3>
+                        <p>${safe(e.description)}</p>
+                        <p style="margin-top:10px">Ward: ${safe(e.ward)}</p>
+                        ${voted
+                            ? `<p class="status" style="margin-top:15px">Already Voted</p>`
+                            : `<button class="btn" onclick="openElection('${e.id}')">View Candidates</button>`
+                        }
+                    </div>
+                `;
+            }).join("") || `<div class="empty">No active elections are available.</div>`}
+        </div>
+
+        <button class="btn btn-outline" onclick="dashboard()">Back</button>
+    `;
+}
+
+// ---------------- SELECT CANDIDATE ----------------
+
+function openElection(electionId) {
+    const e = elections.find(x => x.id === electionId);
+    const voter = voters.find(x => x.id === currentUser.id);
+
+    if (!e || e.status !== "Active") {
+        alert("This election is not active.");
+        return;
+    }
+
+    if (e.ward !== "All Wards" && e.ward !== voter.ward) {
+        alert("You are not allocated to this election ward.");
+        return;
+    }
+
+    if (votes.some(v => v.voterId === currentUser.id && v.electionId === electionId)) {
+        alert("You have already voted in this election.");
+        return;
+    }
+
+    const list = candidates.filter(c => c.electionId === electionId);
+
+    if (!list.length) {
+        alert("No candidates have been added.");
+        return;
+    }
+
+    selectedElection = electionId;
+
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <div class="eyebrow">Election ballot</div>
+            <h2>${safe(e.name)}</h2>
+            <p class="page-subtitle">Choose one candidate carefully.</p>
+
+            <form onsubmit="candidateSelected(event)">
+                ${list.map(c => `
+                    <div class="candidate">
+                        <label>
+                            <input type="radio" name="candidate" value="${c.id}" required>
+                            <b>${safe(c.name)}</b>
+                        </label>
+                        <p>Party: ${safe(c.party)}</p>
+                        <p>Symbol: ${safe(c.symbol)}</p>
+                        <p>${safe(c.description)}</p>
+                    </div>
+                `).join("")}
+
+                <button class="btn" type="submit">Continue to Verification</button>
+            </form>
+            <button class="btn btn-outline" onclick="activeElections()">Back</button>
+        </div>
+    `;
+}
+
+function candidateSelected(event) {
+    event.preventDefault();
+
+    const chosen = document.querySelector('input[name="candidate"]:checked');
+
+    if (!chosen) {
+        alert("Select a candidate.");
+        return;
+    }
+
+    const candidate = candidates.find(c =>
+        c.id === chosen.value && c.electionId === selectedElection
+    );
+
+    if (!candidate) {
+        alert("Invalid candidate.");
+        return;
+    }
+
+    votingOTP = String(Math.floor(100000 + Math.random() * 900000));
+
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <div class="eyebrow">Final verification</div>
+            <h2>Confirm your selection.</h2>
+            <p class="page-subtitle">You selected the following candidate.</p>
+
+            <div class="candidate">
+                <h3>${safe(candidate.name)}</h3>
+                <p>Party: ${safe(candidate.party)}</p>
+                <p>Symbol: ${safe(candidate.symbol)}</p>
+            </div>
+
+            <button class="btn" onclick="showVotingOTP()">Get OTP for Voting</button>
+
+            <label>Enter Voting OTP</label>
+            <input id="voteOTPInput" maxlength="6" placeholder="Enter six digit OTP">
+
+            <button class="btn" onclick="verifyVoteOTP('${candidate.id}')">Verify and Submit Vote</button>
+
+            <p class="note">Demo OTP is displayed in an alert. A real application needs an OTP delivery service.</p>
+        </div>
+    `;
+}
+
+function showVotingOTP() {
+    alert("Demo Voting OTP: " + votingOTP);
+}
+
+function verifyVoteOTP(candidateId) {
+    const entered = document.getElementById("voteOTPInput").value;
+
+    if (!votingOTP || entered !== votingOTP) {
+        alert("Incorrect voting OTP.");
+        return;
+    }
+
+    votingOTP = "";
+    submitVote(candidateId);
+}
+
+// ---------------- SUBMIT VOTE ----------------
+
+function submitVote(candidateId) {
+    const voter = voters.find(v => v.id === currentUser.id);
+    const election = elections.find(e => e.id === selectedElection);
+    const candidate = candidates.find(c =>
+        c.id === candidateId && c.electionId === selectedElection
+    );
+
+    if (!voter || !voter.active || !election ||
+        election.status !== "Active" || !candidate) {
+        alert("Unable to submit vote. Please check eligibility.");
+        return;
+    }
+
+    if (election.ward !== "All Wards" && election.ward !== voter.ward) {
+        alert("You are not eligible for this election.");
+        return;
+    }
+
+    if (votes.some(v => v.voterId === currentUser.id &&
+        v.electionId === selectedElection)) {
+        alert("You have already voted.");
+        return;
+    }
+
+    const confirmation = id("CONF");
+
+    votes.push({
+        id:confirmation,
+        voterId:currentUser.id,
+        electionId:selectedElection,
+        candidateId:candidate.id,
+        date:new Date().toLocaleString()
+    });
+
+    save();
+
+    document.getElementById("app").innerHTML = `
+        <div class="form-box" style="text-align:center">
+            <div style="font-size:55px;color:var(--green)">✓</div>
+            <div class="eyebrow">Submission complete</div>
+            <h2>Your vote has been recorded.</h2>
+            <p class="page-subtitle">Thank you for participating in this election.</p>
+            <div class="message">
+                Confirmation ID: <b>${safe(confirmation)}</b><br>
+                Date: ${safe(new Date().toLocaleString())}
+            </div>
+            <p class="note">Your candidate selection is not displayed in this confirmation.</p>
+            <button class="btn" onclick="dashboard()">Return to Dashboard</button>
+        </div>
+    `;
+}
+
+// ---------------- VOTING HISTORY ----------------
+
+function votingHistory() {
+    const history = votes.filter(v => v.voterId === currentUser.id);
+
+    document.getElementById("app").innerHTML = `
+        <h1 class="page-title">My Voting History</h1>
+        <p class="page-subtitle">Your previous voting confirmations.</p>
+
+        <div class="table-wrap">
+            <table>
+                <tr><th>Confirmation ID</th><th>Election</th><th>Date</th><th>Status</th></tr>
+                ${history.map(v => {
+                    const e = elections.find(x => x.id === v.electionId);
+                    return `
+                        <tr>
+                            <td>${safe(v.id)}</td>
+                            <td>${safe(e?.name || "Election")}</td>
+                            <td>${safe(v.date)}</td>
+                            <td><span class="status">Submitted</span></td>
+                        </tr>
+                    `;
+                }).join("") || `<tr><td colspan="4">No voting history available.</td></tr>`}
+            </table>
+        </div>
+        <button class="btn btn-outline" onclick="dashboard()">Back</button>
+    `;
+}
+
+// ---------------- RESULTS ----------------
+
+function resultsPage() {
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2>Election Results</h2>
+            <p class="page-subtitle">Select an election to view its results.</p>
+
+            <label>Select Election</label>
+            <select id="resultElection">
+                <option value="">Choose election</option>
+                ${elections.map(e => `<option value="${e.id}">${safe(e.name)}</option>`).join("")}
+            </select>
+
+            <button class="btn" onclick="showResults()">Get Results</button>
+            <button class="btn btn-outline" onclick="adminDashboard()">Back</button>
+        </div>
+
+        <div id="resultArea"></div>
+    `;
+}
+
+function showResults() {
+    const electionId = document.getElementById("resultElection").value;
+
+    if (!electionId) {
+        alert("Please select an election.");
+        return;
+    }
+
+    const e = elections.find(x => x.id === electionId);
+    const list = candidates.filter(c => c.electionId === electionId);
+    const total = votes.filter(v => v.electionId === electionId).length;
+
+    const data = list.map(c => ({
+        candidate:c,
+        count:votes.filter(v =>
+            v.electionId === electionId && v.candidateId === c.id
+        ).length
+    })).sort((a,b) => b.count - a.count);
+
+    document.getElementById("resultArea").innerHTML = `
+        <div class="dashboard-card">
+            <div class="eyebrow">Election report</div>
+            <h2 class="page-title">${safe(e.name)}</h2>
+            <p class="page-subtitle">Total votes recorded: ${total}</p>
+
+            <div class="table-wrap">
+                <table>
+                    <tr><th>Candidate</th><th>Party</th><th>Symbol</th><th>Votes</th><th>Percentage</th></tr>
+                    ${data.map(r => `
+                        <tr>
+                            <td>${safe(r.candidate.name)}</td>
+                            <td>${safe(r.candidate.party)}</td>
+                            <td>${safe(r.candidate.symbol)}</td>
+                            <td>${r.count}</td>
+                            <td>${total ? (r.count / total * 100).toFixed(2) : "0.00"}%</td>
+                        </tr>
+                    `).join("") || `<tr><td colspan="5">No candidates found.</td></tr>`}
+                </table>
+            </div>
+        </div>
+    `;
+}
+
+// ---------------- CHANGE ADMIN PASSWORD ----------------
+
+function passwordForm() {
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2>Change Admin Password</h2>
+            <form onsubmit="changePassword(event)">
+                <label>Current Password</label>
+                <input type="password" id="oldPassword" required>
+
+                <label>New Password</label>
+                <input type="password" id="newPassword" minlength="4" required>
+
+                <button class="btn" type="submit">Update Password</button>
+            </form>
+            <button class="btn btn-outline" onclick="adminDashboard()">Back</button>
+        </div>
+    `;
+}
+
+function changePassword(event) {
+    event.preventDefault();
+
+    const oldPassword = document.getElementById("oldPassword").value;
+    const newPassword = document.getElementById("newPassword").value;
+    const saved = localStorage.getItem("vo_admin_password") || "admin123";
+
+    if (oldPassword !== saved) {
+        alert("Current password is incorrect.");
+        return;
+    }
+
+    localStorage.setItem("vo_admin_password", newPassword);
+    alert("Password changed successfully.");
+    logout();
+}
+
+// ---------------- INITIAL PAGE ----------------
+
+if (currentUser) {
+    if (currentUser.role === "admin" ||
+        (currentUser.role === "voter" &&
+         voters.some(v => v.id === currentUser.id && v.active))) {
+        dashboard();
+    } else {
+        currentUser = null;
+        sessionStorage.removeItem("vo_user");
+        home();
+    }
+} else {
+    home();
+}
+
+</script>
+</body>
+</html>

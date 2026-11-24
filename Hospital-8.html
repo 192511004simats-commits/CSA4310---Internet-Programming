@@ -1,0 +1,389 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>MedCare Hospital</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f3f7fc;
+    color:#263449;
+}
+
+/* Header */
+header{
+    background:linear-gradient(120deg,#075985,#0891b2);
+    color:white;
+    padding:25px;
+    text-align:center;
+}
+
+header h1{
+    font-size:32px;
+    margin-bottom:8px;
+}
+
+/* Navigation */
+nav{
+    background:white;
+    padding:15px;
+    text-align:center;
+    box-shadow:0 3px 10px #00000012;
+    position:sticky;
+    top:0;
+}
+
+nav button{
+    background:transparent;
+    color:#087e9b;
+    border:0;
+    padding:12px 16px;
+    font-weight:bold;
+    cursor:pointer;
+    border-radius:6px;
+    transition:0.3s;
+}
+
+nav button:hover{
+    background:#087e9b;
+    color:white;
+}
+
+/* Main sections */
+.box{
+    background:white;
+    width:90%;
+    max-width:550px;
+    margin:35px auto;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 5px 20px #00000012;
+    text-align:center;
+    animation:fade 0.4s ease;
+}
+
+@keyframes fade{
+    from{opacity:0;transform:translateY(10px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+h2{
+    color:#087e9b;
+    margin-bottom:20px;
+}
+
+h3{
+    margin:15px;
+    color:#075985;
+}
+
+/* Input fields */
+input,select,textarea{
+    width:90%;
+    padding:13px;
+    margin:10px 0;
+    border:1px solid #ccd8e5;
+    border-radius:8px;
+    font-size:15px;
+    outline:none;
+}
+
+input:focus,select:focus,textarea:focus{
+    border-color:#0891b2;
+    box-shadow:0 0 5px #0891b255;
+}
+
+textarea{
+    height:90px;
+    resize:vertical;
+}
+
+/* Buttons */
+button{
+    background:#087e9b;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    margin:8px 4px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:14px;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#075985;
+    transform:translateY(-2px);
+}
+
+/* Home section */
+#home{
+    max-width:850px;
+    padding:55px 25px;
+    background:linear-gradient(120deg,#e0f7fa,#eff6ff);
+}
+
+#home h2{
+    font-size:30px;
+}
+
+#home p{
+    line-height:1.8;
+    margin-bottom:15px;
+}
+
+/* Messages */
+#message,#regmsg,#bookingMsg,#checkinMsg,
+#reviewMsg,#hospitalMsg,#result{
+    color:#07834a;
+    font-weight:bold;
+    margin:15px;
+}
+
+/* Footer */
+footer{
+    background:#075985;
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin-top:50px;
+}
+
+/* Responsive design */
+@media(max-width:600px){
+    header h1{font-size:25px}
+
+    nav button{
+        padding:9px;
+        font-size:12px;
+    }
+
+    .box{
+        width:94%;
+        padding:20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>MedCare Hospital</h1>
+<p>Your Health, Our Priority</p>
+</header>
+
+<nav>
+<button onclick="show('home')">Home</button>
+<button onclick="show('register')">Register</button>
+<button onclick="show('search')">Search Doctor</button>
+<button onclick="show('appointments')">Appointments</button>
+<button onclick="show('hospital')">Hospital</button>
+<button onclick="show('admin')">Admin</button>
+</nav>
+
+<div id="home" class="box">
+<h2>Welcome to MedCare Hospital</h2>
+<p>Find the right doctor, choose your preferred time and book your appointment easily.</p>
+<button onclick="show('search')">Book Appointment</button>
+</div>
+
+<div id="register" class="box" hidden>
+<h2>Patient Registration</h2>
+<input id="patient" placeholder="Patient Name">
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<button onclick="register()">Register</button>
+<p id="regmsg"></p>
+</div>
+
+<div id="search" class="box" hidden>
+<h2>Find Your Doctor</h2>
+
+<select id="location">
+<option>Chennai</option>
+<option>Coimbatore</option>
+<option>Madurai</option>
+</select>
+
+<select id="specialty">
+<option>Cardiology</option>
+<option>Dermatology</option>
+<option>Orthopedics</option>
+<option>General Medicine</option>
+</select>
+
+<button onclick="searchDoctor()">Search Doctor</button>
+<p id="doctorResult"></p>
+</div>
+
+<div id="booking" class="box" hidden>
+<h2>Book Your Appointment</h2>
+<input type="date" id="date">
+<input type="time" id="time">
+<button onclick="book()">Confirm Booking</button>
+<p id="bookingMsg"></p>
+</div>
+
+<div id="appointments" class="box" hidden>
+<h2>Appointment Management</h2>
+<p id="appointmentList">No appointments booked.</p>
+<button onclick="cancel()">Cancel Appointment</button>
+<button onclick="checkin()">Patient Check-in</button>
+<p id="checkinMsg"></p>
+<button onclick="show('review')">Write Review</button>
+</div>
+
+<div id="review" class="box" hidden>
+<h2>Share Your Feedback</h2>
+<textarea id="feedback" placeholder="Write your feedback"></textarea>
+<button onclick="review()">Submit Review</button>
+<p id="reviewMsg"></p>
+</div>
+
+<div id="hospital" class="box" hidden>
+<h2>Hospital Registration</h2>
+<input id="hospitalName" placeholder="Hospital Name">
+<input id="hospitalLocation" placeholder="Hospital Location">
+<button onclick="addHospital()">Register Hospital</button>
+<p id="hospitalMsg"></p>
+</div>
+
+<div id="admin" class="box" hidden>
+<h2>Admin Dashboard</h2>
+<input id="newDoctor" placeholder="Enter Doctor Name">
+<button onclick="addDoctor()">Add Doctor</button>
+<p id="doctorList">Doctors: Dr. Kumar, Dr. Priya</p>
+<h3>Appointment Statistics</h3>
+<p id="stats">Total Appointments: 0</p>
+</div>
+
+<footer>
+<p>© 2026 MedCare Hospital | All Rights Reserved</p>
+<p>Care • Trust • Health</p>
+</footer>
+
+<script>
+let appointments=[];
+let doctors=["Dr. Kumar","Dr. Priya"];
+let selectedDoctor="";
+
+function show(id){
+document.querySelectorAll(".box").forEach(
+box=>box.hidden=true
+);
+document.getElementById(id).hidden=false;
+}
+
+function register(){
+let name=document.getElementById("patient").value;
+if(name==""){
+alert("Enter patient name");
+return;
+}
+document.getElementById("regmsg").innerHTML=
+"Registration successful!";
+}
+
+function searchDoctor(){
+let specialty=document.getElementById("specialty").value;
+let location=document.getElementById("location").value;
+
+selectedDoctor="Dr. Kumar";
+
+document.getElementById("doctorResult").innerHTML=
+"Available Doctor: "+selectedDoctor+
+"<br>Specialty: "+specialty+
+"<br>Location: "+location+
+'<br><button onclick="show(\'booking\')">Book Now</button>';
+}
+
+function book(){
+let date=document.getElementById("date").value;
+let time=document.getElementById("time").value;
+
+if(!date||!time){
+alert("Select date and time");
+return;
+}
+
+appointments.push({
+doctor:selectedDoctor,
+date:date,
+time:time
+});
+
+document.getElementById("bookingMsg").innerHTML=
+"Appointment booked successfully!";
+
+updateAppointments();
+}
+
+function updateAppointments(){
+let list=document.getElementById("appointmentList");
+
+if(appointments.length==0){
+list.innerHTML="No appointments booked.";
+}else{
+list.innerHTML=appointments.map((a,i)=>
+(i+1)+". "+a.doctor+" - "+a.date+" - "+a.time
+).join("<br>");
+}
+
+document.getElementById("stats").innerHTML=
+"Total Appointments: "+appointments.length;
+}
+
+function cancel(){
+if(appointments.length>0){
+appointments.pop();
+alert("Appointment cancelled");
+updateAppointments();
+}else{
+alert("No appointments available");
+}
+}
+
+function checkin(){
+if(appointments.length>0){
+document.getElementById("checkinMsg").innerHTML=
+"Check-in completed successfully!";
+}else{
+alert("No appointment found");
+}
+}
+
+function review(){
+let text=document.getElementById("feedback").value;
+document.getElementById("reviewMsg").innerHTML=
+text?"Thank you for your feedback!":"Enter your feedback";
+}
+
+function addHospital(){
+let name=document.getElementById("hospitalName").value;
+let location=document.getElementById("hospitalLocation").value;
+
+document.getElementById("hospitalMsg").innerHTML=
+name&&location?"Hospital registered successfully!":
+"Enter hospital details";
+}
+
+function addDoctor(){
+let name=document.getElementById("newDoctor").value;
+if(name!=""){
+doctors.push(name);
+document.getElementById("doctorList").innerHTML=
+"Doctors: "+doctors.join(", ");
+}
+}
+</script>
+
+</body>
+</html>

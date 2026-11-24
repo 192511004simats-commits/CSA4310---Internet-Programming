@@ -1,0 +1,1521 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wanderlust Travels | Explore the World</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+ --primary:#176b57;
+ --dark:#123e35;
+ --accent:#e5a94c;
+ --bg:#f5f7f6;
+ --white:#fff;
+ --text:#263a35;
+ --muted:#788780;
+ --border:#e5ebe7;
+}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0}
+.hidden{display:none!important}
+.btn{padding:11px 17px;border-radius:8px;font-weight:bold}
+.primary{background:var(--primary);color:white}
+.primary:hover{background:var(--dark)}
+.secondary{background:#e8f3ef;color:var(--primary)}
+.danger{background:#ffeded;color:#c44b4b}
+.full{width:100%}
+input,select,textarea{
+ width:100%;padding:12px;border:1px solid var(--border);
+ border-radius:8px;outline:none;background:white
+}
+input:focus,select:focus,textarea:focus{border-color:var(--primary)}
+textarea{min-height:90px;resize:vertical}
+label{display:block;font-size:13px;font-weight:bold;margin-bottom:7px}
+.form-group{margin-bottom:17px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.full-field{grid-column:1/-1}
+
+/* LOGIN */
+#loginPage{
+ min-height:100vh;display:flex;align-items:center;
+ justify-content:center;padding:20px;
+ background:linear-gradient(130deg,#103d33,#25866c)
+}
+.login-card{
+ background:white;width:100%;max-width:430px;padding:38px;
+ border-radius:18px;box-shadow:0 15px 45px #0003
+}
+.logo{text-align:center;font-size:29px;font-weight:bold;color:var(--primary);margin-bottom:8px}
+.login-sub{text-align:center;color:var(--muted);font-size:13px;margin-bottom:28px}
+.demo{background:#edf7f2;padding:14px;border-radius:9px;
+ margin-top:18px;font-size:12px;line-height:1.9;color:#416456}
+
+/* REGISTER */
+#registerPage{
+ min-height:100vh;display:flex;align-items:center;
+ justify-content:center;padding:20px
+}
+.register-card{
+ background:white;width:100%;max-width:480px;padding:35px;
+ border-radius:16px;box-shadow:0 8px 30px #0000000d
+}
+
+/* SIDEBAR */
+#app{min-height:100vh}
+.sidebar{
+ width:245px;background:#123e35;color:white;
+ position:fixed;top:0;bottom:0;left:0;padding:24px 15px;
+ overflow-y:auto;z-index:10
+}
+.brand{font-size:24px;font-weight:bold;padding:5px 10px 30px}
+.brand span{color:#e9bd73}
+.brand small{display:block;font-size:10px;color:#a9c8ba;
+ font-weight:normal;margin-top:5px;letter-spacing:1px}
+.nav-label{font-size:10px;color:#a9c8ba;padding:15px 12px 9px;letter-spacing:1px}
+.nav-btn{
+ width:100%;text-align:left;padding:13px 12px;background:transparent;
+ color:#d9e8e1;border-radius:8px;margin-bottom:5px;font-size:14px
+}
+.nav-btn:hover,.nav-btn.active{background:#246b56;color:white}
+.main{margin-left:245px;min-height:100vh}
+.topbar{
+ height:72px;background:white;display:flex;align-items:center;
+ justify-content:space-between;padding:0 30px;border-bottom:1px solid var(--border)
+}
+.topbar h3{font-size:18px}
+.user-info{display:flex;align-items:center;gap:12px;font-size:13px}
+.avatar{
+ width:38px;height:38px;border-radius:50%;display:grid;
+ place-items:center;background:#e8f3ef;color:var(--primary);font-weight:bold
+}
+.content{padding:28px 30px;max-width:1500px;margin:auto}
+.welcome{margin-bottom:24px}
+.welcome h2{font-size:24px;margin-bottom:7px}
+.welcome p,.muted{font-size:13px;color:var(--muted)}
+.mobile-menu{display:none;background:transparent;font-size:22px}
+
+/* DASHBOARD */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat{
+ background:white;padding:21px;border-radius:12px;
+ border:1px solid var(--border);box-shadow:0 3px 12px #00000005
+}
+.stat-icon{font-size:25px;margin-bottom:14px}
+.stat h2{font-size:28px;margin-bottom:5px}
+.stat p{font-size:12px;color:var(--muted)}
+.panel{
+ background:white;padding:22px;border-radius:12px;
+ border:1px solid var(--border);margin-bottom:22px
+}
+.panel-head{
+ display:flex;align-items:center;justify-content:space-between;
+ flex-wrap:wrap;gap:12px;margin-bottom:18px
+}
+.panel-head h3{font-size:17px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+/* DESTINATION AND HOTEL CARDS */
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.travel-card{
+ background:white;border:1px solid var(--border);
+ border-radius:12px;overflow:hidden;transition:.2s
+}
+.travel-card:hover{transform:translateY(-3px);box-shadow:0 8px 22px #0000000c}
+.travel-img{
+ height:155px;width:100%;object-fit:cover;
+ background:#e7eee9;display:block
+}
+.card-body{padding:16px}
+.card-body h3{font-size:17px;margin-bottom:9px}
+.card-body p{font-size:12px;color:var(--muted);line-height:1.8}
+.price{font-size:19px;font-weight:bold;color:var(--primary);margin:12px 0}
+.tag{
+ display:inline-block;padding:5px 9px;border-radius:20px;
+ background:#eaf5ef;color:var(--primary);font-size:11px;font-weight:bold
+}
+.card-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+
+/* TABLES */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:600px}
+th,td{
+ text-align:left;padding:14px 12px;border-bottom:1px solid #eee;
+ font-size:13px
+}
+th{background:#fafafa;color:#748078;font-size:12px}
+td{color:#46534c}
+.status{
+ display:inline-block;padding:6px 10px;border-radius:20px;
+ background:#e8f7ef;color:#168653;font-size:11px;font-weight:bold
+}
+.status.pending{background:#fff4df;color:#b77b20}
+.status.cancelled{background:#ffeded;color:#c44b4b}
+.small-btn{padding:7px 11px;border-radius:6px;font-size:11px;font-weight:bold}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.empty{text-align:center;padding:30px;color:var(--muted);font-size:13px}
+.notice{background:#edf7f2;color:#24634e;padding:14px;
+ border-radius:8px;font-size:13px;line-height:1.7;margin-bottom:17px}
+.page{display:none}
+.page.active{display:block}
+footer{text-align:center;padding:20px;color:#9ba49f;font-size:11px}
+.hero{
+ background:linear-gradient(120deg,#123e35,#247a60);
+ color:white;padding:30px;border-radius:14px;margin-bottom:22px
+}
+.hero h2{font-size:26px;margin-bottom:10px}
+.hero p{font-size:13px;color:#d3e8de;line-height:1.8}
+.search-row{display:grid;grid-template-columns:2fr 1fr auto;gap:12px}
+.route-box{padding:17px;background:#eff6f2;border-radius:10px;margin-bottom:12px}
+.route-box h4{margin-bottom:9px;color:var(--dark)}
+.route-box p{font-size:13px;color:var(--muted);line-height:1.9}
+
+@media(max-width:950px){
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .card-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:650px){
+ .sidebar{transform:translateX(-100%);transition:.3s}
+ .sidebar.open{transform:translateX(0)}
+ .main{margin-left:0}
+ .mobile-menu{display:block}
+ .topbar{padding:0 15px}
+ .content{padding:20px 14px}
+ .grid-2,.form-grid,.search-row{grid-template-columns:1fr}
+ .full-field{grid-column:auto}
+ .card-grid{grid-template-columns:1fr}
+ .stat{padding:14px}
+ .stat h2{font-size:23px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN PAGE -->
+<section id="loginPage">
+<div class="login-card">
+ <div class="logo">✈ Wanderlust Travels</div>
+ <p class="login-sub">Explore More. Travel Better.</p>
+
+ <form id="loginForm">
+  <div class="form-group">
+   <label>Login As</label>
+   <select id="loginRole">
+    <option value="user">User / Traveller</option>
+    <option value="admin">Administrator</option>
+   </select>
+  </div>
+  <div class="form-group">
+   <label>Email Address</label>
+   <input type="email" id="loginEmail" placeholder="Enter email" required>
+  </div>
+  <div class="form-group">
+   <label>Password</label>
+   <input type="password" id="loginPassword" placeholder="Enter password" required>
+  </div>
+  <button class="btn primary full">Login to Wanderlust →</button>
+ </form>
+
+ <p style="text-align:center;font-size:13px;margin-top:18px">
+  New traveller?
+  <a href="#" onclick="showRegister();return false"
+   style="color:#176b57;font-weight:bold">Create Account</a>
+ </p>
+
+ <div class="demo">
+  <b>Demo Admin Login</b><br>
+  Email: admin@wanderlust.com<br>
+  Password: admin123<br>
+  User: Register a new account
+ </div>
+</div>
+</section>
+
+<!-- REGISTRATION PAGE -->
+<section id="registerPage" class="hidden">
+<div class="register-card">
+ <div class="logo">✈ Wanderlust Travels</div>
+ <p class="login-sub">Create your traveller account</p>
+
+ <form id="registerForm">
+  <div class="form-grid">
+   <div class="full-field"><label>Full Name</label>
+    <input id="regName" required></div>
+   <div class="full-field"><label>Email Address</label>
+    <input id="regEmail" type="email" required></div>
+   <div><label>Phone Number</label><input id="regPhone" required></div>
+   <div><label>City</label><input id="regCity" required></div>
+   <div class="full-field"><label>Password</label>
+    <input id="regPassword" type="password" minlength="4" required></div>
+   <div class="full-field"><button class="btn primary full">Register</button></div>
+  </div>
+ </form>
+
+ <p style="text-align:center;font-size:13px;margin-top:20px">
+  Already registered?
+  <a href="#" onclick="showLogin();return false" style="color:#176b57">Login</a>
+ </p>
+</div>
+</section>
+
+<!-- MAIN APPLICATION -->
+<div id="app" class="hidden">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">✈ Wanderlust
+  <span>Travels</span>
+  <small>EXPLORE THE WORLD</small>
+ </div>
+ <div class="nav-label">MAIN MENU</div>
+ <nav id="navigation"></nav>
+ <div class="nav-label">ACCOUNT</div>
+ <button class="nav-btn" onclick="logout()">↪ Logout</button>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div style="display:flex;align-items:center;gap:14px">
+  <button class="mobile-menu" onclick="toggleMenu()">☰</button>
+  <h3 id="topTitle">Dashboard</h3>
+ </div>
+ <div class="user-info">
+  <div style="text-align:right">
+   <b id="userName">User</b>
+   <p class="muted" id="userRole">Traveller</p>
+  </div>
+  <div class="avatar" id="avatar">U</div>
+ </div>
+</header>
+
+<div class="content">
+
+<!-- USER DASHBOARD -->
+<section id="userHome" class="page">
+ <div class="hero">
+  <h2>Discover Your Next Adventure 🌍</h2>
+  <p>Explore beautiful destinations, discover local food, find comfortable stays
+  and plan your next unforgettable journey with Wanderlust Travels.</p>
+  <button class="btn" style="background:#e5a94c;color:#183d32;margin-top:17px"
+   onclick="navigate('destinations')">Explore Destinations →</button>
+ </div>
+
+ <div class="stats">
+  <div class="stat"><div class="stat-icon">🌍</div>
+   <h2 id="userDestCount">0</h2><p>Tourist Destinations</p></div>
+  <div class="stat"><div class="stat-icon">🏨</div>
+   <h2 id="userHotelCount">0</h2><p>Hotels & Hostels</p></div>
+  <div class="stat"><div class="stat-icon">🍽️</div>
+   <h2 id="userFoodCount">0</h2><p>Food Options</p></div>
+  <div class="stat"><div class="stat-icon">🎫</div>
+   <h2 id="userBookingCount">0</h2><p>My Bookings</p></div>
+ </div>
+
+ <div class="panel">
+  <div class="panel-head">
+   <h3>Popular Destinations</h3>
+   <button class="btn secondary" onclick="navigate('destinations')">View All</button>
+  </div>
+  <div class="card-grid" id="popularDestinations"></div>
+ </div>
+
+ <div class="grid-2">
+  <div class="panel">
+   <h3 style="margin-bottom:12px">Find Your Perfect Stay 🏨</h3>
+   <p class="muted" style="line-height:1.9">Discover comfortable hotels and hostels for your journey.</p>
+   <button class="btn primary" style="margin-top:15px" onclick="navigate('hotels')">View Hotels</button>
+  </div>
+  <div class="panel">
+   <h3 style="margin-bottom:12px">Explore Local Food 🍽️</h3>
+   <p class="muted" style="line-height:1.9">Discover local dishes and restaurants at your destination.</p>
+   <button class="btn secondary" style="margin-top:15px" onclick="navigate('food')">View Food Details</button>
+  </div>
+ </div>
+</section>
+
+<!-- DESTINATIONS -->
+<section id="destinations" class="page">
+ <div class="welcome">
+  <h2>Tourism Destinations</h2>
+  <p>Explore beautiful places and plan your next trip.</p>
+ </div>
+ <div class="panel">
+  <div class="search-row">
+   <input id="destSearch" placeholder="Search destination or city">
+   <select id="destCategory">
+    <option value="">All Categories</option>
+    <option>Beach</option><option>Hill Station</option>
+    <option>Historical</option><option>Adventure</option>
+   </select>
+   <button class="btn primary" onclick="searchDestinations()">Search</button>
+  </div>
+ </div>
+ <div class="card-grid" id="destinationList"></div>
+</section>
+
+<!-- FOOD DETAILS -->
+<section id="food" class="page">
+ <div class="welcome">
+  <h2>Food & Restaurants</h2>
+  <p>Discover delicious local food and popular restaurants.</p>
+ </div>
+ <div class="panel">
+  <div class="search-row">
+   <input id="foodSearch" placeholder="Search food or restaurant">
+   <input id="foodCitySearch" placeholder="Search city">
+   <button class="btn primary" onclick="searchFood()">Search</button>
+  </div>
+ </div>
+ <div class="card-grid" id="foodList"></div>
+</section>
+
+<!-- HOTEL DETAILS -->
+<section id="hotels" class="page">
+ <div class="welcome">
+  <h2>Hotels & Hostels</h2>
+  <p>Find the perfect accommodation for your trip.</p>
+ </div>
+ <div class="panel">
+  <div class="search-row">
+   <input id="hotelSearch" placeholder="Search hotel or city">
+   <select id="hotelType">
+    <option value="">All Types</option>
+    <option>Hotel</option><option>Hostel</option><option>Resort</option>
+   </select>
+   <button class="btn primary" onclick="searchHotels()">Search</button>
+  </div>
+ </div>
+ <div class="card-grid" id="hotelList"></div>
+</section>
+
+<!-- ROUTES -->
+<section id="routes" class="page">
+ <div class="welcome">
+  <h2>Travel Routes</h2>
+  <p>View available routes and transportation details.</p>
+ </div>
+ <div class="panel">
+  <div class="search-row">
+   <input id="routeSearch" placeholder="Search starting point or destination">
+   <select id="routeTransport">
+    <option value="">All Transport</option>
+    <option>Bus</option><option>Train</option><option>Flight</option>
+   </select>
+   <button class="btn primary" onclick="searchRoutes()">Search</button>
+  </div>
+ </div>
+ <div class="panel"><div id="routeList"></div></div>
+</section>
+
+<!-- BOOK ACCOMMODATION -->
+<section id="bookAccommodation" class="page">
+ <div class="welcome">
+  <h2>Book Accommodation</h2>
+  <p>Reserve your hotel or hostel for your upcoming journey.</p>
+ </div>
+ <div class="panel">
+  <div class="notice">Select your accommodation, travel dates and number of guests to create a booking request.</div>
+  <form id="bookingForm">
+   <div class="form-grid">
+    <div class="full-field"><label>Select Hotel / Hostel</label>
+     <select id="bookingHotel" required></select></div>
+    <div><label>Check-in Date</label><input type="date" id="checkIn" required></div>
+    <div><label>Check-out Date</label><input type="date" id="checkOut" required></div>
+    <div><label>Number of Guests</label>
+     <input type="number" id="guests" min="1" max="20" value="1" required></div>
+    <div><label>Number of Rooms</label>
+     <input type="number" id="rooms" min="1" max="10" value="1" required></div>
+    <div class="full-field"><label>Special Requests</label>
+     <textarea id="specialRequests" placeholder="Any additional requirements..."></textarea></div>
+    <div class="full-field">
+     <h3 id="bookingPrice" style="color:#176b57;margin-bottom:15px">Select accommodation to view price</h3>
+     <button class="btn primary">Confirm Booking</button>
+    </div>
+   </div>
+  </form>
+ </div>
+</section>
+
+<!-- MY BOOKINGS -->
+<section id="myBookings" class="page">
+ <div class="welcome">
+  <h2>My Bookings</h2>
+  <p>View and manage your accommodation reservations.</p>
+ </div>
+ <div class="panel"><div id="myBookingList"></div></div>
+</section>
+
+<!-- ADMIN DASHBOARD -->
+<section id="adminHome" class="page">
+ <div class="welcome">
+  <h2>Administrator Dashboard</h2>
+  <p>Manage tourism information, accommodation, food and travel routes.</p>
+ </div>
+ <div class="stats">
+  <div class="stat"><div class="stat-icon">🌍</div>
+   <h2 id="adminDestCount">0</h2><p>Tourism Destinations</p></div>
+  <div class="stat"><div class="stat-icon">🍽️</div>
+   <h2 id="adminFoodCount">0</h2><p>Food Listings</p></div>
+  <div class="stat"><div class="stat-icon">🏨</div>
+   <h2 id="adminHotelCount">0</h2><p>Hotels & Hostels</p></div>
+  <div class="stat"><div class="stat-icon">🎫</div>
+   <h2 id="adminBookingCount">0</h2><p>Total Bookings</p></div>
+ </div>
+ <div class="grid-2">
+  <div class="panel">
+   <h3 style="margin-bottom:15px">Travel Information</h3>
+   <p class="muted" style="line-height:2">Manage destinations, food listings, hotels and travel routes from one place.</p>
+   <button class="btn primary" style="margin-top:15px" onclick="navigate('manageDestinations')">Manage Tourism</button>
+  </div>
+  <div class="panel">
+   <h3 style="margin-bottom:15px">Booking Management</h3>
+   <p class="muted" style="line-height:2">Review accommodation bookings and update reservation status.</p>
+   <button class="btn secondary" style="margin-top:15px" onclick="navigate('adminBookings')">View Bookings</button>
+  </div>
+ </div>
+ <div class="panel">
+  <div class="panel-head"><h3>Recent Bookings</h3></div>
+  <div id="recentBookings"></div>
+ </div>
+</section>
+
+<!-- ADMIN TOURISM MANAGEMENT -->
+<section id="manageDestinations" class="page">
+ <div class="welcome">
+  <h2>Manage Tourism Details</h2>
+  <p>Add, update and delete tourist destinations.</p>
+ </div>
+ <div class="panel">
+  <div class="panel-head"><h3 id="destFormTitle">Post Tourism Details</h3></div>
+  <form id="destForm">
+   <input type="hidden" id="destId">
+   <div class="form-grid">
+    <div><label>Destination Name</label><input id="destName" required></div>
+    <div><label>City / State</label><input id="destPlace" required></div>
+    <div><label>Category</label>
+     <select id="destType">
+      <option>Beach</option><option>Hill Station</option>
+      <option>Historical</option><option>Adventure</option>
+     </select>
+    </div>
+    <div><label>Entry Price (₹)</label><input id="destPrice" type="number" min="0" required></div>
+    <div class="full-field"><label>Image URL</label><input id="destImage" placeholder="https://example.com/image.jpg"></div>
+    <div class="full-field"><label>Description</label><textarea id="destDescription" required></textarea></div>
+    <div class="full-field">
+     <button class="btn primary">Save Tourism Details</button>
+     <button type="button" class="btn secondary" onclick="resetDestForm()">Clear</button>
+    </div>
+   </div>
+  </form>
+ </div>
+ <div class="panel">
+  <div class="panel-head"><h3>All Destinations</h3></div>
+  <div id="adminDestTable"></div>
+ </div>
+</section>
+
+<!-- ADMIN FOOD MANAGEMENT -->
+<section id="manageFood" class="page">
+ <div class="welcome">
+  <h2>Manage Food Details</h2>
+  <p>Add and manage local food and restaurant information.</p>
+ </div>
+ <div class="panel">
+  <div class="panel-head"><h3 id="foodFormTitle">Add Food Details</h3></div>
+  <form id="foodForm">
+   <input type="hidden" id="foodId">
+   <div class="form-grid">
+    <div><label>Food / Restaurant Name</label><input id="foodName" required></div>
+    <div><label>City</label><input id="foodPlace" required></div>
+    <div><label>Food Type</label>
+     <select id="foodType"><option>Vegetarian</option><option>Non-Vegetarian</option><option>Both</option></select>
+    </div>
+    <div><label>Price Range (₹)</label><input id="foodPrice" type="number" min="0" required></div>
+    <div class="full-field"><label>Image URL</label><input id="foodImage" placeholder="https://example.com/image.jpg"></div>
+    <div class="full-field"><label>Description</label><textarea id="foodDescription" required></textarea></div>
+    <div class="full-field"><button class="btn primary">Save Food Details</button>
+     <button type="button" class="btn secondary" onclick="resetFoodForm()">Clear</button></div>
+   </div>
+  </form>
+ </div>
+ <div class="panel"><div class="panel-head"><h3>Food Listings</h3></div>
+  <div id="adminFoodTable"></div></div>
+</section>
+
+<!-- ADMIN HOTEL MANAGEMENT -->
+<section id="manageHotels" class="page">
+ <div class="welcome">
+  <h2>Manage Hotels & Hostels</h2>
+  <p>Add, update and delete accommodation details.</p>
+ </div>
+ <div class="panel">
+  <div class="panel-head"><h3 id="hotelFormTitle">Add Hotel / Hostel</h3></div>
+  <form id="hotelForm">
+   <input type="hidden" id="hotelId">
+   <div class="form-grid">
+    <div><label>Hotel / Hostel Name</label><input id="hotelName" required></div>
+    <div><label>Location</label><input id="hotelPlace" required></div>
+    <div><label>Accommodation Type</label>
+     <select id="hotelCategory"><option>Hotel</option><option>Hostel</option><option>Resort</option></select>
+    </div>
+    <div><label>Price Per Night (₹)</label><input id="hotelPrice" type="number" min="1" required></div>
+    <div><label>Contact Number</label><input id="hotelPhone" required></div>
+    <div><label>Available Rooms</label><input id="hotelRooms" type="number" min="0" required></div>
+    <div class="full-field"><label>Image URL</label><input id="hotelImage" placeholder="https://example.com/image.jpg"></div>
+    <div class="full-field"><label>Description</label><textarea id="hotelDescription" required></textarea></div>
+    <div class="full-field"><button class="btn primary">Save Accommodation</button>
+     <button type="button" class="btn secondary" onclick="resetHotelForm()">Clear</button></div>
+   </div>
+  </form>
+ </div>
+ <div class="panel"><div class="panel-head"><h3>All Hotels & Hostels</h3></div>
+  <div id="adminHotelTable"></div></div>
+</section>
+
+<!-- ADMIN ROUTE MANAGEMENT -->
+<section id="manageRoutes" class="page">
+ <div class="welcome">
+  <h2>Manage Travel Routes</h2>
+  <p>Add and manage transportation routes for travellers.</p>
+ </div>
+ <div class="panel">
+  <div class="panel-head"><h3 id="routeFormTitle">Add Travel Route</h3></div>
+  <form id="routeForm">
+   <input type="hidden" id="routeId">
+   <div class="form-grid">
+    <div><label>Starting Point</label><input id="routeFrom" required></div>
+    <div><label>Destination</label><input id="routeTo" required></div>
+    <div><label>Transport Type</label>
+     <select id="routeType"><option>Bus</option><option>Train</option><option>Flight</option></select>
+    </div>
+    <div><label>Departure Time</label><input id="routeTime" type="time" required></div>
+    <div><label>Travel Duration</label><input id="routeDuration" placeholder="e.g. 5 hours" required></div>
+    <div><label>Ticket Price (₹)</label><input id="routePrice" type="number" min="0" required></div>
+    <div class="full-field"><button class="btn primary">Save Route</button>
+     <button type="button" class="btn secondary" onclick="resetRouteForm()">Clear</button></div>
+   </div>
+  </form>
+ </div>
+ <div class="panel"><div class="panel-head"><h3>All Travel Routes</h3></div>
+  <div id="adminRouteTable"></div></div>
+</section>
+
+<!-- ADMIN BOOKINGS -->
+<section id="adminBookings" class="page">
+ <div class="welcome">
+  <h2>Accommodation Booking Details</h2>
+  <p>View customer reservations and manage booking status.</p>
+ </div>
+ <div class="panel"><div id="adminBookingTable"></div></div>
+</section>
+
+<footer>© 2026 Wanderlust Travels | Your Journey, Our Passion</footer>
+</div>
+</main>
+</div>
+
+<script>
+// =======================================
+// DATA STORAGE
+// =======================================
+
+function getData(key,defaultValue=[]){
+ try{return JSON.parse(localStorage.getItem(key))??defaultValue}
+ catch{return defaultValue}
+}
+function saveData(key,value){
+ localStorage.setItem(key,JSON.stringify(value));
+}
+
+let users=getData('wt_users',[]);
+let destinations=getData('wt_destinations',[
+ {id:1,name:'Ooty',place:'Tamil Nadu',type:'Hill Station',price:100,image:'https://images.unsplash.com/photo-1593693411515-c20261bcad6e?w=700',description:'Enjoy beautiful mountains, tea gardens and pleasant weather.'},
+ {id:2,name:'Goa',place:'Goa',type:'Beach',price:200,image:'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=700',description:'Experience beautiful beaches, water activities and nightlife.'},
+ {id:3,name:'Jaipur',place:'Rajasthan',type:'Historical',price:150,image:'https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?w=700',description:'Explore royal palaces, forts and colourful markets.'}
+]);
+let foods=getData('wt_foods',[
+ {id:1,name:'Annapoorna Restaurant',place:'Coimbatore',type:'Vegetarian',price:180,image:'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=700',description:'Traditional South Indian meals and breakfast.'},
+ {id:2,name:'Beach Seafood Cafe',place:'Goa',type:'Non-Vegetarian',price:350,image:'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=700',description:'Fresh seafood and delicious coastal dishes.'},
+ {id:3,name:'Mountain Cafe',place:'Ooty',type:'Both',price:250,image:'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=700',description:'Enjoy hot meals and snacks with a mountain view.'}
+]);
+let hotels=getData('wt_hotels',[
+ {id:1,name:'Green Valley Resort',place:'Ooty',type:'Resort',price:2500,phone:'9876543210',rooms:12,image:'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=700',description:'A peaceful resort surrounded by beautiful green hills.'},
+ {id:2,name:'Ocean View Hotel',place:'Goa',type:'Hotel',price:3200,phone:'9876543211',rooms:8,image:'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=700',description:'Comfortable hotel close to beautiful beaches.'},
+ {id:3,name:'City Backpackers Hostel',place:'Jaipur',type:'Hostel',price:800,phone:'9876543212',rooms:20,image:'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=700',description:'Affordable and friendly accommodation for travellers.'}
+]);
+let routes=getData('wt_routes',[
+ {id:1,from:'Chennai',to:'Ooty',type:'Bus',time:'06:00',duration:'10 hours',price:850},
+ {id:2,from:'Chennai',to:'Goa',type:'Train',time:'09:30',duration:'18 hours',price:1200},
+ {id:3,from:'Bengaluru',to:'Jaipur',type:'Flight',time:'11:00',duration:'2 hours 30 minutes',price:4500}
+]);
+let bookings=getData('wt_bookings',[]);
+let currentUser=null;
+
+// =======================================
+// INITIALIZE AND COMMON FUNCTIONS
+// =======================================
+
+function persist(){
+ saveData('wt_users',users);
+ saveData('wt_destinations',destinations);
+ saveData('wt_foods',foods);
+ saveData('wt_hotels',hotels);
+ saveData('wt_routes',routes);
+ saveData('wt_bookings',bookings);
+}
+
+function safe(value){
+ return String(value??'').replace(/[&<>"']/g,c=>({
+ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+ })[c]);
+}
+function emptyTable(message='No records found'){
+ return `<div class="empty">${message}</div>`;
+}
+function table(headers,rows){
+ if(!rows.length)return emptyTable();
+ return `<div class="table-wrap"><table>
+ <thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+ <tbody>${rows.join('')}</tbody></table></div>`;
+}
+function money(value){
+ return '₹'+Number(value).toLocaleString('en-IN');
+}
+function showLogin(){
+ document.getElementById('registerPage').classList.add('hidden');
+ document.getElementById('loginPage').classList.remove('hidden');
+}
+function showRegister(){
+ document.getElementById('loginPage').classList.add('hidden');
+ document.getElementById('registerPage').classList.remove('hidden');
+}
+function toggleMenu(){
+ document.getElementById('sidebar').classList.toggle('open');
+}
+
+// =======================================
+// USER REGISTRATION
+// =======================================
+
+document.getElementById('registerForm').addEventListener('submit',e=>{
+ e.preventDefault();
+
+ const email=document.getElementById('regEmail').value.trim().toLowerCase();
+
+ if(users.some(u=>u.email===email)){
+  alert('This email is already registered!');
+  return;
+ }
+
+ users.push({
+  id:Date.now(),
+  name:document.getElementById('regName').value,
+  email,
+  phone:document.getElementById('regPhone').value,
+  city:document.getElementById('regCity').value,
+  password:document.getElementById('regPassword').value
+ });
+
+ persist();
+ e.target.reset();
+ alert('Registration successful! Please login.');
+ showLogin();
+});
+
+// =======================================
+// LOGIN AND LOGOUT
+// =======================================
+
+document.getElementById('loginForm').addEventListener('submit',e=>{
+ e.preventDefault();
+
+ const role=document.getElementById('loginRole').value;
+ const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+ const password=document.getElementById('loginPassword').value;
+
+ if(role==='admin'&&email==='admin@wanderlust.com'&&password==='admin123'){
+  login({role:'admin',name:'Administrator',email});
+  return;
+ }
+
+ if(role==='user'){
+  const user=users.find(u=>u.email===email&&u.password===password);
+  if(user){
+   login({...user,role:'user'});
+   return;
+  }
+ }
+
+ alert('Invalid email or password!');
+});
+
+function login(user){
+ currentUser=user;
+
+ document.getElementById('loginPage').classList.add('hidden');
+ document.getElementById('registerPage').classList.add('hidden');
+ document.getElementById('app').classList.remove('hidden');
+
+ document.getElementById('userName').textContent=user.name;
+ document.getElementById('userRole').textContent=
+  user.role==='admin'?'Administrator':'Traveller';
+ document.getElementById('avatar').textContent=user.name.charAt(0).toUpperCase();
+
+ buildNavigation();
+ renderAll();
+ navigate(user.role==='admin'?'adminHome':'userHome');
+}
+
+function logout(){
+ currentUser=null;
+ document.getElementById('app').classList.add('hidden');
+ document.getElementById('loginPage').classList.remove('hidden');
+ document.getElementById('loginForm').reset();
+}
+
+// =======================================
+// NAVIGATION
+// =======================================
+
+const menus={
+ user:[
+  ['userHome','▦','Dashboard'],
+  ['destinations','🌍','Tourism Details'],
+  ['food','🍽️','Food Details'],
+  ['hotels','🏨','Hotel / Hostel Details'],
+  ['routes','🚌','Route Details'],
+  ['bookAccommodation','＋','Book Accommodation'],
+  ['myBookings','🎫','My Bookings']
+ ],
+ admin:[
+  ['adminHome','▦','Dashboard'],
+  ['manageDestinations','🌍','Tourism Details'],
+  ['manageFood','🍽️','Manage Food'],
+  ['manageHotels','🏨','Manage Hotels'],
+  ['manageRoutes','🚌','Manage Routes'],
+  ['adminBookings','🎫','View Bookings']
+ ]
+};
+
+function buildNavigation(){
+ const nav=document.getElementById('navigation');
+ nav.innerHTML='';
+
+ menus[currentUser.role].forEach(item=>{
+  const button=document.createElement('button');
+  button.className='nav-btn';
+  button.textContent=item[1]+'  '+item[2];
+  button.onclick=()=>navigate(item[0]);
+  nav.appendChild(button);
+ });
+}
+
+function navigate(page){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(page).classList.add('active');
+
+ const menu=menus[currentUser.role].find(m=>m[0]===page);
+ document.getElementById('topTitle').textContent=menu?menu[2]:'Dashboard';
+
+ document.querySelectorAll('#navigation .nav-btn').forEach((b,i)=>{
+  b.classList.toggle('active',menus[currentUser.role][i]?.[0]===page);
+ });
+
+ document.getElementById('sidebar').classList.remove('open');
+ renderAll();
+}
+
+// =======================================
+// IMAGE AND CARD HELPERS
+// =======================================
+
+function travelImage(url){
+ const fallback='https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=700';
+ return safe(url||fallback);
+}
+
+function destinationCard(d){
+ return `<div class="travel-card">
+  <img class="travel-img" src="${travelImage(d.image)}" alt="${safe(d.name)}"
+   onerror="this.src='https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=700'">
+  <div class="card-body">
+   <span class="tag">${safe(d.type)}</span>
+   <h3 style="margin-top:10px">${safe(d.name)}</h3>
+   <p>📍 ${safe(d.place)}</p>
+   <p>${safe(d.description)}</p>
+   <div class="price">${money(d.price)} <small style="font-size:11px;color:#788780">entry / person</small></div>
+  </div>
+ </div>`;
+}
+
+function foodCard(f){
+ return `<div class="travel-card">
+  <img class="travel-img" src="${travelImage(f.image)}" alt="${safe(f.name)}"
+   onerror="this.style.display='none'">
+  <div class="card-body">
+   <span class="tag">${safe(f.type)}</span>
+   <h3 style="margin-top:10px">${safe(f.name)}</h3>
+   <p>📍 ${safe(f.place)}</p>
+   <p>${safe(f.description)}</p>
+   <div class="price">${money(f.price)} <small style="font-size:11px;color:#788780">approx. per person</small></div>
+  </div>
+ </div>`;
+}
+
+function hotelCard(h){
+ return `<div class="travel-card">
+  <img class="travel-img" src="${travelImage(h.image)}" alt="${safe(h.name)}"
+   onerror="this.style.display='none'">
+  <div class="card-body">
+   <span class="tag">${safe(h.type)}</span>
+   <h3 style="margin-top:10px">${safe(h.name)}</h3>
+   <p>📍 ${safe(h.place)}</p>
+   <p>${safe(h.description)}</p>
+   <p>☎ ${safe(h.phone)}</p>
+   <p>Available rooms: ${h.rooms}</p>
+   <div class="price">${money(h.price)} <small style="font-size:11px;color:#788780">per night</small></div>
+   <div class="card-actions">
+    <button class="btn primary" onclick="bookHotel(${h.id})">Book Now</button>
+   </div>
+  </div>
+ </div>`;
+}
+
+// =======================================
+// USER DASHBOARD
+// =======================================
+
+function renderUserHome(){
+ const mine=bookings.filter(b=>b.userId===currentUser.id);
+
+ document.getElementById('userDestCount').textContent=destinations.length;
+ document.getElementById('userHotelCount').textContent=hotels.length;
+ document.getElementById('userFoodCount').textContent=foods.length;
+ document.getElementById('userBookingCount').textContent=mine.length;
+
+ document.getElementById('popularDestinations').innerHTML=
+  destinations.slice(0,3).map(destinationCard).join('')||emptyTable();
+}
+
+// =======================================
+// USER DESTINATION SEARCH
+// =======================================
+
+function renderDestinations(list=destinations){
+ document.getElementById('destinationList').innerHTML=
+  list.map(destinationCard).join('')||emptyTable('No destinations available.');
+}
+
+function searchDestinations(){
+ const q=document.getElementById('destSearch').value.trim().toLowerCase();
+ const type=document.getElementById('destCategory').value;
+
+ const result=destinations.filter(d=>
+  (!q||d.name.toLowerCase().includes(q)||d.place.toLowerCase().includes(q))&&
+  (!type||d.type===type)
+ );
+ renderDestinations(result);
+}
+
+// =======================================
+// FOOD DETAILS
+// =======================================
+
+function renderFood(list=foods){
+ document.getElementById('foodList').innerHTML=
+  list.map(foodCard).join('')||emptyTable('No food details available.');
+}
+
+function searchFood(){
+ const q=document.getElementById('foodSearch').value.trim().toLowerCase();
+ const city=document.getElementById('foodCitySearch').value.trim().toLowerCase();
+
+ const result=foods.filter(f=>
+  (!q||f.name.toLowerCase().includes(q)||f.type.toLowerCase().includes(q))&&
+  (!city||f.place.toLowerCase().includes(city))
+ );
+ renderFood(result);
+}
+
+// =======================================
+// HOTEL DETAILS
+// =======================================
+
+function renderHotels(list=hotels){
+ document.getElementById('hotelList').innerHTML=
+  list.map(hotelCard).join('')||emptyTable('No hotels available.');
+}
+
+function searchHotels(){
+ const q=document.getElementById('hotelSearch').value.trim().toLowerCase();
+ const type=document.getElementById('hotelType').value;
+
+ const result=hotels.filter(h=>
+  (!q||h.name.toLowerCase().includes(q)||h.place.toLowerCase().includes(q))&&
+  (!type||h.type===type)
+ );
+ renderHotels(result);
+}
+
+// =======================================
+// ROUTE DETAILS
+// =======================================
+
+function routeCard(r){
+ return `<div class="route-box">
+  <div class="panel-head">
+   <h4>${safe(r.from)} → ${safe(r.to)}</h4>
+   <span class="tag">${safe(r.type)}</span>
+  </div>
+  <div class="grid-2">
+   <p>🕒 Departure: <b>${safe(r.time)}</b></p>
+   <p>⌛ Duration: <b>${safe(r.duration)}</b></p>
+   <p>🎫 Ticket Price: <b>${money(r.price)}</b></p>
+  </div>
+ </div>`;
+}
+
+function renderRoutes(list=routes){
+ document.getElementById('routeList').innerHTML=
+  list.map(routeCard).join('')||emptyTable('No routes available.');
+}
+
+function searchRoutes(){
+ const q=document.getElementById('routeSearch').value.trim().toLowerCase();
+ const type=document.getElementById('routeTransport').value;
+
+ const result=routes.filter(r=>
+  (!q||r.from.toLowerCase().includes(q)||r.to.toLowerCase().includes(q))&&
+  (!type||r.type===type)
+ );
+ renderRoutes(result);
+}
+
+// =======================================
+// ACCOMMODATION BOOKING
+// =======================================
+
+function renderBookingOptions(){
+ const select=document.getElementById('bookingHotel');
+ const previous=select.value;
+
+ select.innerHTML='<option value="">Select accommodation</option>'+
+ hotels.filter(h=>h.rooms>0).map(h=>
+ `<option value="${h.id}">${safe(h.name)} - ${safe(h.place)} (${money(h.price)}/night)</option>`
+ ).join('');
+
+ if(hotels.some(h=>String(h.id)===previous&&h.rooms>0))select.value=previous;
+ updateBookingPrice();
+}
+
+function bookHotel(id){
+ const h=hotels.find(x=>x.id===id);
+ if(!h||h.rooms<=0){
+  alert('This accommodation is currently unavailable.');
+  return;
+ }
+ navigate('bookAccommodation');
+ document.getElementById('bookingHotel').value=String(id);
+ updateBookingPrice();
+}
+
+function updateBookingPrice(){
+ const id=Number(document.getElementById('bookingHotel').value);
+ const h=hotels.find(x=>x.id===id);
+ document.getElementById('bookingPrice').textContent=
+  h?'Room price: '+money(h.price)+' per night':'Select accommodation to view price';
+}
+
+document.getElementById('bookingHotel').addEventListener('change',updateBookingPrice);
+
+document.getElementById('bookingForm').addEventListener('submit',e=>{
+ e.preventDefault();
+
+ const hotelId=Number(document.getElementById('bookingHotel').value);
+ const hotel=hotels.find(h=>h.id===hotelId);
+
+ if(!hotel||hotel.rooms<=0){
+  alert('Please select available accommodation.');
+  return;
+ }
+
+ const checkIn=document.getElementById('checkIn').value;
+ const checkOut=document.getElementById('checkOut').value;
+ const guests=Number(document.getElementById('guests').value);
+ const rooms=Number(document.getElementById('rooms').value);
+
+ if(!checkIn||!checkOut||checkOut<=checkIn){
+  alert('Check-out date must be after check-in date.');
+  return;
+ }
+ if(rooms>hotel.rooms){
+  alert('Not enough rooms available.');
+  return;
+ }
+
+ const days=Math.ceil((new Date(checkOut)-new Date(checkIn))/86400000);
+ const total=days*hotel.price*rooms;
+
+ bookings.push({
+  id:Date.now(),
+  userId:currentUser.id,
+  userName:currentUser.name,
+  email:currentUser.email,
+  hotelId:hotel.id,
+  hotelName:hotel.name,
+  place:hotel.place,
+  checkIn,checkOut,guests,rooms,days,total,
+  requests:document.getElementById('specialRequests').value,
+  status:'Pending',
+  date:new Date().toLocaleDateString('en-IN')
+ });
+
+ hotel.rooms-=rooms;
+ persist();
+ e.target.reset();
+ renderAll();
+
+ alert('Booking request submitted successfully! Your booking ID is '+bookings[bookings.length-1].id);
+ navigate('myBookings');
+});
+
+// =======================================
+// USER BOOKINGS
+// =======================================
+
+function renderMyBookings(){
+ const mine=bookings.filter(b=>b.userId===currentUser.id);
+
+ document.getElementById('myBookingList').innerHTML=table(
+ ['Booking ID','Hotel','Location','Check-in','Check-out','Guests','Total','Status','Action'],
+ mine.slice().reverse().map(b=>`<tr>
+  <td>#${b.id}</td>
+  <td>${safe(b.hotelName)}</td>
+  <td>${safe(b.place)}</td>
+  <td>${b.checkIn}</td>
+  <td>${b.checkOut}</td>
+  <td>${b.guests}</td>
+  <td>${money(b.total)}</td>
+  <td><span class="status ${b.status==='Cancelled'?'cancelled':b.status==='Pending'?'pending':''}">${b.status}</span></td>
+  <td>${b.status==='Pending'?`<button class="small-btn danger" onclick="cancelBooking(${b.id})">Cancel</button>`:'-'}</td>
+ </tr>`)
+ );
+}
+
+function cancelBooking(id){
+ if(!confirm('Are you sure you want to cancel this booking?'))return;
+
+ const b=bookings.find(x=>x.id===id);
+ if(!b||b.status!=='Pending')return;
+
+ b.status='Cancelled';
+ const h=hotels.find(x=>x.id===b.hotelId);
+ if(h)h.rooms+=b.rooms;
+
+ persist();
+ renderAll();
+ alert('Booking cancelled successfully.');
+}
+
+// =======================================
+// ADMIN DASHBOARD
+// =======================================
+
+function renderAdminHome(){
+ document.getElementById('adminDestCount').textContent=destinations.length;
+ document.getElementById('adminFoodCount').textContent=foods.length;
+ document.getElementById('adminHotelCount').textContent=hotels.length;
+ document.getElementById('adminBookingCount').textContent=bookings.length;
+
+ document.getElementById('recentBookings').innerHTML=table(
+ ['Booking ID','Customer','Hotel','Check-in','Amount','Status'],
+ bookings.slice(-5).reverse().map(b=>`<tr>
+  <td>#${b.id}</td><td>${safe(b.userName)}</td>
+  <td>${safe(b.hotelName)}</td><td>${b.checkIn}</td>
+  <td>${money(b.total)}</td><td>${safe(b.status)}</td>
+ </tr>`)
+ );
+}
+
+// =======================================
+// ADMIN TOURISM CRUD
+// =======================================
+
+function renderAdminDestinations(){
+ document.getElementById('adminDestTable').innerHTML=table(
+ ['Destination','Location','Category','Entry Price','Action'],
+ destinations.map(d=>`<tr>
+  <td>${safe(d.name)}</td><td>${safe(d.place)}</td>
+  <td>${safe(d.type)}</td><td>${money(d.price)}</td>
+  <td><div class="actions">
+   <button class="small-btn secondary" onclick="editDestination(${d.id})">Edit</button>
+   <button class="small-btn danger" onclick="deleteDestination(${d.id})">Delete</button>
+  </div></td>
+ </tr>`)
+ );
+}
+
+document.getElementById('destForm').addEventListener('submit',e=>{
+ e.preventDefault();
+
+ const id=document.getElementById('destId').value;
+ const data={
+  name:document.getElementById('destName').value,
+  place:document.getElementById('destPlace').value,
+  type:document.getElementById('destType').value,
+  price:Number(document.getElementById('destPrice').value),
+  image:document.getElementById('destImage').value,
+  description:document.getElementById('destDescription').value
+ };
+
+ if(id){
+  destinations=destinations.map(d=>d.id==id?{...d,...data}:d);
+  alert('Destination updated successfully!');
+ }else{
+  destinations.push({id:Date.now(),...data});
+  alert('Destination added successfully!');
+ }
+
+ persist();resetDestForm();renderAll();
+});
+
+function editDestination(id){
+ const d=destinations.find(x=>x.id===id);
+ if(!d)return;
+ document.getElementById('destId').value=d.id;
+ document.getElementById('destName').value=d.name;
+ document.getElementById('destPlace').value=d.place;
+ document.getElementById('destType').value=d.type;
+ document.getElementById('destPrice').value=d.price;
+ document.getElementById('destImage').value=d.image;
+ document.getElementById('destDescription').value=d.description;
+ document.getElementById('destFormTitle').textContent='Update Tourism Details';
+ window.scrollTo(0,0);
+}
+
+function resetDestForm(){
+ document.getElementById('destForm').reset();
+ document.getElementById('destId').value='';
+ document.getElementById('destFormTitle').textContent='Post Tourism Details';
+}
+
+function deleteDestination(id){
+ if(!confirm('Delete this destination?'))return;
+ destinations=destinations.filter(d=>d.id!==id);
+ persist();renderAll();
+}
+
+// =======================================
+// ADMIN FOOD CRUD
+// =======================================
+
+function renderAdminFood(){
+ document.getElementById('adminFoodTable').innerHTML=table(
+ ['Food / Restaurant','Location','Type','Price','Action'],
+ foods.map(f=>`<tr>
+  <td>${safe(f.name)}</td><td>${safe(f.place)}</td>
+  <td>${safe(f.type)}</td><td>${money(f.price)}</td>
+  <td><div class="actions">
+   <button class="small-btn secondary" onclick="editFood(${f.id})">Edit</button>
+   <button class="small-btn danger" onclick="deleteFood(${f.id})">Delete</button>
+  </div></td>
+ </tr>`)
+ );
+}
+
+document.getElementById('foodForm').addEventListener('submit',e=>{
+ e.preventDefault();
+
+ const id=document.getElementById('foodId').value;
+ const data={
+  name:document.getElementById('foodName').value,
+  place:document.getElementById('foodPlace').value,
+  type:document.getElementById('foodType').value,
+  price:Number(document.getElementById('foodPrice').value),
+  image:document.getElementById('foodImage').value,
+  description:document.getElementById('foodDescription').value
+ };
+
+ if(id){
+  foods=foods.map(f=>f.id==id?{...f,...data}:f);
+  alert('Food details updated!');
+ }else{
+  foods.push({id:Date.now(),...data});
+  alert('Food details added!');
+ }
+
+ persist();resetFoodForm();renderAll();
+});
+
+function editFood(id){
+ const f=foods.find(x=>x.id===id);
+ if(!f)return;
+ document.getElementById('foodId').value=f.id;
+ document.getElementById('foodName').value=f.name;
+ document.getElementById('foodPlace').value=f.place;
+ document.getElementById('foodType').value=f.type;
+ document.getElementById('foodPrice').value=f.price;
+ document.getElementById('foodImage').value=f.image;
+ document.getElementById('foodDescription').value=f.description;
+ document.getElementById('foodFormTitle').textContent='Update Food Details';
+ window.scrollTo(0,0);
+}
+
+function resetFoodForm(){
+ document.getElementById('foodForm').reset();
+ document.getElementById('foodId').value='';
+ document.getElementById('foodFormTitle').textContent='Add Food Details';
+}
+
+function deleteFood(id){
+ if(!confirm('Delete this food listing?'))return;
+ foods=foods.filter(f=>f.id!==id);
+ persist();renderAll();
+}
+
+// =======================================
+// ADMIN HOTEL CRUD
+// =======================================
+
+function renderAdminHotels(){
+ document.getElementById('adminHotelTable').innerHTML=table(
+ ['Hotel / Hostel','Location','Type','Price','Rooms','Action'],
+ hotels.map(h=>`<tr>
+  <td>${safe(h.name)}</td><td>${safe(h.place)}</td>
+  <td>${safe(h.type)}</td><td>${money(h.price)}</td>
+  <td>${h.rooms}</td>
+  <td><div class="actions">
+   <button class="small-btn secondary" onclick="editHotel(${h.id})">Edit</button>
+   <button class="small-btn danger" onclick="deleteHotel(${h.id})">Delete</button>
+  </div></td>
+ </tr>`)
+ );
+}
+
+document.getElementById('hotelForm').addEventListener('submit',e=>{
+ e.preventDefault();
+
+ const id=document.getElementById('hotelId').value;
+ const data={
+  name:document.getElementById('hotelName').value,
+  place:document.getElementById('hotelPlace').value,
+  type:document.getElementById('hotelCategory').value,
+  price:Number(document.getElementById('hotelPrice').value),
+  phone:document.getElementById('hotelPhone').value,
+  rooms:Number(document.getElementById('hotelRooms').value),
+  image:document.getElementById('hotelImage').value,
+  description:document.getElementById('hotelDescription').value
+ };
+
+ if(id){
+  const old=hotels.find(h=>h.id==id);
+  const reserved=bookings.filter(b=>b.hotelId==id&&b.status==='Pending')
+   .reduce((a,b)=>a+b.rooms,0);
+  if(data.rooms<reserved){
+   alert('Available rooms cannot be less than pending reservations.');
+   return;
+  }
+  hotels=hotels.map(h=>h.id==id?{...h,...data}:h);
+  alert('Hotel details updated!');
+ }else{
+  hotels.push({id:Date.now(),...data});
+  alert('Hotel added successfully!');
+ }
+
+ persist();resetHotelForm();renderAll();
+});
+
+function editHotel(id){
+ const h=hotels.find(x=>x.id===id);
+ if(!h)return;
+ document.getElementById('hotelId').value=h.id;
+ document.getElementById('hotelName').value=h.name;
+ document.getElementById('hotelPlace').value=h.place;
+ document.getElementById('hotelCategory').value=h.type;
+ document.getElementById('hotelPrice').value=h.price;
+ document.getElementById('hotelPhone').value=h.phone;
+ document.getElementById('hotelRooms').value=h.rooms;
+ document.getElementById('hotelImage').value=h.image;
+ document.getElementById('hotelDescription').value=h.description;
+ document.getElementById('hotelFormTitle').textContent='Update Accommodation';
+ window.scrollTo(0,0);
+}
+
+function resetHotelForm(){
+ document.getElementById('hotelForm').reset();
+ document.getElementById('hotelId').value='';
+ document.getElementById('hotelFormTitle').textContent='Add Hotel / Hostel';
+}
+
+function deleteHotel(id){
+ const hasPending=bookings.some(b=>b.hotelId===id&&b.status==='Pending');
+ if(hasPending){
+  alert('This hotel has pending bookings. Resolve them before deleting.');
+  return;
+ }
+ if(!confirm('Delete this accommodation?'))return;
+ hotels=hotels.filter(h=>h.id!==id);
+ persist();renderAll();
+}
+
+// =======================================
+// ADMIN ROUTE CRUD
+// =======================================
+
+function renderAdminRoutes(){
+ document.getElementById('adminRouteTable').innerHTML=table(
+ ['From','To','Transport','Departure','Duration','Price','Action'],
+ routes.map(r=>`<tr>
+  <td>${safe(r.from)}</td><td>${safe(r.to)}</td>
+  <td>${safe(r.type)}</td><td>${safe(r.time)}</td>
+  <td>${safe(r.duration)}</td><td>${money(r.price)}</td>
+  <td><div class="actions">
+   <button class="small-btn secondary" onclick="editRoute(${r.id})">Edit</button>
+   <button class="small-btn danger" onclick="deleteRoute(${r.id})">Delete</button>
+  </div></td>
+ </tr>`)
+ );
+}
+
+document.getElementById('routeForm').addEventListener('submit',e=>{
+ e.preventDefault();
+
+ const id=document.getElementById('routeId').value;
+ const data={
+  from:document.getElementById('routeFrom').value,
+  to:document.getElementById('routeTo').value,
+  type:document.getElementById('routeType').value,
+  time:document.getElementById('routeTime').value,
+  duration:document.getElementById('routeDuration').value,
+  price:Number(document.getElementById('routePrice').value)
+ };
+
+ if(id){
+  routes=routes.map(r=>r.id==id?{...r,...data}:r);
+  alert('Route updated successfully!');
+ }else{
+  routes.push({id:Date.now(),...data});
+  alert('New route added!');
+ }
+
+ persist();resetRouteForm();renderAll();
+});
+
+function editRoute(id){
+ const r=routes.find(x=>x.id===id);
+ if(!r)return;
+ document.getElementById('routeId').value=r.id;
+ document.getElementById('routeFrom').value=r.from;
+ document.getElementById('routeTo').value=r.to;
+ document.getElementById('routeType').value=r.type;
+ document.getElementById('routeTime').value=r.time;
+ document.getElementById('routeDuration').value=r.duration;
+ document.getElementById('routePrice').value=r.price;
+ document.getElementById('routeFormTitle').textContent='Update Travel Route';
+ window.scrollTo(0,0);
+}
+
+function resetRouteForm(){
+ document.getElementById('routeForm').reset();
+ document.getElementById('routeId').value='';
+ document.getElementById('routeFormTitle').textContent='Add Travel Route';
+}
+
+function deleteRoute(id){
+ if(!confirm('Delete this travel route?'))return;
+ routes=routes.filter(r=>r.id!==id);
+ persist();renderAll();
+}
+
+// =======================================
+// ADMIN BOOKING MANAGEMENT
+// =======================================
+
+function renderAdminBookings(){
+ document.getElementById('adminBookingTable').innerHTML=table(
+ ['Booking ID','Customer','Email','Hotel','Check-in','Check-out','Guests','Total','Status','Action'],
+ bookings.slice().reverse().map(b=>`<tr>
+  <td>#${b.id}</td><td>${safe(b.userName)}</td>
+  <td>${safe(b.email)}</td><td>${safe(b.hotelName)}</td>
+  <td>${b.checkIn}</td><td>${b.checkOut}</td>
+  <td>${b.guests}</td><td>${money(b.total)}</td>
+  <td><span class="status ${b.status==='Cancelled'?'cancelled':b.status==='Pending'?'pending':''}">${b.status}</span></td>
+  <td>${b.status==='Pending'?`
+   <div class="actions">
+    <button class="small-btn secondary" onclick="updateBooking(${b.id},'Confirmed')">Confirm</button>
+    <button class="small-btn danger" onclick="updateBooking(${b.id},'Cancelled')">Cancel</button>
+   </div>`:'-'}</td>
+ </tr>`)
+ );
+}
+
+function updateBooking(id,status){
+ const b=bookings.find(x=>x.id===id);
+ if(!b||b.status!=='Pending')return;
+
+ b.status=status;
+
+ if(status==='Cancelled'){
+  const h=hotels.find(x=>x.id===b.hotelId);
+  if(h)h.rooms+=b.rooms;
+ }
+
+ persist();
+ renderAll();
+}
+
+// =======================================
+// RENDER ALL
+// =======================================
+
+function renderAll(){
+ if(!currentUser)return;
+
+ persist();
+
+ if(currentUser.role==='user'){
+  renderUserHome();
+  renderDestinations();
+  renderFood();
+  renderHotels();
+  renderRoutes();
+  renderBookingOptions();
+  renderMyBookings();
+ }
+
+ if(currentUser.role==='admin'){
+  renderAdminHome();
+  renderAdminDestinations();
+  renderAdminFood();
+  renderAdminHotels();
+  renderAdminRoutes();
+  renderAdminBookings();
+ }
+}
+
+// =======================================
+// INITIAL DATE VALIDATION
+// =======================================
+
+const today=new Date();
+const localToday=new Date(today.getTime()-today.getTimezoneOffset()*60000)
+ .toISOString().split('T')[0];
+
+document.getElementById('checkIn').min=localToday;
+document.getElementById('checkOut').min=localToday;
+
+document.getElementById('checkIn').addEventListener('change',()=>{
+ const date=document.getElementById('checkIn').value;
+ document.getElementById('checkOut').min=date||localToday;
+ if(document.getElementById('checkOut').value&&
+    document.getElementById('checkOut').value<=date){
+  document.getElementById('checkOut').value='';
+ }
+});
+
+</script>
+</body>
+</html>

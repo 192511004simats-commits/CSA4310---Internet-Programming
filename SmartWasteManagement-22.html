@@ -1,0 +1,1016 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoTrack | Smart Waste Management</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+ --green:#168653;
+ --dark:#123b2c;
+ --light:#eaf7ef;
+ --bg:#f4f7f5;
+ --white:#fff;
+ --text:#24352c;
+ --muted:#78867e;
+ --red:#dc5454;
+ --orange:#e99a37;
+}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0}
+.hidden{display:none!important}
+#loginPage{min-height:100vh;display:flex;align-items:center;justify-content:center;
+ background:linear-gradient(130deg,#103c2c,#168653);padding:20px}
+.login-card{background:white;width:100%;max-width:430px;padding:38px;
+ border-radius:18px;box-shadow:0 15px 45px #0003}
+.logo{text-align:center;font-size:27px;font-weight:bold;color:var(--green);margin-bottom:8px}
+.login-sub{text-align:center;color:var(--muted);margin-bottom:27px}
+.form-group{margin-bottom:17px}
+label{display:block;font-size:13px;font-weight:bold;margin-bottom:7px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #dce5df;
+ border-radius:8px;background:white;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--green)}
+textarea{resize:vertical;min-height:90px}
+.btn{padding:11px 17px;border-radius:8px;font-weight:bold}
+.primary{background:var(--green);color:white}
+.primary:hover{background:#106d42}
+.secondary{background:#e7f4eb;color:var(--green)}
+.danger{background:#ffeded;color:var(--red)}
+.dark-btn{background:var(--dark);color:white}
+.full{width:100%}
+.demo{background:#f0f7f2;padding:13px;border-radius:8px;
+ font-size:12px;line-height:1.8;margin-top:17px;color:#486353}
+#app{min-height:100vh}
+.sidebar{width:245px;background:#123b2c;color:white;position:fixed;
+ top:0;bottom:0;left:0;padding:23px 15px;overflow-y:auto}
+.brand{font-size:23px;font-weight:bold;padding:5px 10px 30px}
+.brand span{color:#7ce2a7}
+.nav-label{font-size:10px;color:#9bb7a8;padding:14px 12px 8px;letter-spacing:1px}
+.nav-btn{width:100%;text-align:left;padding:13px 12px;background:transparent;
+ color:#d5e6dc;border-radius:8px;margin-bottom:5px;font-size:14px}
+.nav-btn:hover,.nav-btn.active{background:#246345;color:white}
+.main{margin-left:245px;min-height:100vh}
+.topbar{height:72px;background:white;display:flex;align-items:center;
+ justify-content:space-between;padding:0 30px;border-bottom:1px solid #e8eee9}
+.topbar h3{font-size:18px}
+.user-info{display:flex;align-items:center;gap:12px;font-size:13px}
+.avatar{width:37px;height:37px;background:var(--light);color:var(--green);
+ display:grid;place-items:center;border-radius:50%;font-weight:bold}
+.content{padding:28px 30px;max-width:1500px;margin:auto}
+.welcome{margin-bottom:25px}
+.welcome h2{font-size:24px;margin-bottom:7px}
+.welcome p,.muted{color:var(--muted);font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:17px;margin-bottom:25px}
+.stat{background:white;padding:21px;border-radius:12px;
+ border:1px solid #e9efeb;box-shadow:0 3px 10px #00000005}
+.stat .icon{font-size:22px;margin-bottom:15px}
+.stat h2{font-size:28px;margin-bottom:5px}
+.stat p{font-size:12px;color:var(--muted)}
+.panel{background:white;padding:22px;border-radius:12px;
+ border:1px solid #e8eee9;margin-bottom:22px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;
+ gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.panel-head h3{font-size:17px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:600px}
+th,td{text-align:left;padding:14px 12px;border-bottom:1px solid #edf0ed;
+ font-size:13px}
+th{color:#728077;background:#f8faf8;font-size:12px}
+td{color:#435148}
+.status{display:inline-block;padding:6px 10px;border-radius:20px;
+ font-size:11px;font-weight:bold;background:#eaf7ef;color:#168653}
+.status.pending{background:#fff3dd;color:#b77b20}
+.status.progress{background:#e8f0ff;color:#4275bf}
+.status.rejected{background:#ffeded;color:#d34c4c}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.small-btn{padding:7px 10px;border-radius:6px;font-size:11px;font-weight:bold}
+.empty{text-align:center;padding:30px;color:var(--muted);font-size:13px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.full-field{grid-column:1/-1}
+.page{display:none}
+.page.active{display:block}
+.progress-bar{height:9px;background:#eaf0eb;border-radius:20px;overflow:hidden;margin-top:9px}
+.progress-fill{height:100%;background:var(--green);border-radius:20px}
+.route-box{background:#f0f8f2;border-radius:10px;padding:17px;margin-bottom:12px}
+.route-box h4{margin-bottom:8px;color:var(--dark)}
+.route-box p{font-size:13px;color:#64756b;line-height:1.8}
+.notice{padding:13px;background:#eff8f1;border-radius:8px;
+ color:#26734b;font-size:13px;margin-bottom:15px}
+footer{text-align:center;color:#a0aaa3;font-size:11px;padding:20px}
+.mobile-menu{display:none;background:transparent;font-size:22px}
+@media(max-width:900px){
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .sidebar{width:210px}
+ .main{margin-left:210px}
+}
+@media(max-width:650px){
+ .sidebar{transform:translateX(-100%);z-index:10;width:245px;transition:.3s}
+ .sidebar.open{transform:translateX(0)}
+ .main{margin-left:0}
+ .topbar{padding:0 15px}
+ .mobile-menu{display:block}
+ .content{padding:20px 14px}
+ .stats{gap:10px}
+ .stat{padding:14px}
+ .stat h2{font-size:23px}
+ .grid-2,.form-grid{grid-template-columns:1fr}
+ .full-field{grid-column:auto}
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN PAGE -->
+<section id="loginPage">
+<div class="login-card">
+ <div class="logo">♻ EcoTrack</div>
+ <p class="login-sub">Smart Waste Management System</p>
+
+ <form id="loginForm">
+  <div class="form-group">
+   <label>User Role</label>
+   <select id="role">
+    <option value="admin">Administrator</option>
+    <option value="public">General Public</option>
+    <option value="driver">Driver</option>
+   </select>
+  </div>
+  <div class="form-group">
+   <label>Email Address</label>
+   <input type="email" id="email" placeholder="Enter email address" required>
+  </div>
+  <div class="form-group">
+   <label>Password</label>
+   <input type="password" id="password" placeholder="Enter password" required>
+  </div>
+  <button class="btn primary full" type="submit">Login to Dashboard →</button>
+ </form>
+
+ <p style="text-align:center;margin-top:17px;font-size:13px">
+  New citizen? <a href="#" onclick="showRegister();return false"
+  style="color:#168653;font-weight:bold">Create Account</a>
+ </p>
+
+ <div class="demo">
+  <b>Demo Login Credentials</b><br>
+  Admin: admin@ecotrack.com / admin123<br>
+  Driver: driver@ecotrack.com / driver123<br>
+  Public: Register a new account
+ </div>
+</div>
+</section>
+
+<!-- REGISTRATION -->
+<section id="registerPage" class="hidden" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px">
+<div class="login-card">
+ <div class="logo">♻ EcoTrack</div>
+ <p class="login-sub">Create your citizen account</p>
+ <form id="registerForm">
+  <div class="form-group"><label>Full Name</label><input id="regName" required></div>
+  <div class="form-group"><label>Email</label><input id="regEmail" type="email" required></div>
+  <div class="form-group"><label>Phone Number</label><input id="regPhone" required></div>
+  <div class="form-group"><label>Address</label><textarea id="regAddress" required></textarea></div>
+  <div class="form-group"><label>Password</label><input id="regPassword" type="password" required minlength="4"></div>
+  <button class="btn primary full">Register</button>
+ </form>
+ <p style="text-align:center;margin-top:18px;font-size:13px">
+  Already registered? <a href="#" onclick="showLogin();return false">Login</a>
+ </p>
+</div>
+</section>
+
+<!-- MAIN APPLICATION -->
+<div id="app" class="hidden">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">♻ Eco<span>Track</span></div>
+ <div class="nav-label">MAIN MENU</div>
+ <nav id="navigation"></nav>
+ <div class="nav-label">ACCOUNT</div>
+ <button class="nav-btn" onclick="logout()">↪ Logout</button>
+</aside>
+
+<main class="main">
+ <header class="topbar">
+  <div style="display:flex;align-items:center;gap:14px">
+   <button class="mobile-menu" onclick="toggleMenu()">☰</button>
+   <h3 id="topTitle">Dashboard</h3>
+  </div>
+  <div class="user-info">
+   <div style="text-align:right">
+    <b id="userName">Admin</b>
+    <p id="userRole" class="muted">Administrator</p>
+   </div>
+   <div class="avatar" id="avatar">A</div>
+  </div>
+ </header>
+
+ <div class="content">
+
+ <!-- ADMIN DASHBOARD -->
+ <section id="adminHome" class="page">
+  <div class="welcome"><h2>Administrator Dashboard</h2>
+   <p>Monitor waste collection activities and system performance.</p></div>
+  <div class="stats">
+   <div class="stat"><div class="icon">🗑️</div><h2 id="statBins">0</h2><p>Total Garbage Bins</p></div>
+   <div class="stat"><div class="icon">🚛</div><h2 id="statDrivers">0</h2><p>Registered Drivers</p></div>
+   <div class="stat"><div class="icon">📢</div><h2 id="statComplaints">0</h2><p>Total Complaints</p></div>
+   <div class="stat"><div class="icon">♻️</div><h2 id="statLoad">0</h2><p>Total Waste Collected (kg)</p></div>
+  </div>
+  <div class="grid-2">
+   <div class="panel">
+    <div class="panel-head"><h3>Complaint Overview</h3></div>
+    <div id="complaintOverview"></div>
+   </div>
+   <div class="panel">
+    <div class="panel-head"><h3>Collection Summary</h3></div>
+    <div id="collectionOverview"></div>
+   </div>
+  </div>
+  <div class="panel">
+   <div class="panel-head"><h3>Recent Public Complaints</h3>
+    <button class="btn secondary" onclick="navigate('complaints')">View All</button></div>
+   <div id="recentComplaints"></div>
+  </div>
+ </section>
+
+ <!-- ADMIN BINS -->
+ <section id="bins" class="page">
+  <div class="welcome"><h2>Garbage Bin Management</h2>
+   <p>Create, update and delete garbage bin locations.</p></div>
+  <div class="panel">
+   <div class="panel-head"><h3 id="binFormTitle">Add New Garbage Bin</h3></div>
+   <form id="binForm">
+    <input type="hidden" id="binId">
+    <div class="form-grid">
+     <div><label>Bin Name / ID</label><input id="binName" required placeholder="BIN-001"></div>
+     <div><label>Location</label><input id="binLocation" required placeholder="Enter location"></div>
+     <div><label>Bin Capacity (kg)</label><input id="binCapacity" type="number" min="1" required></div>
+     <div><label>Current Load (kg)</label><input id="binLoad" type="number" min="0" value="0" required></div>
+     <div class="full-field"><button class="btn primary">Save Garbage Bin</button>
+      <button type="button" class="btn secondary" onclick="resetBinForm()">Clear</button></div>
+    </div>
+   </form>
+  </div>
+  <div class="panel">
+   <div class="panel-head"><h3>All Garbage Bins</h3></div>
+   <div id="binsTable"></div>
+  </div>
+ </section>
+
+ <!-- ADMIN DRIVERS -->
+ <section id="drivers" class="page">
+  <div class="welcome"><h2>Driver Management</h2>
+   <p>Register drivers and assign garbage collection routes.</p></div>
+  <div class="panel">
+   <div class="panel-head"><h3>Register New Driver</h3></div>
+   <form id="driverForm">
+    <div class="form-grid">
+     <div><label>Driver Name</label><input id="driverName" required></div>
+     <div><label>Email</label><input id="driverEmail" type="email" required></div>
+     <div><label>Phone Number</label><input id="driverPhone" required></div>
+     <div><label>Vehicle Number</label><input id="vehicleNo" required></div>
+     <div><label>Password</label><input id="driverPassword" required value="driver123"></div>
+     <div class="full-field"><button class="btn primary">Register Driver</button></div>
+    </div>
+   </form>
+  </div>
+  <div class="panel">
+   <div class="panel-head"><h3>Registered Drivers</h3></div>
+   <div id="driversTable"></div>
+  </div>
+ </section>
+
+ <!-- ADMIN ROUTES -->
+ <section id="routes" class="page">
+  <div class="welcome"><h2>Route Management</h2>
+   <p>Assign collection routes to drivers.</p></div>
+  <div class="panel">
+   <div class="notice">Select a driver and the garbage bins to create a collection route. The demonstration uses an alphabetical location order.</div>
+   <form id="routeForm">
+    <div class="form-grid">
+     <div><label>Select Driver</label><select id="routeDriver" required></select></div>
+     <div><label>Dumping Site</label><input id="dumpSite" value="City Waste Disposal Centre" required></div>
+     <div class="full-field"><label>Select Garbage Bins</label>
+      <div id="routeBins" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px"></div>
+     </div>
+     <div class="full-field"><button class="btn primary">Generate & Assign Route</button></div>
+    </div>
+   </form>
+  </div>
+  <div class="panel">
+   <div class="panel-head"><h3>Assigned Routes</h3></div>
+   <div id="routesTable"></div>
+  </div>
+ </section>
+
+ <!-- ADMIN COMPLAINTS -->
+ <section id="complaints" class="page">
+  <div class="welcome"><h2>Public Complaints</h2>
+   <p>Review complaints and update their status.</p></div>
+  <div class="panel"><div id="adminComplaints"></div></div>
+ </section>
+
+ <!-- ADMIN REPORTS -->
+ <section id="reports" class="page">
+  <div class="welcome"><h2>Waste Collection Reports</h2>
+   <p>Analyze garbage collection and complaint statistics.</p></div>
+  <div class="stats">
+   <div class="stat"><div class="icon">🗑️</div><h2 id="reportBins">0</h2><p>Active Bins</p></div>
+   <div class="stat"><div class="icon">⚖️</div><h2 id="reportLoad">0</h2><p>Collected Waste (kg)</p></div>
+   <div class="stat"><div class="icon">✅</div><h2 id="reportResolved">0</h2><p>Resolved Complaints</p></div>
+   <div class="stat"><div class="icon">⏳</div><h2 id="reportPending">0</h2><p>Pending Complaints</p></div>
+  </div>
+  <div class="panel">
+   <div class="panel-head"><h3>Garbage Bin Utilization</h3></div>
+   <div id="binReports"></div>
+  </div>
+  <div class="panel">
+   <div class="panel-head"><h3>Complaint Status Report</h3></div>
+   <div id="complaintReports"></div>
+  </div>
+  <button class="btn primary" onclick="exportReport()">⬇ Download CSV Report</button>
+ </section>
+
+ <!-- PUBLIC HOME -->
+ <section id="publicHome" class="page">
+  <div class="welcome"><h2>Welcome to EcoTrack</h2>
+   <p>Keep your surroundings clean. Report waste problems and track your complaints.</p></div>
+  <div class="stats">
+   <div class="stat"><div class="icon">📢</div><h2 id="myTotal">0</h2><p>My Complaints</p></div>
+   <div class="stat"><div class="icon">⏳</div><h2 id="myPending">0</h2><p>Pending Complaints</p></div>
+   <div class="stat"><div class="icon">✅</div><h2 id="myResolved">0</h2><p>Resolved Complaints</p></div>
+   <div class="stat"><div class="icon">🗑️</div><h2 id="publicBins">0</h2><p>Available Garbage Bins</p></div>
+  </div>
+  <div class="panel">
+   <div class="panel-head"><h3>Waste Management Services</h3>
+    <button class="btn primary" onclick="navigate('newComplaint')">+ Register Complaint</button></div>
+   <p class="muted" style="line-height:2">Report overflowing garbage bins, uncollected waste and illegal dumping. Our team will review your complaint and update its status.</p>
+  </div>
+  <div class="panel"><div class="panel-head"><h3>Recent Complaints</h3></div>
+   <div id="publicRecent"></div></div>
+ </section>
+
+ <!-- PUBLIC NEW COMPLAINT -->
+ <section id="newComplaint" class="page">
+  <div class="welcome"><h2>Register a Complaint</h2>
+   <p>Submit a waste management issue in your area.</p></div>
+  <div class="panel">
+   <form id="complaintForm">
+    <div class="form-grid">
+     <div><label>Complaint Category</label>
+      <select id="complaintType" required>
+       <option value="">Select category</option>
+       <option>Overflowing Garbage Bin</option>
+       <option>Uncollected Waste</option>
+       <option>Illegal Dumping</option>
+       <option>Damaged Garbage Bin</option>
+       <option>Other</option>
+      </select>
+     </div>
+     <div><label>Location</label><input id="complaintLocation" required placeholder="Enter your area"></div>
+     <div class="full-field"><label>Description</label>
+      <textarea id="complaintDescription" required placeholder="Describe the waste problem..."></textarea></div>
+     <div class="full-field"><button class="btn primary">Submit Complaint</button></div>
+    </div>
+   </form>
+  </div>
+ </section>
+
+ <!-- PUBLIC TRACK COMPLAINT -->
+ <section id="myComplaints" class="page">
+  <div class="welcome"><h2>My Complaints</h2>
+   <p>Track the progress of your submitted complaints.</p></div>
+  <div class="panel"><div id="myComplaintsTable"></div></div>
+ </section>
+
+ <!-- DRIVER HOME -->
+ <section id="driverHome" class="page">
+  <div class="welcome"><h2>Driver Dashboard</h2>
+   <p>Manage your daily garbage collection activities.</p></div>
+  <div class="stats">
+   <div class="stat"><div class="icon">🗺️</div><h2 id="driverRouteCount">0</h2><p>Assigned Routes</p></div>
+   <div class="stat"><div class="icon">🗑️</div><h2 id="driverBinCount">0</h2><p>Assigned Bins</p></div>
+   <div class="stat"><div class="icon">⚖️</div><h2 id="driverLoad">0</h2><p>Waste Collected (kg)</p></div>
+   <div class="stat"><div class="icon">📅</div><h2 id="driverTasks">0</h2><p>Pending Collection Tasks</p></div>
+  </div>
+  <div class="panel"><div class="panel-head"><h3>Today's Work Updates</h3></div>
+   <div id="driverWork"></div></div>
+ </section>
+
+ <!-- DRIVER ROUTE -->
+ <section id="driverRoutes" class="page">
+  <div class="welcome"><h2>My Collection Routes</h2>
+   <p>View the assigned garbage collection route.</p></div>
+  <div class="panel"><div id="driverRouteList"></div></div>
+ </section>
+
+ <!-- DRIVER LOAD -->
+ <section id="loadUpdate" class="page">
+  <div class="welcome"><h2>Update Garbage Load</h2>
+   <p>Record collected waste for each garbage bin.</p></div>
+  <div class="panel">
+   <form id="loadForm">
+    <div class="form-grid">
+     <div><label>Select Garbage Bin</label><select id="loadBin" required></select></div>
+     <div><label>Collected Waste (kg)</label><input id="loadAmount" type="number" min="0" required></div>
+     <div class="full-field"><label>Collection Notes</label><textarea id="loadNotes" placeholder="Optional notes"></textarea></div>
+     <div class="full-field"><button class="btn primary">Update Garbage Load</button></div>
+    </div>
+   </form>
+  </div>
+  <div class="panel"><div class="panel-head"><h3>Collection History</h3></div>
+   <div id="loadHistory"></div></div>
+ </section>
+
+ <footer>© 2026 EcoTrack | Smart Waste Management System</footer>
+ </div>
+</main>
+</div>
+
+<script>
+// ======================================
+// DATA STORAGE
+// ======================================
+
+const getData=(key,defaultValue=[])=>{
+ try{return JSON.parse(localStorage.getItem(key)) ?? defaultValue}
+ catch{return defaultValue}
+};
+const saveData=(key,value)=>localStorage.setItem(key,JSON.stringify(value));
+
+let bins=getData('eco_bins',[
+ {id:1,name:'BIN-001',location:'Anna Nagar',capacity:100,load:40},
+ {id:2,name:'BIN-002',location:'Porur',capacity:150,load:75},
+ {id:3,name:'BIN-003',location:'Vadapalani',capacity:120,load:30}
+]);
+let drivers=getData('eco_drivers',[
+ {id:1,name:'Arun Kumar',email:'driver@ecotrack.com',phone:'9876543210',vehicle:'TN-01-AB-1234',password:'driver123'}
+]);
+let complaints=getData('eco_complaints',[]);
+let routes=getData('eco_routes',[]);
+let history=getData('eco_history',[]);
+let users=getData('eco_users',[]);
+let currentUser=null;
+
+function persist(){
+ saveData('eco_bins',bins);
+ saveData('eco_drivers',drivers);
+ saveData('eco_complaints',complaints);
+ saveData('eco_routes',routes);
+ saveData('eco_history',history);
+ saveData('eco_users',users);
+}
+
+// ======================================
+// LOGIN AND REGISTRATION
+// ======================================
+
+function showRegister(){
+ document.getElementById('loginPage').classList.add('hidden');
+ document.getElementById('registerPage').classList.remove('hidden');
+}
+function showLogin(){
+ document.getElementById('registerPage').classList.add('hidden');
+ document.getElementById('loginPage').classList.remove('hidden');
+}
+
+document.getElementById('registerForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const email=document.getElementById('regEmail').value.trim().toLowerCase();
+ if(users.some(u=>u.email===email)){
+  alert('Email already registered!');
+  return;
+ }
+ const user={
+  id:Date.now(),
+  name:document.getElementById('regName').value.trim(),
+  email,
+  phone:document.getElementById('regPhone').value,
+  address:document.getElementById('regAddress').value,
+  password:document.getElementById('regPassword').value
+ };
+ users.push(user);
+ persist();
+ alert('Registration successful! Please login.');
+ e.target.reset();
+ showLogin();
+});
+
+document.getElementById('loginForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const role=document.getElementById('role').value;
+ const email=document.getElementById('email').value.trim().toLowerCase();
+ const password=document.getElementById('password').value;
+
+ if(role==='admin' && email==='admin@ecotrack.com' && password==='admin123'){
+  login({role,name:'Administrator',email});
+  return;
+ }
+ if(role==='driver'){
+  const d=drivers.find(x=>x.email.toLowerCase()===email&&x.password===password);
+  if(d){login({...d,role:'driver'});return}
+ }
+ if(role==='public'){
+  const u=users.find(x=>x.email===email&&x.password===password);
+  if(u){login({...u,role:'public'});return}
+ }
+ alert('Invalid email or password. Please check your login details.');
+});
+
+function login(user){
+ currentUser=user;
+ document.getElementById('loginPage').classList.add('hidden');
+ document.getElementById('registerPage').classList.add('hidden');
+ document.getElementById('app').classList.remove('hidden');
+ document.getElementById('userName').textContent=user.name;
+ document.getElementById('userRole').textContent=user.role.toUpperCase();
+ document.getElementById('avatar').textContent=user.name.charAt(0).toUpperCase();
+ buildNavigation();
+ renderAll();
+ const home={admin:'adminHome',public:'publicHome',driver:'driverHome'};
+ navigate(home[user.role]);
+}
+
+function logout(){
+ currentUser=null;
+ document.getElementById('app').classList.add('hidden');
+ document.getElementById('loginPage').classList.remove('hidden');
+ document.getElementById('loginForm').reset();
+}
+
+function toggleMenu(){
+ document.getElementById('sidebar').classList.toggle('open');
+}
+
+// ======================================
+// NAVIGATION
+// ======================================
+
+const menus={
+ admin:[
+  ['adminHome','▦','Dashboard'],
+  ['bins','🗑','Garbage Bins'],
+  ['drivers','🚛','Manage Drivers'],
+  ['routes','🗺','Assign Routes'],
+  ['complaints','📢','Public Complaints'],
+  ['reports','📊','Waste Reports']
+ ],
+ public:[
+  ['publicHome','⌂','Dashboard'],
+  ['newComplaint','＋','Register Complaint'],
+  ['myComplaints','▤','My Complaints']
+ ],
+ driver:[
+  ['driverHome','▦','Dashboard'],
+  ['driverRoutes','🗺','My Routes'],
+  ['loadUpdate','⚖','Update Garbage Load']
+ ]
+};
+
+function buildNavigation(){
+ const nav=document.getElementById('navigation');
+ nav.innerHTML='';
+ menus[currentUser.role].forEach(item=>{
+  const btn=document.createElement('button');
+  btn.className='nav-btn';
+  btn.innerHTML=item[1]+' &nbsp; '+item[2];
+  btn.onclick=()=>navigate(item[0]);
+  nav.appendChild(btn);
+ });
+}
+
+function navigate(page){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(page).classList.add('active');
+ document.getElementById('topTitle').textContent=
+  document.querySelector(`#navigation button[onclick]`) ?
+  (menus[currentUser.role].find(x=>x[0]===page)?.[2] || page) : page;
+
+ document.querySelectorAll('.nav-btn').forEach((b,i)=>{
+  b.classList.toggle('active',menus[currentUser.role][i]?.[0]===page);
+ });
+ document.getElementById('sidebar').classList.remove('open');
+ renderAll();
+}
+
+// ======================================
+// COMMON TABLE AND HELPERS
+// ======================================
+
+function emptyTable(message='No records found'){
+ return `<div class="empty">${message}</div>`;
+}
+function safe(value){
+ return String(value??'').replace(/[&<>"']/g,c=>({
+ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+ })[c]);
+}
+function statusClass(s){
+ if(s==='Resolved'||s==='Completed')return '';
+ if(s==='In Progress')return 'progress';
+ if(s==='Rejected')return 'rejected';
+ return 'pending';
+}
+function table(headers,rows){
+ if(!rows.length)return emptyTable();
+ return `<div class="table-wrap"><table><thead><tr>
+ ${headers.map(h=>`<th>${h}</th>`).join('')}
+ </tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
+}
+function dateNow(){return new Date().toLocaleDateString('en-IN')}
+
+// ======================================
+// ADMIN DASHBOARD
+// ======================================
+
+function renderAdmin(){
+ document.getElementById('statBins').textContent=bins.length;
+ document.getElementById('statDrivers').textContent=drivers.length;
+ document.getElementById('statComplaints').textContent=complaints.length;
+ document.getElementById('statLoad').textContent=history.reduce((a,h)=>a+Number(h.amount),0);
+
+ const pending=complaints.filter(c=>c.status==='Pending').length;
+ const progress=complaints.filter(c=>c.status==='In Progress').length;
+ const resolved=complaints.filter(c=>c.status==='Resolved').length;
+ const total=complaints.length||1;
+
+ document.getElementById('complaintOverview').innerHTML=[
+  ['Pending',pending,'#e99a37'],
+  ['In Progress',progress,'#4275bf'],
+  ['Resolved',resolved,'#168653']
+ ].map(x=>`<p style="font-size:13px;margin:15px 0 6px">${x[0]} <b style="float:right">${x[1]}</b></p>
+ <div class="progress-bar"><div class="progress-fill" style="width:${x[1]/total*100}%;background:${x[2]}"></div></div>`).join('');
+
+ const load=history.reduce((a,h)=>a+Number(h.amount),0);
+ const capacity=bins.reduce((a,b)=>a+Number(b.capacity),0)||1;
+ document.getElementById('collectionOverview').innerHTML=`
+ <h2 style="font-size:30px;color:#168653">${load} kg</h2>
+ <p class="muted">Total recorded waste collection</p>
+ <p style="margin-top:20px;font-size:13px">Bin capacity utilization</p>
+ <div class="progress-bar"><div class="progress-fill" style="width:${Math.min(100,bins.reduce((a,b)=>a+Number(b.load),0)/capacity*100)}%"></div></div>
+ <p class="muted" style="margin-top:8px">${bins.reduce((a,b)=>a+Number(b.load),0)} / ${capacity} kg bin load</p>`;
+
+ document.getElementById('recentComplaints').innerHTML=table(
+ ['ID','Citizen','Category','Location','Status'],
+ complaints.slice(-5).reverse().map(c=>`<tr>
+ <td>#${c.id}</td><td>${safe(c.name)}</td><td>${safe(c.type)}</td>
+ <td>${safe(c.location)}</td><td><span class="status ${statusClass(c.status)}">${c.status}</span></td>
+ </tr>`)
+ );
+}
+
+// ======================================
+// GARBAGE BIN CRUD
+// ======================================
+
+function renderBins(){
+ document.getElementById('binsTable').innerHTML=table(
+ ['Bin ID','Location','Capacity','Current Load','Action'],
+ bins.map(b=>`<tr>
+ <td><b>${safe(b.name)}</b></td><td>${safe(b.location)}</td>
+ <td>${b.capacity} kg</td><td>${b.load} kg</td>
+ <td><div class="actions">
+ <button class="small-btn secondary" onclick="editBin(${b.id})">Edit</button>
+ <button class="small-btn danger" onclick="deleteBin(${b.id})">Delete</button>
+ </div></td></tr>`)
+ );
+}
+
+document.getElementById('binForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const id=document.getElementById('binId').value;
+ const capacity=Number(document.getElementById('binCapacity').value);
+ const load=Number(document.getElementById('binLoad').value);
+ if(load>capacity){alert('Current load cannot exceed bin capacity.');return}
+ const data={
+  name:document.getElementById('binName').value,
+  location:document.getElementById('binLocation').value,
+  capacity,load
+ };
+ if(id){
+  bins=bins.map(b=>b.id==id?{...b,...data}:b);
+  alert('Garbage bin updated successfully!');
+ }else{
+  bins.push({id:Date.now(),...data});
+  alert('New garbage bin created!');
+ }
+ persist();resetBinForm();renderAll();
+});
+
+function editBin(id){
+ const b=bins.find(x=>x.id===id);
+ if(!b)return;
+ document.getElementById('binId').value=b.id;
+ document.getElementById('binName').value=b.name;
+ document.getElementById('binLocation').value=b.location;
+ document.getElementById('binCapacity').value=b.capacity;
+ document.getElementById('binLoad').value=b.load;
+ document.getElementById('binFormTitle').textContent='Update Garbage Bin';
+ window.scrollTo(0,0);
+}
+function resetBinForm(){
+ document.getElementById('binForm').reset();
+ document.getElementById('binId').value='';
+ document.getElementById('binFormTitle').textContent='Add New Garbage Bin';
+}
+function deleteBin(id){
+ if(!confirm('Are you sure you want to delete this bin?'))return;
+ bins=bins.filter(b=>b.id!==id);
+ persist();renderAll();
+}
+
+// ======================================
+// DRIVER MANAGEMENT
+// ======================================
+
+function renderDrivers(){
+ document.getElementById('driversTable').innerHTML=table(
+ ['Name','Email','Phone','Vehicle','Action'],
+ drivers.map(d=>`<tr>
+ <td>${safe(d.name)}</td><td>${safe(d.email)}</td>
+ <td>${safe(d.phone)}</td><td>${safe(d.vehicle)}</td>
+ <td><button class="small-btn danger" onclick="deleteDriver(${d.id})">Delete</button></td>
+ </tr>`)
+ );
+}
+
+document.getElementById('driverForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const email=document.getElementById('driverEmail').value.trim().toLowerCase();
+ if(drivers.some(d=>d.email.toLowerCase()===email)||users.some(u=>u.email===email)){
+  alert('Email already exists!');return;
+ }
+ drivers.push({
+  id:Date.now(),
+  name:document.getElementById('driverName').value,
+  email,
+  phone:document.getElementById('driverPhone').value,
+  vehicle:document.getElementById('vehicleNo').value,
+  password:document.getElementById('driverPassword').value
+ });
+ persist();e.target.reset();renderAll();
+ alert('Driver registered successfully!');
+});
+
+function deleteDriver(id){
+ if(!confirm('Delete this driver?'))return;
+ drivers=drivers.filter(d=>d.id!==id);
+ persist();renderAll();
+}
+
+// ======================================
+// ROUTE ASSIGNMENT
+// ======================================
+
+function renderRouteForm(){
+ document.getElementById('routeDriver').innerHTML=
+  '<option value="">Select Driver</option>'+
+  drivers.map(d=>`<option value="${d.id}">${safe(d.name)}</option>`).join('');
+
+ document.getElementById('routeBins').innerHTML=bins.map(b=>`
+ <label style="display:flex;align-items:center;gap:8px;padding:10px;
+ background:#f4f8f5;border-radius:7px">
+ <input type="checkbox" value="${b.id}" style="width:auto">
+ <span>${safe(b.name)} - ${safe(b.location)}</span></label>`).join('')||emptyTable('Add bins before assigning routes');
+
+ document.getElementById('routesTable').innerHTML=table(
+ ['Driver','Vehicle','Collection Stops','Dumping Site','Action'],
+ routes.map(r=>{
+  const d=drivers.find(x=>x.id===r.driverId);
+  return `<tr><td>${safe(d?.name||'Driver removed')}</td>
+  <td>${safe(d?.vehicle||'-')}</td><td>${r.binIds.length} stops</td>
+  <td>${safe(r.dumpSite)}</td>
+  <td><button class="small-btn danger" onclick="deleteRoute(${r.id})">Delete</button></td></tr>`;
+ })
+ );
+}
+
+document.getElementById('routeForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const driverId=Number(document.getElementById('routeDriver').value);
+ const selected=[...document.querySelectorAll('#routeBins input:checked')].map(x=>Number(x.value));
+ if(!driverId||!selected.length){alert('Select a driver and at least one garbage bin.');return}
+ const ordered=selected.map(id=>bins.find(b=>b.id===id))
+  .filter(Boolean).sort((a,b)=>a.location.localeCompare(b.location));
+ routes.push({
+  id:Date.now(),driverId,
+  binIds:ordered.map(b=>b.id),
+  dumpSite:document.getElementById('dumpSite').value,
+  date:dateNow(),completed:[]
+ });
+ persist();renderAll();
+ alert('Route assigned successfully!');
+});
+
+function deleteRoute(id){
+ if(!confirm('Delete this route?'))return;
+ routes=routes.filter(r=>r.id!==id);
+ persist();renderAll();
+}
+
+// ======================================
+// PUBLIC COMPLAINT MANAGEMENT
+// ======================================
+
+document.getElementById('complaintForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const complaint={
+  id:Date.now(),
+  userId:currentUser.id,
+  name:currentUser.name,
+  email:currentUser.email,
+  type:document.getElementById('complaintType').value,
+  location:document.getElementById('complaintLocation').value,
+  description:document.getElementById('complaintDescription').value,
+  status:'Pending',
+  date:dateNow()
+ };
+ complaints.push(complaint);
+ persist();e.target.reset();
+ alert('Complaint registered successfully! Complaint ID: '+complaint.id);
+ navigate('myComplaints');
+});
+
+function renderComplaints(){
+ document.getElementById('adminComplaints').innerHTML=table(
+ ['ID','Citizen','Category','Location','Description','Date','Status','Update'],
+ complaints.map(c=>`<tr>
+ <td>#${c.id}</td><td>${safe(c.name)}</td><td>${safe(c.type)}</td>
+ <td>${safe(c.location)}</td><td>${safe(c.description)}</td><td>${c.date}</td>
+ <td><span class="status ${statusClass(c.status)}">${c.status}</span></td>
+ <td><select onchange="updateComplaint(${c.id},this.value)" style="min-width:115px;padding:7px">
+ ${['Pending','In Progress','Resolved','Rejected'].map(s=>
+ `<option ${c.status===s?'selected':''}>${s}</option>`).join('')}
+ </select></td></tr>`)
+ );
+}
+function updateComplaint(id,status){
+ complaints=complaints.map(c=>c.id===id?{...c,status}:c);
+ persist();renderAll();
+}
+
+function renderPublic(){
+ const mine=complaints.filter(c=>c.userId===currentUser.id);
+ document.getElementById('myTotal').textContent=mine.length;
+ document.getElementById('myPending').textContent=mine.filter(c=>c.status==='Pending').length;
+ document.getElementById('myResolved').textContent=mine.filter(c=>c.status==='Resolved').length;
+ document.getElementById('publicBins').textContent=bins.length;
+
+ const html=table(
+ ['Complaint ID','Category','Location','Date','Status'],
+ mine.slice().reverse().map(c=>`<tr><td>#${c.id}</td>
+ <td>${safe(c.type)}</td><td>${safe(c.location)}</td><td>${c.date}</td>
+ <td><span class="status ${statusClass(c.status)}">${c.status}</span></td></tr>`)
+ );
+ document.getElementById('myComplaintsTable').innerHTML=html;
+ document.getElementById('publicRecent').innerHTML=html;
+}
+
+// ======================================
+// DRIVER DASHBOARD AND ROUTES
+// ======================================
+
+function myRoutes(){return routes.filter(r=>r.driverId===currentUser.id)}
+function renderDriver(){
+ const mine=myRoutes();
+ const assigned=[...new Set(mine.flatMap(r=>r.binIds))];
+ const done=mine.reduce((a,r)=>a+r.completed.length,0);
+ const pending=mine.reduce((a,r)=>a+r.binIds.filter(id=>!r.completed.includes(id)).length,0);
+ const myHistory=history.filter(h=>h.driverId===currentUser.id);
+
+ document.getElementById('driverRouteCount').textContent=mine.length;
+ document.getElementById('driverBinCount').textContent=assigned.length;
+ document.getElementById('driverLoad').textContent=myHistory.reduce((a,h)=>a+Number(h.amount),0);
+ document.getElementById('driverTasks').textContent=pending;
+
+ document.getElementById('driverWork').innerHTML=mine.map(r=>{
+  const d=r.binIds.map(id=>bins.find(b=>b.id===id)).filter(Boolean);
+  return `<div class="route-box">
+  <h4>Collection Route #${r.id}</h4>
+  <p>Date: ${r.date}<br>Collection stops: ${d.length}<br>
+  Completed: ${r.completed.length}/${r.binIds.length}<br>
+  Dumping Site: ${safe(r.dumpSite)}</p></div>`;
+ }).join('')||emptyTable('No work assigned yet. Contact the administrator.');
+
+ document.getElementById('driverRouteList').innerHTML=mine.map(r=>{
+  const stops=r.binIds.map((id,i)=>{
+   const b=bins.find(x=>x.id===id);
+   if(!b)return '';
+   const complete=r.completed.includes(id);
+   return `<div style="padding:12px;border-bottom:1px solid #eee">
+   <b>${i+1}. ${safe(b.name)} - ${safe(b.location)}</b>
+   <span class="status ${complete?'':'pending'}" style="float:right">${complete?'Completed':'Pending'}</span>
+   </div>`;
+  }).join('');
+  return `<div class="route-box"><h4>Route #${r.id}</h4>${stops}
+  <p style="margin-top:12px">Final destination: <b>${safe(r.dumpSite)}</b></p>
+  </div>`;
+ }).join('')||emptyTable('No routes assigned.');
+
+ const options=assigned.map(id=>{
+  const b=bins.find(x=>x.id===id);
+  return b?`<option value="${b.id}">${safe(b.name)} - ${safe(b.location)}</option>`:'';
+ }).join('');
+ document.getElementById('loadBin').innerHTML=
+  '<option value="">Select garbage bin</option>'+options;
+
+ document.getElementById('loadHistory').innerHTML=table(
+ ['Bin','Collected Waste','Date','Notes'],
+ myHistory.slice().reverse().map(h=>`<tr>
+ <td>${safe(h.binName)}</td><td>${h.amount} kg</td>
+ <td>${h.date}</td><td>${safe(h.notes||'-')}</td></tr>`)
+ );
+}
+
+document.getElementById('loadForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const binId=Number(document.getElementById('loadBin').value);
+ const amount=Number(document.getElementById('loadAmount').value);
+ const b=bins.find(x=>x.id===binId);
+ if(!b){alert('Please select a valid garbage bin.');return}
+ if(amount<=0){alert('Enter a valid collected load.');return}
+ if(b.load+amount>b.capacity){alert('This collection exceeds the bin capacity.');return}
+ const route=myRoutes().find(r=>r.binIds.includes(binId));
+ if(!route){alert('This bin is not assigned to your route.');return}
+
+ b.load+=amount;
+ route.completed=[...new Set([...route.completed,binId])];
+ history.push({
+  id:Date.now(),driverId:currentUser.id,binId,
+  binName:b.name,amount,notes:document.getElementById('loadNotes').value,
+  date:dateNow()
+ });
+ persist();e.target.reset();renderAll();
+ alert('Garbage load updated successfully!');
+});
+
+// ======================================
+// REPORTS AND CSV EXPORT
+// ======================================
+
+function renderReports(){
+ const resolved=complaints.filter(c=>c.status==='Resolved').length;
+ document.getElementById('reportBins').textContent=bins.length;
+ document.getElementById('reportLoad').textContent=history.reduce((a,h)=>a+Number(h.amount),0);
+ document.getElementById('reportResolved').textContent=resolved;
+ document.getElementById('reportPending').textContent=complaints.filter(c=>c.status==='Pending').length;
+
+ document.getElementById('binReports').innerHTML=bins.map(b=>{
+  const percent=Math.min(100,b.load/b.capacity*100);
+  return `<div style="margin:17px 0">
+  <div style="display:flex;justify-content:space-between;font-size:13px">
+  <b>${safe(b.name)} - ${safe(b.location)}</b><span>${b.load}/${b.capacity} kg</span></div>
+  <div class="progress-bar"><div class="progress-fill" style="width:${percent}%"></div></div>
+  </div>`;
+ }).join('')||emptyTable();
+
+ document.getElementById('complaintReports').innerHTML=table(
+ ['Status','Number of Complaints'],
+ ['Pending','In Progress','Resolved','Rejected'].map(s=>
+ `<tr><td>${s}</td><td>${complaints.filter(c=>c.status===s).length}</td></tr>`)
+ );
+}
+
+function exportReport(){
+ const rows=[
+ ['Bin ID','Location','Capacity','Current Load'],
+ ...bins.map(b=>[b.name,b.location,b.capacity,b.load])
+ ];
+ const csv=rows.map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+ const blob=new Blob([csv],{type:'text/csv'});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement('a');
+ a.href=url;a.download='EcoTrack_Waste_Report.csv';a.click();
+ URL.revokeObjectURL(url);
+}
+
+// ======================================
+// RENDER ALL DASHBOARDS
+// ======================================
+
+function renderAll(){
+ if(!currentUser)return;
+ persist();
+
+ if(currentUser.role==='admin'){
+  renderAdmin();
+  renderBins();
+  renderDrivers();
+  renderRouteForm();
+  renderComplaints();
+  renderReports();
+ }
+ if(currentUser.role==='public')renderPublic();
+ if(currentUser.role==='driver')renderDriver();
+}
+</script>
+
+</body>
+</html>

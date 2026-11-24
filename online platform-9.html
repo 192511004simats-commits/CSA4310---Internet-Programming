@@ -1,0 +1,726 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>TechSavvy - Online Shopping</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f6fa;
+    color:#222;
+}
+
+/* HEADER */
+header{
+    background:#101d35;
+    color:white;
+    padding:20px 7%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+header h1{
+    color:#35c5f0;
+    font-size:28px;
+}
+
+header span{
+    color:white;
+}
+
+nav button{
+    background:transparent;
+    color:white;
+    border:none;
+    padding:10px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+nav button:hover{
+    color:#35c5f0;
+}
+
+/* HERO SECTION */
+.hero{
+    background:linear-gradient(120deg,#102b50,#087eae);
+    color:white;
+    padding:65px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.hero h2{
+    font-size:38px;
+    margin-bottom:15px;
+}
+
+.hero p{
+    font-size:17px;
+    line-height:1.7;
+}
+
+.hero button{
+    background:#35c5f0;
+    color:#102b50;
+    padding:13px 25px;
+    border:none;
+    border-radius:7px;
+    margin-top:20px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.hero-icon{
+    font-size:110px;
+}
+
+/* GENERAL SECTIONS */
+.section{
+    padding:40px 7%;
+}
+
+.section h2{
+    text-align:center;
+    margin-bottom:25px;
+    color:#102b50;
+}
+
+/* SEARCH */
+.search{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:25px;
+}
+
+input,select,textarea{
+    padding:12px;
+    border:1px solid #ccd3df;
+    border-radius:7px;
+    font-size:14px;
+}
+
+.search input{
+    width:280px;
+}
+
+/* CATEGORY CARDS */
+.categories{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.category{
+    background:white;
+    padding:22px;
+    text-align:center;
+    border-radius:12px;
+    box-shadow:0 3px 12px #00000010;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.category:hover{
+    transform:translateY(-6px);
+    background:#e5f7ff;
+}
+
+.category h3{
+    margin-top:10px;
+    color:#102b50;
+}
+
+.category .emoji{
+    font-size:40px;
+}
+
+/* PRODUCT CARDS */
+.products{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:22px;
+}
+
+.card{
+    background:white;
+    padding:18px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 3px 15px #00000012;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 8px 20px #00000020;
+}
+
+.product-image{
+    background:#edf5fa;
+    border-radius:10px;
+    padding:25px;
+    font-size:65px;
+    margin-bottom:15px;
+}
+
+.card h3{
+    margin-bottom:10px;
+}
+
+.card p{
+    color:#687386;
+    margin:8px 0;
+    font-size:14px;
+}
+
+.price{
+    color:#087eae;
+    font-size:21px;
+    font-weight:bold;
+    margin:12px;
+}
+
+/* BUTTONS */
+.btn{
+    background:#087eae;
+    color:white;
+    padding:10px 16px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    margin:5px;
+}
+
+.btn:hover{
+    background:#102b50;
+}
+
+.danger{
+    background:#dc3545;
+}
+
+.success{
+    background:#15965c;
+}
+
+/* CONTENT BOX */
+.panel{
+    background:white;
+    max-width:650px;
+    margin:35px auto;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 3px 15px #00000012;
+    text-align:center;
+}
+
+.panel h2{
+    color:#102b50;
+    margin-bottom:20px;
+}
+
+.panel input,.panel textarea{
+    width:90%;
+    margin:8px;
+}
+
+/* CART */
+.cart-item{
+    background:#f1f6fa;
+    padding:15px;
+    margin:10px 0;
+    border-radius:8px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+/* FOOTER */
+footer{
+    background:#101d35;
+    color:white;
+    text-align:center;
+    padding:25px;
+    margin-top:40px;
+}
+
+/* RESPONSIVE */
+@media(max-width:850px){
+    .products,.categories{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:550px){
+    header{
+        justify-content:center;
+        gap:15px;
+    }
+
+    .products,.categories{
+        grid-template-columns:1fr;
+    }
+
+    .hero h2{
+        font-size:28px;
+    }
+
+    .hero-icon{
+        font-size:65px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+<h1>Tech<span>Savvy.</span></h1>
+
+<nav>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('shop')">Shop</button>
+<button onclick="showPage('cart')">Cart 🛒 <span id="cartCount">0</span></button>
+<button onclick="showPage('orders')">Orders</button>
+<button onclick="showPage('login')">Login</button>
+<button onclick="showPage('admin')">Admin</button>
+</nav>
+</header>
+
+<!-- HOME -->
+<div id="home">
+
+<section class="hero">
+<div>
+<h2>Upgrade Your Digital Life</h2>
+<p>Discover the latest smartphones, laptops and electronic gadgets.</p>
+<p>Best products. Best prices. Best experience.</p>
+<button onclick="showPage('shop')">Shop Now →</button>
+</div>
+<div class="hero-icon">💻 📱</div>
+</section>
+
+<section class="section">
+<h2>Shop By Category</h2>
+
+<div class="categories">
+<div class="category" onclick="filterCategory('Smartphones')">
+<div class="emoji">📱</div>
+<h3>Smartphones</h3>
+</div>
+
+<div class="category" onclick="filterCategory('Laptops')">
+<div class="emoji">💻</div>
+<h3>Laptops</h3>
+</div>
+
+<div class="category" onclick="filterCategory('Tablets')">
+<div class="emoji">📲</div>
+<h3>Tablets</h3>
+</div>
+
+<div class="category" onclick="filterCategory('Accessories')">
+<div class="emoji">🎧</div>
+<h3>Accessories</h3>
+</div>
+</div>
+</section>
+
+</div>
+
+<!-- SHOP -->
+<div id="shop" hidden>
+<section class="section">
+
+<h2>Explore Our Products</h2>
+
+<div class="search">
+<input id="search" placeholder="Search products..." oninput="displayProducts()">
+
+<select id="categoryFilter" onchange="displayProducts()">
+<option value="All">All Categories</option>
+<option>Smartphones</option>
+<option>Laptops</option>
+<option>Tablets</option>
+<option>Accessories</option>
+</select>
+</div>
+
+<div class="products" id="productList"></div>
+
+</section>
+</div>
+
+<!-- CART -->
+<div id="cart" hidden>
+<div class="panel">
+<h2>🛒 Shopping Cart</h2>
+<div id="cartItems">Your cart is empty.</div>
+<h3 id="total">Total: ₹0</h3>
+<button class="btn success" onclick="checkout()">Proceed to Checkout</button>
+</div>
+</div>
+
+<!-- LOGIN -->
+<div id="login" hidden>
+<div class="panel">
+<h2>Customer Login</h2>
+<input id="customerName" placeholder="Enter Your Name">
+<input id="customerEmail" type="email" placeholder="Enter Email">
+<button class="btn" onclick="login()">Login</button>
+<p id="loginMsg"></p>
+</div>
+</div>
+
+<!-- CHECKOUT -->
+<div id="checkoutPage" hidden>
+<div class="panel">
+<h2>Checkout</h2>
+<input id="buyerName" placeholder="Customer Name">
+<input id="buyerPhone" placeholder="Phone Number">
+<input id="buyerAddress" placeholder="Delivery Address">
+<button class="btn success" onclick="placeOrder()">Place Order</button>
+<p id="orderMsg"></p>
+</div>
+</div>
+
+<!-- ORDERS -->
+<div id="orders" hidden>
+<div class="panel">
+<h2>My Orders</h2>
+<div id="orderHistory">No orders yet.</div>
+</div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin" hidden>
+<div class="panel">
+<h2>⚙ Admin Dashboard</h2>
+
+<h3>Add New Product</h3>
+<input id="newName" placeholder="Product Name">
+<input id="newPrice" type="number" placeholder="Product Price">
+<select id="newCategory">
+<option>Smartphones</option>
+<option>Laptops</option>
+<option>Tablets</option>
+<option>Accessories</option>
+</select>
+<textarea id="newDescription" placeholder="Product Description"></textarea>
+<button class="btn" onclick="addProduct()">Add Product</button>
+
+<h3>Manage Products</h3>
+<div id="adminProducts"></div>
+
+<h3>Customer Details</h3>
+<div id="customerDetails">No customers yet.</div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+<h3>TechSavvy Electronics</h3>
+<p>Your Trusted Online Gadget Store</p>
+<p>© 2026 TechSavvy. All Rights Reserved.</p>
+</footer>
+
+<script>
+
+// PRODUCT DATABASE
+let products=[
+{id:1,name:"Smartphone",category:"Smartphones",
+price:15000,description:"Latest smartphone with advanced camera.",icon:"📱"},
+
+{id:2,name:"Laptop",category:"Laptops",
+price:45000,description:"High performance laptop.",icon:"💻"},
+
+{id:3,name:"Tablet",category:"Tablets",
+price:20000,description:"Lightweight tablet for everyday use.",icon:"📲"},
+
+{id:4,name:"Headphones",category:"Accessories",
+price:2000,description:"Wireless headphones with clear sound.",icon:"🎧"}
+];
+
+let cart=[];
+let orders=[];
+let customers=[];
+let currentUser="";
+
+// NAVIGATION
+function showPage(page){
+document.querySelectorAll("body > div").forEach(
+d=>d.hidden=true
+);
+document.getElementById(page).hidden=false;
+
+if(page==="shop") displayProducts();
+if(page==="cart") displayCart();
+if(page==="admin") displayAdmin();
+if(page==="orders") displayOrders();
+
+window.scrollTo(0,0);
+}
+
+// FILTER CATEGORY
+function filterCategory(category){
+showPage("shop");
+document.getElementById("categoryFilter").value=category;
+displayProducts();
+}
+
+// DISPLAY PRODUCTS
+function displayProducts(){
+let search=document.getElementById("search").value.toLowerCase();
+let category=document.getElementById("categoryFilter").value;
+
+let filtered=products.filter(p=>
+p.name.toLowerCase().includes(search) &&
+(category==="All" || p.category===category)
+);
+
+document.getElementById("productList").innerHTML=
+filtered.map(p=>`
+<div class="card">
+<div class="product-image">${p.icon}</div>
+<h3>${p.name}</h3>
+<p>${p.category}</p>
+<p>${p.description}</p>
+<div class="price">₹${p.price}</div>
+<button class="btn" onclick="addToCart(${p.id})">
+Add to Cart
+</button>
+</div>
+`).join("") || "No products found.";
+}
+
+// ADD TO CART
+function addToCart(id){
+let p=products.find(x=>x.id===id);
+let item=cart.find(x=>x.id===id);
+
+if(item){
+item.quantity++;
+}else{
+cart.push({...p,quantity:1});
+}
+
+updateCount();
+alert("Product added to cart!");
+}
+
+// CART COUNT
+function updateCount(){
+document.getElementById("cartCount").innerHTML=
+cart.reduce((sum,p)=>sum+p.quantity,0);
+}
+
+// DISPLAY CART
+function displayCart(){
+let total=0;
+
+document.getElementById("cartItems").innerHTML=
+cart.length===0?"Your cart is empty.":
+
+cart.map(p=>{
+total+=p.price*p.quantity;
+return `
+<div class="cart-item">
+<span>${p.name} - ₹${p.price}</span>
+<span>
+<button class="btn" onclick="changeQty(${p.id},1)">+</button>
+${p.quantity}
+<button class="btn" onclick="changeQty(${p.id},-1)">-</button>
+<button class="btn danger" onclick="removeItem(${p.id})">Remove</button>
+</span>
+</div>`;
+}).join("");
+
+document.getElementById("total").innerHTML="Total: ₹"+total;
+}
+
+// CHANGE QUANTITY
+function changeQty(id,value){
+let item=cart.find(p=>p.id===id);
+item.quantity+=value;
+
+if(item.quantity<=0){
+removeItem(id);
+}else{
+displayCart();
+}
+updateCount();
+}
+
+// REMOVE ITEM
+function removeItem(id){
+cart=cart.filter(p=>p.id!==id);
+displayCart();
+updateCount();
+}
+
+// LOGIN
+function login(){
+let name=document.getElementById("customerName").value;
+let email=document.getElementById("customerEmail").value;
+
+if(!name || !email){
+alert("Enter name and email");
+return;
+}
+
+currentUser=name;
+customers.push({name,email});
+
+document.getElementById("loginMsg").innerHTML=
+"Welcome "+name+"! Login successful.";
+}
+
+// CHECKOUT
+function checkout(){
+if(cart.length===0){
+alert("Your cart is empty");
+return;
+}
+
+showPage("checkoutPage");
+
+if(currentUser){
+document.getElementById("buyerName").value=currentUser;
+}
+}
+
+// PLACE ORDER
+function placeOrder(){
+let name=document.getElementById("buyerName").value;
+let phone=document.getElementById("buyerPhone").value;
+let address=document.getElementById("buyerAddress").value;
+
+if(!name || !phone || !address){
+alert("Please fill all details");
+return;
+}
+
+let total=cart.reduce((sum,p)=>sum+p.price*p.quantity,0);
+
+orders.push({
+name:name,
+items:cart.map(p=>p.name+" x "+p.quantity).join(", "),
+total:total,
+status:"Order Placed"
+});
+
+customers.push({name:name,email:"Checkout Customer"});
+
+cart=[];
+updateCount();
+
+document.getElementById("orderMsg").innerHTML=
+"Order placed successfully!";
+
+displayOrders();
+}
+
+// ORDER HISTORY
+function displayOrders(){
+document.getElementById("orderHistory").innerHTML=
+orders.length===0?"No orders yet.":
+
+orders.map((o,i)=>`
+<div class="cart-item">
+<div>
+<b>Order ${i+1}</b><br>
+${o.items}<br>
+Total: ₹${o.total}<br>
+Status: ${o.status}
+</div>
+</div>
+`).join("");
+}
+
+// ADMIN ADD PRODUCT
+function addProduct(){
+let name=document.getElementById("newName").value;
+let price=Number(document.getElementById("newPrice").value);
+let category=document.getElementById("newCategory").value;
+let description=document.getElementById("newDescription").value;
+
+if(!name || price<=0){
+alert("Enter valid product details");
+return;
+}
+
+products.push({
+id:Date.now(),
+name:name,
+price:price,
+category:category,
+description:description,
+icon:"🛍️"
+});
+
+alert("Product added successfully!");
+displayAdmin();
+}
+
+// ADMIN PRODUCT MANAGEMENT
+function displayAdmin(){
+document.getElementById("adminProducts").innerHTML=
+products.map(p=>`
+<div class="cart-item">
+<span>${p.name} - ₹${p.price}</span>
+<span>
+<button class="btn" onclick="editPrice(${p.id})">Edit Price</button>
+<button class="btn danger" onclick="deleteProduct(${p.id})">Delete</button>
+</span>
+</div>
+`).join("");
+
+document.getElementById("customerDetails").innerHTML=
+customers.length===0?"No customers yet.":
+
+customers.map(c=>`
+<p>${c.name} - ${c.email}</p>
+`).join("");
+}
+
+// EDIT PRICE
+function editPrice(id){
+let p=products.find(x=>x.id===id);
+let price=prompt("Enter new price:",p.price);
+
+if(price!==null && Number(price)>0){
+p.price=Number(price);
+displayAdmin();
+alert("Price updated!");
+}
+}
+
+// DELETE PRODUCT
+function deleteProduct(id){
+products=products.filter(p=>p.id!==id);
+displayAdmin();
+alert("Product deleted!");
+}
+
+// INITIAL DISPLAY
+displayProducts();
+
+</script>
+</body>
+</html>

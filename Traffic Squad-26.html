@@ -1,0 +1,985 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traffic Squad - Challan Management</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f2f5f9;
+    color: #263238;
+}
+
+header {
+    background: #142b4a;
+    color: white;
+    padding: 18px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+header h2 {
+    color: #ffca55;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+button {
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    background: #ffca55;
+    color: #142b4a;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+nav button {
+    background: transparent;
+    color: white;
+}
+
+nav button:hover {
+    background: #294565;
+}
+
+.hero {
+    background: linear-gradient(120deg, #142b4a, #245b83);
+    text-align: center;
+    color: white;
+    padding: 65px 20px;
+}
+
+.hero h1 {
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 30px auto;
+}
+
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 18px;
+}
+
+h2, h3 {
+    margin-bottom: 15px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccd5df;
+    border-radius: 5px;
+    margin: 8px 0 15px;
+    font-size: 14px;
+}
+
+textarea {
+    min-height: 80px;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.primary {
+    background: #176b87;
+    color: white;
+}
+
+.success {
+    background: #218838;
+    color: white;
+}
+
+.danger {
+    background: #dc3545;
+    color: white;
+}
+
+.small {
+    padding: 7px 10px;
+    font-size: 12px;
+    margin: 4px;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 15px;
+    background: #d4edda;
+    color: #155724;
+    font-size: 12px;
+    margin: 8px 0;
+}
+
+.pending {
+    background: #fff0c2;
+    color: #765300;
+}
+
+.hidden {
+    display: none;
+}
+
+.message {
+    padding: 12px;
+    background: #eaf3f8;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.case-photo {
+    max-width: 250px;
+    max-height: 180px;
+    display: block;
+    object-fit: contain;
+    margin: 12px 0;
+    border-radius: 6px;
+}
+
+.receipt {
+    border: 2px dashed #176b87;
+    padding: 20px;
+    background: #fbfdff;
+    margin-top: 12px;
+}
+
+footer {
+    background: #142b4a;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+@media(max-width: 600px) {
+    header {
+        flex-direction: column;
+    }
+
+    .hero h1 {
+        font-size: 27px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>🚦 Traffic Squad</h2>
+    <nav>
+        <button onclick="showHome()">Home</button>
+        <button onclick="showLogin()">Login</button>
+        <button onclick="showRegister()">Register</button>
+        <button onclick="logout()">Logout</button>
+    </nav>
+</header>
+
+<!-- HOME PAGE -->
+<section id="home">
+    <div class="hero">
+        <h1>Traffic Squad</h1>
+        <p>Penalty Collection & Management-Based Web Application</p>
+        <p>View traffic challans, report violations and manage traffic cases online.</p>
+        <button onclick="showLogin()">Get Started</button>
+    </div>
+
+    <div class="container">
+        <h2 style="text-align:center;">Our Features</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>🚘 Online Challan</h3>
+                <p>Vehicle owners can view their traffic penalties online.</p>
+            </div>
+            <div class="card">
+                <h3>👮 Police Case Creation</h3>
+                <p>Police officers can create cases with vehicle details and proof photos.</p>
+            </div>
+            <div class="card">
+                <h3>📊 Daily Reports</h3>
+                <p>Administrators can monitor daily traffic violation reports.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- REGISTER -->
+<section id="registerPage" class="container hidden">
+    <div class="card">
+        <h2>User Registration</h2>
+
+        <label>Full Name</label>
+        <input type="text" id="regName" placeholder="Enter your name">
+
+        <label>Email</label>
+        <input type="email" id="regEmail" placeholder="Enter email">
+
+        <label>Phone Number</label>
+        <input type="tel" id="regPhone" placeholder="Enter phone number">
+
+        <label>Vehicle Number</label>
+        <input type="text" id="regVehicle" placeholder="Example: TN01AB1234">
+
+        <label>Password</label>
+        <input type="password" id="regPassword" placeholder="Create password">
+
+        <button class="primary" onclick="registerUser()">Register</button>
+        <p id="registerMessage"></p>
+    </div>
+</section>
+
+<!-- LOGIN -->
+<section id="loginPage" class="container hidden">
+    <div class="card">
+        <h2>Login</h2>
+
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="Enter email">
+
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter password">
+
+        <label>Login As</label>
+        <select id="loginRole">
+            <option value="user">User</option>
+            <option value="police">Police</option>
+            <option value="admin">Admin</option>
+        </select>
+
+        <button class="primary" onclick="login()">Login</button>
+        <p id="loginMessage"></p>
+
+        <div class="message">
+            <b>Demo Admin Account</b><br>
+            Email: admin@trafficsquad.com<br>
+            Password: admin123
+        </div>
+    </div>
+</section>
+
+<!-- USER DASHBOARD -->
+<section id="userDashboard" class="container hidden">
+    <h2>User Dashboard</h2>
+
+    <div class="card">
+        <h3>My Profile</h3>
+        <div id="userProfile"></div>
+    </div>
+
+    <div class="card">
+        <h3>View My Challans</h3>
+        <p>View all traffic penalties registered against your account.</p>
+        <button class="primary" onclick="loadUserCases()">View Challans</button>
+        <div id="userChallans"></div>
+    </div>
+
+    <div class="card">
+        <h3>View Case Filed</h3>
+        <div id="userCases"></div>
+    </div>
+</section>
+
+<!-- POLICE DASHBOARD -->
+<section id="policeDashboard" class="container hidden">
+    <h2>Police Dashboard</h2>
+
+    <div class="card">
+        <h3>Traffic Rules</h3>
+        <div id="trafficRules"></div>
+    </div>
+
+    <div class="card">
+        <h3>Create Traffic Violation Case</h3>
+
+        <label>Vehicle Owner Name</label>
+        <input type="text" id="ownerName" placeholder="Enter owner name">
+
+        <label>Vehicle Owner Email</label>
+        <input type="email" id="ownerEmail" placeholder="Enter registered user email">
+
+        <label>Vehicle Number</label>
+        <input type="text" id="vehicleNumber" placeholder="Example: TN01AB1234">
+
+        <label>Violation Type</label>
+        <select id="violationType" onchange="updateFine()">
+            <option value="">Select Violation</option>
+            <option value="Helmet Violation">Helmet Violation</option>
+            <option value="No Seat Belt">No Seat Belt</option>
+            <option value="Signal Jumping">Signal Jumping</option>
+            <option value="Over Speeding">Over Speeding</option>
+            <option value="Wrong Parking">Wrong Parking</option>
+            <option value="Driving Without Licence">Driving Without Licence</option>
+        </select>
+
+        <label>Fine Amount (₹)</label>
+        <input type="number" id="fineAmount" placeholder="Fine amount">
+
+        <label>Violation Location</label>
+        <input type="text" id="caseLocation" placeholder="Enter location">
+
+        <label>Upload Vehicle / Violation Proof Photo</label>
+        <input type="file" id="proofPhoto" accept="image/*" onchange="previewPhoto()">
+
+        <img id="photoPreview" class="case-photo hidden" alt="Proof preview">
+
+        <label>Case Description</label>
+        <textarea id="caseDescription" placeholder="Enter violation details"></textarea>
+
+        <button class="primary" onclick="createCase()">Create Case & Generate Challan</button>
+        <p id="caseMessage"></p>
+        <div id="newReceipt"></div>
+    </div>
+
+    <div class="card">
+        <h3>Manage Traffic Reports - Live Updates</h3>
+        <button class="primary" onclick="loadPoliceCases()">Refresh Reports</button>
+        <div id="policeReports"></div>
+    </div>
+</section>
+
+<!-- ADMIN DASHBOARD -->
+<section id="adminDashboard" class="container hidden">
+    <h2>Admin Dashboard</h2>
+
+    <div class="card">
+        <h3>Manage Police Login</h3>
+
+        <label>Police Officer Name</label>
+        <input type="text" id="policeName" placeholder="Enter officer name">
+
+        <label>Police Email</label>
+        <input type="email" id="policeEmail" placeholder="Enter police email">
+
+        <label>Password</label>
+        <input type="password" id="policePassword" placeholder="Create password">
+
+        <button class="primary" onclick="addPolice()">Create Police Login</button>
+        <p id="policeMessage"></p>
+
+        <h3>Police Accounts</h3>
+        <div id="policeList"></div>
+    </div>
+
+    <div class="card">
+        <h3>Daily Traffic Report</h3>
+
+        <label>Select Date</label>
+        <input type="date" id="reportDate">
+
+        <button class="primary" onclick="loadDailyReport()">View Daily Report</button>
+
+        <div id="dailyReport"></div>
+    </div>
+
+    <div class="card">
+        <h3>All Traffic Cases</h3>
+        <div id="allCases"></div>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Traffic Squad | Penalty Collection & Management System</p>
+</footer>
+
+<script>
+
+// DATABASE USING LOCAL STORAGE
+let users = JSON.parse(localStorage.getItem("ts_users")) || [];
+let police = JSON.parse(localStorage.getItem("ts_police")) || [];
+let cases = JSON.parse(localStorage.getItem("ts_cases")) || [];
+
+let currentUser = JSON.parse(sessionStorage.getItem("ts_currentUser")) || null;
+let selectedPhoto = "";
+
+// ADMIN LOGIN
+const ADMIN_EMAIL = "admin@trafficsquad.com";
+const ADMIN_PASSWORD = "admin123";
+
+// SAVE DATA
+function saveData() {
+    localStorage.setItem("ts_users", JSON.stringify(users));
+    localStorage.setItem("ts_police", JSON.stringify(police));
+    localStorage.setItem("ts_cases", JSON.stringify(cases));
+}
+
+// HTML ESCAPE
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+// PAGE NAVIGATION
+function hideAll() {
+    let pages = [
+        "home", "registerPage", "loginPage",
+        "userDashboard", "policeDashboard", "adminDashboard"
+    ];
+
+    pages.forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+    });
+}
+
+function showHome() {
+    hideAll();
+    document.getElementById("home").classList.remove("hidden");
+}
+
+function showRegister() {
+    hideAll();
+    document.getElementById("registerPage").classList.remove("hidden");
+}
+
+function showLogin() {
+    hideAll();
+    document.getElementById("loginPage").classList.remove("hidden");
+}
+
+// USER REGISTRATION
+function registerUser() {
+    let name = document.getElementById("regName").value.trim();
+    let email = document.getElementById("regEmail").value.trim().toLowerCase();
+    let phone = document.getElementById("regPhone").value.trim();
+    let vehicle = document.getElementById("regVehicle").value.trim().toUpperCase();
+    let password = document.getElementById("regPassword").value;
+
+    if (!name || !email || !phone || !vehicle || !password) {
+        alert("Please fill all fields.");
+        return;
+    }
+
+    if (users.some(u => u.email === email)) {
+        alert("Email already registered.");
+        return;
+    }
+
+    users.push({ name, email, phone, vehicle, password });
+
+    saveData();
+
+    document.getElementById("registerMessage").innerText =
+        "Registration successful! Please login.";
+
+    alert("User registered successfully.");
+    showLogin();
+}
+
+// LOGIN
+function login() {
+    let email = document.getElementById("loginEmail").value.trim().toLowerCase();
+    let password = document.getElementById("loginPassword").value;
+    let role = document.getElementById("loginRole").value;
+
+    let account = null;
+
+    if (role === "admin") {
+        if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+            account = {
+                name: "Administrator",
+                email,
+                role: "admin"
+            };
+        }
+    }
+
+    if (role === "user") {
+        account = users.find(u =>
+            u.email === email && u.password === password
+        );
+
+        if (account) {
+            account = { ...account, role: "user" };
+        }
+    }
+
+    if (role === "police") {
+        account = police.find(p =>
+            p.email === email && p.password === password
+        );
+
+        if (account) {
+            account = { ...account, role: "police" };
+        }
+    }
+
+    if (!account) {
+        document.getElementById("loginMessage").innerText =
+            "Invalid email or password.";
+        return;
+    }
+
+    currentUser = account;
+    sessionStorage.setItem("ts_currentUser", JSON.stringify(currentUser));
+
+    openDashboard();
+}
+
+// OPEN DASHBOARD
+function openDashboard() {
+    hideAll();
+
+    if (currentUser.role === "user") {
+        document.getElementById("userDashboard").classList.remove("hidden");
+        loadUserDashboard();
+    }
+
+    else if (currentUser.role === "police") {
+        document.getElementById("policeDashboard").classList.remove("hidden");
+        loadPoliceDashboard();
+    }
+
+    else {
+        document.getElementById("adminDashboard").classList.remove("hidden");
+        loadAdminDashboard();
+    }
+}
+
+// LOGOUT
+function logout() {
+    currentUser = null;
+    sessionStorage.removeItem("ts_currentUser");
+    showHome();
+}
+
+// USER DASHBOARD
+function loadUserDashboard() {
+    document.getElementById("userProfile").innerHTML = `
+        <p><b>Name:</b> ${escapeHTML(currentUser.name)}</p>
+        <p><b>Email:</b> ${escapeHTML(currentUser.email)}</p>
+        <p><b>Phone:</b> ${escapeHTML(currentUser.phone)}</p>
+        <p><b>Vehicle:</b> ${escapeHTML(currentUser.vehicle)}</p>
+    `;
+
+    loadUserCases();
+}
+
+// VIEW CHALLAN AND CASE FILED
+function loadUserCases() {
+    let myCases = cases.filter(c =>
+        c.ownerEmail === currentUser.email
+    );
+
+    let challanOutput = document.getElementById("userChallans");
+    let caseOutput = document.getElementById("userCases");
+
+    if (myCases.length === 0) {
+        challanOutput.innerHTML = "<p>No challans found.</p>";
+        caseOutput.innerHTML = "<p>No cases filed against your account.</p>";
+        return;
+    }
+
+    challanOutput.innerHTML = myCases.map(c => `
+        <div class="card receipt">
+            <h3>Traffic Challan Receipt</h3>
+            <p><b>Case ID:</b> ${escapeHTML(c.id)}</p>
+            <p><b>Owner:</b> ${escapeHTML(c.ownerName)}</p>
+            <p><b>Vehicle Number:</b> ${escapeHTML(c.vehicle)}</p>
+            <p><b>Violation:</b> ${escapeHTML(c.violation)}</p>
+            <p><b>Fine Amount:</b> ₹${Number(c.fine).toLocaleString("en-IN")}</p>
+            <p><b>Location:</b> ${escapeHTML(c.location)}</p>
+            <p><b>Date:</b> ${escapeHTML(c.date)}</p>
+            <p><b>Police Officer:</b> ${escapeHTML(c.policeName)}</p>
+            <span class="status">${escapeHTML(c.status)}</span>
+        </div>
+    `).join("");
+
+    caseOutput.innerHTML = myCases.map(c => `
+        <div class="card">
+            <h3>Case ${escapeHTML(c.id)}</h3>
+            <p><b>Violation:</b> ${escapeHTML(c.violation)}</p>
+            <p><b>Description:</b> ${escapeHTML(c.description)}</p>
+            <p><b>Fine:</b> ₹${Number(c.fine).toLocaleString("en-IN")}</p>
+            ${c.photo ? `<img class="case-photo" src="${c.photo}" alt="Violation proof">` : ""}
+            <p><b>Location:</b> ${escapeHTML(c.location)}</p>
+            <a target="_blank" rel="noopener"
+               href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.location)}">
+               View Location on Google Maps
+            </a>
+        </div>
+    `).join("");
+}
+
+// POLICE TRAFFIC RULES
+const rules = [
+    ["Helmet Violation", "Fine amount depends on applicable traffic rules."],
+    ["No Seat Belt", "Fine amount depends on applicable traffic rules."],
+    ["Signal Jumping", "Fine amount depends on applicable traffic rules."],
+    ["Over Speeding", "Fine amount depends on applicable traffic rules."],
+    ["Wrong Parking", "Fine amount depends on applicable traffic rules."],
+    ["Driving Without Licence", "Fine amount depends on applicable traffic rules."]
+];
+
+function loadPoliceDashboard() {
+    document.getElementById("trafficRules").innerHTML =
+        rules.map(r => `
+            <div class="message">
+                <b>${escapeHTML(r[0])}</b><br>
+                ${escapeHTML(r[1])}
+            </div>
+        `).join("");
+
+    loadPoliceCases();
+}
+
+// SUGGEST DEMO FINE AMOUNT
+function updateFine() {
+    let violation = document.getElementById("violationType").value;
+
+    // Sample values for lab demonstration only.
+    let fines = {
+        "Helmet Violation": 500,
+        "No Seat Belt": 1000,
+        "Signal Jumping": 1000,
+        "Over Speeding": 2000,
+        "Wrong Parking": 500,
+        "Driving Without Licence": 5000
+    };
+
+    document.getElementById("fineAmount").value = fines[violation] || "";
+}
+
+// PHOTO PREVIEW
+function previewPhoto() {
+    let file = document.getElementById("proofPhoto").files[0];
+    let preview = document.getElementById("photoPreview");
+
+    selectedPhoto = "";
+
+    if (!file) {
+        preview.classList.add("hidden");
+        return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+        alert("Please select an image file.");
+        document.getElementById("proofPhoto").value = "";
+        return;
+    }
+
+    if (file.size > 1024 * 1024) {
+        alert("Please select an image smaller than 1 MB for this demo.");
+        document.getElementById("proofPhoto").value = "";
+        preview.classList.add("hidden");
+        return;
+    }
+
+    let reader = new FileReader();
+
+    reader.onload = function(e) {
+        selectedPhoto = e.target.result;
+        preview.src = selectedPhoto;
+        preview.classList.remove("hidden");
+    };
+
+    reader.readAsDataURL(file);
+}
+
+// CREATE CASE
+function createCase() {
+    let ownerName = document.getElementById("ownerName").value.trim();
+    let ownerEmail = document.getElementById("ownerEmail").value.trim().toLowerCase();
+    let vehicle = document.getElementById("vehicleNumber").value.trim().toUpperCase();
+    let violation = document.getElementById("violationType").value;
+    let fine = Number(document.getElementById("fineAmount").value);
+    let location = document.getElementById("caseLocation").value.trim();
+    let description = document.getElementById("caseDescription").value.trim();
+
+    if (!ownerName || !ownerEmail || !vehicle || !violation ||
+        !fine || fine <= 0 || !location || !description) {
+        alert("Please fill all case details correctly.");
+        return;
+    }
+
+    let owner = users.find(u => u.email === ownerEmail);
+
+    if (!owner) {
+        alert("No registered user found with this email.");
+        return;
+    }
+
+    if (owner.vehicle.toUpperCase() !== vehicle) {
+        alert("Vehicle number does not match the registered user's vehicle.");
+        return;
+    }
+
+    let caseID = "TS" + Date.now().toString().slice(-8);
+    let date = new Date().toLocaleString();
+
+    let newCase = {
+        id: caseID,
+        ownerName,
+        ownerEmail,
+        vehicle,
+        violation,
+        fine,
+        location,
+        description,
+        photo: selectedPhoto,
+        policeName: currentUser.name,
+        date,
+        status: "Fine Pending"
+    };
+
+    cases.push(newCase);
+    saveData();
+
+    document.getElementById("caseMessage").innerText =
+        "Case created successfully! Challan generated.";
+
+    showReceipt(newCase);
+
+    document.getElementById("ownerName").value = "";
+    document.getElementById("ownerEmail").value = "";
+    document.getElementById("vehicleNumber").value = "";
+    document.getElementById("violationType").value = "";
+    document.getElementById("fineAmount").value = "";
+    document.getElementById("caseLocation").value = "";
+    document.getElementById("caseDescription").value = "";
+    document.getElementById("proofPhoto").value = "";
+    document.getElementById("photoPreview").classList.add("hidden");
+    selectedPhoto = "";
+
+    loadPoliceCases();
+}
+
+// GENERATE RECEIPT
+function showReceipt(c) {
+    document.getElementById("newReceipt").innerHTML = `
+        <div class="receipt">
+            <h3>🚦 Traffic Squad - Challan Receipt</h3>
+            <p><b>Challan ID:</b> ${escapeHTML(c.id)}</p>
+            <p><b>Owner:</b> ${escapeHTML(c.ownerName)}</p>
+            <p><b>Vehicle Number:</b> ${escapeHTML(c.vehicle)}</p>
+            <p><b>Violation:</b> ${escapeHTML(c.violation)}</p>
+            <p><b>Fine Amount:</b> ₹${Number(c.fine).toLocaleString("en-IN")}</p>
+            <p><b>Location:</b> ${escapeHTML(c.location)}</p>
+            <p><b>Date:</b> ${escapeHTML(c.date)}</p>
+            <p><b>Status:</b> ${escapeHTML(c.status)}</p>
+            <p>Challan generated successfully.</p>
+        </div>
+    `;
+}
+
+// POLICE MANAGE REPORTS
+function loadPoliceCases() {
+    let output = document.getElementById("policeReports");
+
+    if (cases.length === 0) {
+        output.innerHTML = "<p>No traffic reports available.</p>";
+        return;
+    }
+
+    output.innerHTML = cases.map(c => `
+        <div class="card">
+            <h3>Case ID: ${escapeHTML(c.id)}</h3>
+            <p><b>Owner:</b> ${escapeHTML(c.ownerName)}</p>
+            <p><b>Vehicle:</b> ${escapeHTML(c.vehicle)}</p>
+            <p><b>Violation:</b> ${escapeHTML(c.violation)}</p>
+            <p><b>Fine:</b> ₹${Number(c.fine).toLocaleString("en-IN")}</p>
+            <p><b>Date:</b> ${escapeHTML(c.date)}</p>
+            <span class="status">${escapeHTML(c.status)}</span>
+        </div>
+    `).join("");
+}
+
+// ADMIN DASHBOARD
+function loadAdminDashboard() {
+    document.getElementById("reportDate").value =
+        new Date().toISOString().slice(0, 10);
+
+    loadPoliceList();
+    loadDailyReport();
+    loadAllCases();
+}
+
+// ADD POLICE ACCOUNT
+function addPolice() {
+    let name = document.getElementById("policeName").value.trim();
+    let email = document.getElementById("policeEmail").value.trim().toLowerCase();
+    let password = document.getElementById("policePassword").value;
+
+    if (!name || !email || !password) {
+        alert("Please fill all police details.");
+        return;
+    }
+
+    if (email === ADMIN_EMAIL ||
+        police.some(p => p.email === email) ||
+        users.some(u => u.email === email)) {
+        alert("This email is already in use.");
+        return;
+    }
+
+    police.push({ name, email, password });
+    saveData();
+
+    document.getElementById("policeName").value = "";
+    document.getElementById("policeEmail").value = "";
+    document.getElementById("policePassword").value = "";
+
+    document.getElementById("policeMessage").innerText =
+        "Police login created successfully.";
+
+    loadPoliceList();
+}
+
+// MANAGE POLICE LOGIN
+function loadPoliceList() {
+    let output = document.getElementById("policeList");
+
+    if (police.length === 0) {
+        output.innerHTML = "<p>No police accounts created yet.</p>";
+        return;
+    }
+
+    output.innerHTML = police.map((p, index) => `
+        <div class="message">
+            <p><b>Name:</b> ${escapeHTML(p.name)}</p>
+            <p><b>Email:</b> ${escapeHTML(p.email)}</p>
+            <button class="danger small" onclick="deletePolice(${index})">
+                Delete Account
+            </button>
+        </div>
+    `).join("");
+}
+
+function deletePolice(index) {
+    if (!confirm("Delete this police login?")) return;
+
+    police.splice(index, 1);
+    saveData();
+    loadPoliceList();
+}
+
+// ADMIN DAILY REPORT
+function loadDailyReport() {
+    let selectedDate = document.getElementById("reportDate").value;
+
+    if (!selectedDate) return;
+
+    let dailyCases = cases.filter(c => {
+        let caseDate = new Date(c.date).toLocaleDateString("en-CA");
+        return caseDate === selectedDate;
+    });
+
+    let totalFine = dailyCases.reduce((sum, c) => sum + Number(c.fine), 0);
+
+    document.getElementById("dailyReport").innerHTML = `
+        <div class="grid">
+            <div class="card">
+                <h3>Total Cases</h3>
+                <h2>${dailyCases.length}</h2>
+            </div>
+            <div class="card">
+                <h3>Total Fine Amount</h3>
+                <h2>₹${totalFine.toLocaleString("en-IN")}</h2>
+            </div>
+        </div>
+
+        ${dailyCases.length === 0
+            ? "<p>No cases found for this date.</p>"
+            : dailyCases.map(c => `
+                <div class="message">
+                    <b>${escapeHTML(c.id)}</b> -
+                    ${escapeHTML(c.vehicle)} -
+                    ${escapeHTML(c.violation)} -
+                    ₹${Number(c.fine).toLocaleString("en-IN")}
+                </div>
+            `).join("")
+        }
+    `;
+}
+
+// VIEW ALL CASES
+function loadAllCases() {
+    let output = document.getElementById("allCases");
+
+    if (cases.length === 0) {
+        output.innerHTML = "<p>No cases available.</p>";
+        return;
+    }
+
+    output.innerHTML = cases.map(c => `
+        <div class="message">
+            <b>${escapeHTML(c.id)}</b><br>
+            Owner: ${escapeHTML(c.ownerName)}<br>
+            Vehicle: ${escapeHTML(c.vehicle)}<br>
+            Violation: ${escapeHTML(c.violation)}<br>
+            Fine: ₹${Number(c.fine).toLocaleString("en-IN")}<br>
+            Police: ${escapeHTML(c.policeName)}
+        </div>
+    `).join("");
+}
+
+// REFRESH WHEN ANOTHER TAB CHANGES LOCAL DATA
+window.addEventListener("storage", function(event) {
+    if (event.key === "ts_cases") {
+        cases = JSON.parse(localStorage.getItem("ts_cases")) || [];
+
+        if (currentUser?.role === "user") loadUserCases();
+        if (currentUser?.role === "police") loadPoliceCases();
+        if (currentUser?.role === "admin") {
+            loadDailyReport();
+            loadAllCases();
+        }
+    }
+});
+
+// RESTORE LOGIN SESSION
+if (currentUser) {
+    openDashboard();
+} else {
+    showHome();
+}
+
+</script>
+
+</body>
+</html>

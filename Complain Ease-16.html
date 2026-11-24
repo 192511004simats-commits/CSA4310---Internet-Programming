@@ -1,0 +1,1576 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ComplainEase - Complaint Management System</title>
+
+<!-- Leaflet map library -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f2f5fa;
+    color: #263449;
+}
+
+header {
+    background: #183b63;
+    color: white;
+    padding: 18px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+header h2 {
+    font-size: 25px;
+}
+
+nav {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+button {
+    border: none;
+    background: #1675c1;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 3px;
+}
+
+button:hover {
+    background: #10558d;
+}
+
+.logout {
+    background: #d94b4b;
+}
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 30px auto;
+}
+
+.hero {
+    background: linear-gradient(120deg, #183b63, #247db8);
+    color: white;
+    text-align: center;
+    padding: 65px 20px;
+    border-radius: 12px;
+}
+
+.hero h1 {
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 18px;
+    margin-top: 25px;
+}
+
+.card {
+    background: white;
+    padding: 23px;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px #00000012;
+    margin-bottom: 18px;
+}
+
+.card h3 {
+    color: #183b63;
+    margin-bottom: 12px;
+}
+
+.card p {
+    line-height: 1.5;
+}
+
+.form-box {
+    background: white;
+    max-width: 650px;
+    margin: 30px auto;
+    padding: 28px;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px #00000015;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 11px;
+    margin: 8px 0 15px;
+    border: 1px solid #cbd3df;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+h2.section-title {
+    color: #183b63;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin-top: 15px;
+    min-width: 650px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #dce2e9;
+    text-align: left;
+    font-size: 14px;
+}
+
+th {
+    background: #183b63;
+    color: white;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 12px;
+    font-size: 12px;
+    background: #fff0cc;
+    color: #805500;
+}
+
+.status.Resolved {
+    background: #d8f5df;
+    color: #17642a;
+}
+
+.status.Rejected {
+    background: #ffe0e0;
+    color: #a00000;
+}
+
+.status.In-Progress {
+    background: #dcecff;
+    color: #14528c;
+}
+
+#map {
+    height: 300px;
+    width: 100%;
+    border-radius: 8px;
+    margin: 10px 0 15px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.small-text {
+    color: #66758a;
+    font-size: 13px;
+}
+
+footer {
+    background: #183b63;
+    color: white;
+    text-align: center;
+    padding: 18px;
+    margin-top: 40px;
+}
+
+@media(max-width:600px) {
+    header {
+        padding: 15px;
+    }
+
+    .container {
+        width: 94%;
+    }
+
+    .hero h1 {
+        font-size: 27px;
+    }
+
+    .form-box {
+        padding: 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>ComplainEase</h2>
+    <nav id="navigation">
+        <button onclick="showHome()">Home</button>
+        <button onclick="showLogin()">Login</button>
+        <button onclick="showRegister()">Register</button>
+    </nav>
+</header>
+
+<main class="container" id="app"></main>
+
+<footer>
+    <p>© 2026 ComplainEase | Online Complaint Management System</p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+// -------------------- DATA STORAGE --------------------
+
+let users = JSON.parse(localStorage.getItem("ce_users")) || [];
+let officers = JSON.parse(localStorage.getItem("ce_officers")) || [];
+let complaints = JSON.parse(localStorage.getItem("ce_complaints")) || [];
+let feedbacks = JSON.parse(localStorage.getItem("ce_feedbacks")) || [];
+let settings = JSON.parse(localStorage.getItem("ce_settings")) || {
+    postComplaint: true,
+    feedback: true,
+    contact: true,
+    tracking: true
+};
+
+let currentUser = JSON.parse(sessionStorage.getItem("ce_current")) || null;
+let map = null;
+let selectedLocation = "";
+
+function saveData() {
+    localStorage.setItem("ce_users", JSON.stringify(users));
+    localStorage.setItem("ce_officers", JSON.stringify(officers));
+    localStorage.setItem("ce_complaints", JSON.stringify(complaints));
+    localStorage.setItem("ce_feedbacks", JSON.stringify(feedbacks));
+    localStorage.setItem("ce_settings", JSON.stringify(settings));
+}
+
+function setCurrent(user) {
+    currentUser = user;
+    sessionStorage.setItem("ce_current", JSON.stringify(user));
+}
+
+function refreshNavigation() {
+    const nav = document.getElementById("navigation");
+
+    if (!currentUser) {
+        nav.innerHTML = `
+            <button onclick="showHome()">Home</button>
+            <button onclick="showLogin()">Login</button>
+            <button onclick="showRegister()">Register</button>
+        `;
+    } else {
+        nav.innerHTML = `
+            <button onclick="dashboard()">Dashboard</button>
+            <button class="logout" onclick="logout()">Logout</button>
+        `;
+    }
+}
+
+function showMessage(message) {
+    alert(message);
+}
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+function makeId(prefix) {
+    return prefix + Date.now().toString().slice(-8) +
+        Math.floor(Math.random() * 100);
+}
+
+// -------------------- HOME PAGE --------------------
+
+function showHome() {
+    currentUser = null;
+    sessionStorage.removeItem("ce_current");
+    refreshNavigation();
+
+    document.getElementById("app").innerHTML = `
+        <section class="hero">
+            <h1>Welcome to ComplainEase</h1>
+            <p>Your complaints matter. Register your complaint online,
+            track its progress and receive updates in one place.</p>
+            <br>
+            <button onclick="showRegister()">Get Started</button>
+            <button onclick="showLogin()">Login</button>
+        </section>
+
+        <div class="cards">
+            <div class="card">
+                <h3>📝 Register Complaint</h3>
+                <p>Submit your complaints with descriptions and supporting evidence.</p>
+            </div>
+            <div class="card">
+                <h3>📍 Location Tracking</h3>
+                <p>Mark the location of your complaint on an interactive map.</p>
+            </div>
+            <div class="card">
+                <h3>📊 Track Status</h3>
+                <p>Check whether your complaint is pending, in progress or resolved.</p>
+            </div>
+            <div class="card">
+                <h3>💬 Feedback</h3>
+                <p>Share your feedback after the complaint has been handled.</p>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:25px;text-align:center">
+            <h3>Three types of users</h3>
+            <p>Citizen / User | Complaint Officer | Administrator</p>
+        </div>
+    `;
+}
+
+// -------------------- REGISTRATION --------------------
+
+function showRegister() {
+    refreshNavigation();
+
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2 class="section-title">User Registration</h2>
+
+            <form onsubmit="registerUser(event)">
+                <label>Full Name</label>
+                <input id="regName" required>
+
+                <label>Email Address</label>
+                <input id="regEmail" type="email" required>
+
+                <label>Phone Number</label>
+                <input id="regPhone" required>
+
+                <label>Address</label>
+                <textarea id="regAddress" required></textarea>
+
+                <label>Password</label>
+                <input id="regPassword" type="password" minlength="4" required>
+
+                <button type="submit">Register</button>
+            </form>
+
+            <p>Already registered? <a href="#" onclick="showLogin()">Login</a></p>
+        </div>
+    `;
+}
+
+function registerUser(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("regEmail").value.trim().toLowerCase();
+
+    if (users.some(u => u.email === email)) {
+        return showMessage("This email is already registered.");
+    }
+
+    users.push({
+        id: makeId("USR"),
+        name: document.getElementById("regName").value.trim(),
+        email,
+        phone: document.getElementById("regPhone").value.trim(),
+        address: document.getElementById("regAddress").value.trim(),
+        password: document.getElementById("regPassword").value
+    });
+
+    saveData();
+    showMessage("Registration successful! Please login.");
+    showLogin();
+}
+
+// -------------------- LOGIN --------------------
+
+function showLogin() {
+    refreshNavigation();
+
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2 class="section-title">Login</h2>
+
+            <form onsubmit="loginUser(event)">
+                <label>Email / Officer ID</label>
+                <input id="loginId" required>
+
+                <label>Password</label>
+                <input id="loginPassword" type="password" required>
+
+                <button type="submit">Login</button>
+            </form>
+
+            <p class="small-text">
+                Admin demo login: admin@complainease.com / admin123
+            </p>
+            <p class="small-text">
+                Officer demo login: OFF001 / officer123
+            </p>
+            <p>New user? <a href="#" onclick="showRegister()">Register here</a></p>
+        </div>
+    `;
+}
+
+function loginUser(event) {
+    event.preventDefault();
+
+    const id = document.getElementById("loginId").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    if (id.toLowerCase() === "admin@complainease.com" &&
+        password === "admin123") {
+        setCurrent({ role: "admin", name: "Administrator", id: "ADMIN" });
+        refreshNavigation();
+        dashboard();
+        return;
+    }
+
+    const officer = officers.find(o =>
+        (o.id.toLowerCase() === id.toLowerCase() ||
+         o.email.toLowerCase() === id.toLowerCase()) &&
+        o.password === password
+    );
+
+    if (officer) {
+        setCurrent({
+            role: "officer",
+            id: officer.id,
+            name: officer.name
+        });
+        refreshNavigation();
+        dashboard();
+        return;
+    }
+
+    const user = users.find(u =>
+        u.email.toLowerCase() === id.toLowerCase() &&
+        u.password === password
+    );
+
+    if (user) {
+        setCurrent({
+            role: "user",
+            id: user.id,
+            name: user.name,
+            email: user.email
+        });
+        refreshNavigation();
+        dashboard();
+        return;
+    }
+
+    showMessage("Invalid login details.");
+}
+
+// -------------------- DASHBOARD ROUTING --------------------
+
+function dashboard() {
+    if (!currentUser) return showLogin();
+
+    refreshNavigation();
+
+    if (currentUser.role === "admin") {
+        adminDashboard();
+    } else if (currentUser.role === "officer") {
+        officerDashboard();
+    } else {
+        userDashboard();
+    }
+}
+
+function logout() {
+    currentUser = null;
+    sessionStorage.removeItem("ce_current");
+    showHome();
+}
+
+// -------------------- USER DASHBOARD --------------------
+
+function userDashboard() {
+    const myComplaints = complaints.filter(c => c.userId === currentUser.id);
+
+    document.getElementById("app").innerHTML = `
+        <h2 class="section-title">Welcome, ${escapeHTML(currentUser.name)}</h2>
+
+        <div class="cards">
+            <div class="card">
+                <h3>My Complaints</h3>
+                <h2>${myComplaints.length}</h2>
+            </div>
+            <div class="card">
+                <h3>Pending Complaints</h3>
+                <h2>${myComplaints.filter(c => c.status === "Pending").length}</h2>
+            </div>
+            <div class="card">
+                <h3>Resolved Complaints</h3>
+                <h2>${myComplaints.filter(c => c.status === "Resolved").length}</h2>
+            </div>
+        </div>
+
+        <div class="cards">
+            ${settings.postComplaint ? `
+            <div class="card">
+                <h3>📝 Post Complaint</h3>
+                <p>Register a new complaint.</p>
+                <button onclick="complaintForm()">Post Now</button>
+            </div>` : ""}
+
+            ${settings.tracking ? `
+            <div class="card">
+                <h3>📊 View Status</h3>
+                <p>Track your complaint status.</p>
+                <button onclick="viewMyComplaints()">View Status</button>
+            </div>` : ""}
+
+            ${settings.feedback ? `
+            <div class="card">
+                <h3>💬 Feedback</h3>
+                <p>Send feedback about complaint resolution.</p>
+                <button onclick="feedbackForm()">Give Feedback</button>
+            </div>` : ""}
+
+            ${settings.contact ? `
+            <div class="card">
+                <h3>☎ Admin Contact</h3>
+                <p>Get administrator contact information.</p>
+                <button onclick="adminContact()">View Contact</button>
+            </div>` : ""}
+        </div>
+
+        <div class="card">
+            <h3>My Account</h3>
+            <p>Name: ${escapeHTML(currentUser.name)}</p>
+            <p>Email: ${escapeHTML(currentUser.email)}</p>
+            <button onclick="changeMyPassword()">Change Password</button>
+        </div>
+    `;
+}
+
+// -------------------- COMPLAINT FORM --------------------
+
+function complaintForm() {
+    if (!settings.postComplaint) {
+        return showMessage("This feature is currently unavailable.");
+    }
+
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2 class="section-title">Post a Complaint</h2>
+
+            <form onsubmit="submitComplaint(event)">
+                <label>Complaint Title</label>
+                <input id="complaintTitle" required>
+
+                <label>Complaint Category</label>
+                <select id="complaintCategory" required>
+                    <option value="">Select Category</option>
+                    <option>Road Problem</option>
+                    <option>Water Supply</option>
+                    <option>Electricity</option>
+                    <option>Garbage Collection</option>
+                    <option>Public Safety</option>
+                    <option>Street Light</option>
+                    <option>Other</option>
+                </select>
+
+                <label>Description</label>
+                <textarea id="complaintDescription" required></textarea>
+
+                <label>Supporting Document / Image</label>
+                <input id="complaintProof" type="file" accept="image/*,.pdf">
+
+                <label>Mark Complaint Location</label>
+                <p class="small-text">Click on the map to select the complaint location.</p>
+                <div id="map"></div>
+
+                <p id="selectedLocation" class="small-text">
+                    No location selected.
+                </p>
+
+                <button type="submit">Submit Complaint</button>
+                <button type="button" onclick="dashboard()">Cancel</button>
+            </form>
+        </div>
+    `;
+
+    selectedLocation = "";
+
+    setTimeout(() => {
+        if (!window.L) {
+            document.getElementById("selectedLocation").innerText =
+                "Map library unavailable. Check your internet connection.";
+            return;
+        }
+
+        map = L.map("map").setView([13.0827, 80.2707], 12);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "© OpenStreetMap contributors"
+        }).addTo(map);
+
+        let marker;
+
+        map.on("click", function(e) {
+            selectedLocation =
+                e.latlng.lat.toFixed(6) + ", " +
+                e.latlng.lng.toFixed(6);
+
+            if (marker) map.removeLayer(marker);
+
+            marker = L.marker(e.latlng).addTo(map);
+            document.getElementById("selectedLocation").innerText =
+                "Selected location: " + selectedLocation;
+        });
+
+        setTimeout(() => map.invalidateSize(), 200);
+    }, 200);
+}
+
+function submitComplaint(event) {
+    event.preventDefault();
+
+    if (!selectedLocation) {
+        return showMessage("Please select the complaint location on the map.");
+    }
+
+    const file = document.getElementById("complaintProof").files[0];
+
+    // Keep small supporting files in browser storage.
+    if (file && file.size > 500000) {
+        return showMessage("Please upload a file smaller than 500 KB.");
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function() {
+        const complaint = {
+            id: makeId("CMP"),
+            userId: currentUser.id,
+            userName: currentUser.name,
+            title: document.getElementById("complaintTitle").value.trim(),
+            category: document.getElementById("complaintCategory").value,
+            description: document.getElementById("complaintDescription").value.trim(),
+            location: selectedLocation,
+            proof: file ? reader.result : "",
+            proofName: file ? file.name : "",
+            status: "Pending",
+            officerId: "",
+            officerName: "",
+            officerProof: "",
+            createdAt: new Date().toLocaleString(),
+            updatedAt: new Date().toLocaleString()
+        };
+
+        complaints.push(complaint);
+        saveData();
+
+        showMessage("Complaint submitted successfully! Your ID is " + complaint.id);
+        userDashboard();
+    };
+
+    if (file) {
+        reader.readAsDataURL(file);
+    } else {
+        reader.onload();
+    }
+}
+
+// -------------------- USER COMPLAINT HISTORY --------------------
+
+function viewMyComplaints() {
+    const list = complaints.filter(c => c.userId === currentUser.id);
+
+    let rows = list.map(c => `
+        <tr>
+            <td>${escapeHTML(c.id)}</td>
+            <td>${escapeHTML(c.title)}</td>
+            <td>${escapeHTML(c.category)}</td>
+            <td><span class="status ${c.status.replace(" ", "-")}">${escapeHTML(c.status)}</span></td>
+            <td>${escapeHTML(c.updatedAt)}</td>
+            <td><button onclick="complaintDetails('${c.id}')">Details</button></td>
+        </tr>
+    `).join("");
+
+    document.getElementById("app").innerHTML = `
+        <h2 class="section-title">My Complaint History</h2>
+        <div class="card table-wrap">
+            <table>
+                <tr>
+                    <th>Complaint ID</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Last Updated</th>
+                    <th>Action</th>
+                </tr>
+                ${rows || "<tr><td colspan='6'>No complaints found.</td></tr>"}
+            </table>
+        </div>
+        <button onclick="dashboard()">Back to Dashboard</button>
+    `;
+}
+
+function complaintDetails(id) {
+    const c = complaints.find(x => x.id === id && x.userId === currentUser.id);
+    if (!c) return showMessage("Complaint not found.");
+
+    document.getElementById("app").innerHTML = `
+        <div class="card">
+            <h2 class="section-title">Complaint Details</h2>
+            <p><b>Complaint ID:</b> ${escapeHTML(c.id)}</p>
+            <p><b>Title:</b> ${escapeHTML(c.title)}</p>
+            <p><b>Category:</b> ${escapeHTML(c.category)}</p>
+            <p><b>Description:</b> ${escapeHTML(c.description)}</p>
+            <p><b>Location:</b> ${escapeHTML(c.location)}</p>
+            <p><b>Status:</b> <span class="status ${c.status.replace(" ", "-")}">${escapeHTML(c.status)}</span></p>
+            <p><b>Assigned Officer:</b> ${escapeHTML(c.officerName || "Not assigned")}</p>
+            <p><b>Submitted:</b> ${escapeHTML(c.createdAt)}</p>
+            <p><b>Last Updated:</b> ${escapeHTML(c.updatedAt)}</p>
+
+            ${c.proof ? `<p><b>Submitted Evidence:</b><br><a href="${c.proof}" target="_blank">View ${escapeHTML(c.proofName)}</a></p>` : ""}
+            ${c.officerProof ? `<p><b>Officer Proof of Work:</b><br><a href="${c.officerProof}" target="_blank">View proof</a></p>` : ""}
+
+            <button onclick="viewMyComplaints()">Back</button>
+        </div>
+    `;
+}
+
+// -------------------- FEEDBACK --------------------
+
+function feedbackForm() {
+    if (!settings.feedback) return showMessage("Feedback is unavailable.");
+
+    const resolved = complaints.filter(c =>
+        c.userId === currentUser.id && c.status === "Resolved"
+    );
+
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2 class="section-title">Submit Feedback</h2>
+            <form onsubmit="submitFeedback(event)">
+                <label>Select Resolved Complaint</label>
+                <select id="feedbackComplaint" required>
+                    <option value="">Select Complaint</option>
+                    ${resolved.map(c =>
+                        `<option value="${c.id}">${escapeHTML(c.id)} - ${escapeHTML(c.title)}</option>`
+                    ).join("")}
+                </select>
+
+                <label>Rating</label>
+                <select id="feedbackRating" required>
+                    <option value="">Select Rating</option>
+                    <option>5 - Excellent</option>
+                    <option>4 - Very Good</option>
+                    <option>3 - Good</option>
+                    <option>2 - Average</option>
+                    <option>1 - Poor</option>
+                </select>
+
+                <label>Comments</label>
+                <textarea id="feedbackText" required></textarea>
+
+                <button type="submit">Submit Feedback</button>
+            </form>
+            ${resolved.length === 0 ? "<p class='small-text'>Feedback can be submitted after a complaint is resolved.</p>" : ""}
+            <button onclick="dashboard()">Back</button>
+        </div>
+    `;
+}
+
+function submitFeedback(event) {
+    event.preventDefault();
+
+    const complaintId = document.getElementById("feedbackComplaint").value;
+
+    if (feedbacks.some(f => f.complaintId === complaintId &&
+        f.userId === currentUser.id)) {
+        return showMessage("Feedback has already been submitted for this complaint.");
+    }
+
+    feedbacks.push({
+        id: makeId("FDB"),
+        complaintId,
+        userId: currentUser.id,
+        userName: currentUser.name,
+        rating: document.getElementById("feedbackRating").value,
+        comments: document.getElementById("feedbackText").value,
+        date: new Date().toLocaleString()
+    });
+
+    saveData();
+    showMessage("Feedback submitted successfully!");
+    dashboard();
+}
+
+// -------------------- ADMIN CONTACT --------------------
+
+function adminContact() {
+    document.getElementById("app").innerHTML = `
+        <div class="card">
+            <h2 class="section-title">Administrator Contact Details</h2>
+            <p><b>Department:</b> ComplainEase Administration</p>
+            <p><b>Email:</b> admin@complainease.com</p>
+            <p><b>Phone:</b> 044-23456789</p>
+            <p><b>Office:</b> Complaint Resolution Office</p>
+            <button onclick="dashboard()">Back</button>
+        </div>
+    `;
+}
+
+// -------------------- CHANGE PASSWORD --------------------
+
+function changeMyPassword() {
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2 class="section-title">Change Password</h2>
+            <form onsubmit="saveMyPassword(event)">
+                <label>Current Password</label>
+                <input id="oldPassword" type="password" required>
+                <label>New Password</label>
+                <input id="newPassword" type="password" minlength="4" required>
+                <button type="submit">Update Password</button>
+            </form>
+            <button onclick="dashboard()">Back</button>
+        </div>
+    `;
+}
+
+function saveMyPassword(event) {
+    event.preventDefault();
+
+    const oldPassword = document.getElementById("oldPassword").value;
+    const newPassword = document.getElementById("newPassword").value;
+
+    if (currentUser.role === "user") {
+        const user = users.find(u => u.id === currentUser.id);
+        if (!user || user.password !== oldPassword) {
+            return showMessage("Current password is incorrect.");
+        }
+        user.password = newPassword;
+    } else if (currentUser.role === "officer") {
+        const officer = officers.find(o => o.id === currentUser.id);
+        if (!officer || officer.password !== oldPassword) {
+            return showMessage("Current password is incorrect.");
+        }
+        officer.password = newPassword;
+    }
+
+    saveData();
+    showMessage("Password changed successfully.");
+    dashboard();
+}
+
+// -------------------- OFFICER REGISTRATION --------------------
+
+function officerRegisterForm() {
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2 class="section-title">Officer Registration</h2>
+            <p class="small-text">
+                Officer registration requests are stored for the administrator.
+                The admin must approve/create the official officer account.
+            </p>
+            <form onsubmit="registerOfficer(event)">
+                <label>Full Name</label>
+                <input id="offName" required>
+                <label>Email</label>
+                <input id="offEmail" type="email" required>
+                <label>Phone</label>
+                <input id="offPhone" required>
+                <label>Requested Password</label>
+                <input id="offPassword" type="password" minlength="4" required>
+                <button type="submit">Submit Registration</button>
+            </form>
+            <button onclick="showLogin()">Back to Login</button>
+        </div>
+    `;
+}
+
+function registerOfficer(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("offEmail").value.trim().toLowerCase();
+
+    if (officers.some(o => o.email === email)) {
+        return showMessage("Officer email already exists.");
+    }
+
+    const officer = {
+        id: makeId("REQ"),
+        name: document.getElementById("offName").value.trim(),
+        email,
+        phone: document.getElementById("offPhone").value.trim(),
+        password: document.getElementById("offPassword").value,
+        approved: false
+    };
+
+    officers.push(officer);
+    saveData();
+
+    showMessage("Officer registration request submitted. Contact administrator.");
+    showLogin();
+}
+
+// -------------------- OFFICER DASHBOARD --------------------
+
+function officerDashboard() {
+    const mine = complaints.filter(c =>
+        c.officerId === currentUser.id ||
+        (!c.officerId && c.status !== "Resolved" && c.status !== "Rejected")
+    );
+
+    document.getElementById("app").innerHTML = `
+        <h2 class="section-title">Officer Dashboard</h2>
+        <div class="cards">
+            <div class="card">
+                <h3>My Assigned Complaints</h3>
+                <h2>${complaints.filter(c => c.officerId === currentUser.id).length}</h2>
+            </div>
+            <div class="card">
+                <h3>Available Complaints</h3>
+                <h2>${complaints.filter(c => !c.officerId && c.status === "Pending").length}</h2>
+            </div>
+        </div>
+
+        <div class="card table-wrap">
+            <h3>Complaints</h3>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>User</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                ${mine.map(c => `
+                    <tr>
+                        <td>${escapeHTML(c.id)}</td>
+                        <td>${escapeHTML(c.title)}</td>
+                        <td>${escapeHTML(c.userName)}</td>
+                        <td>${escapeHTML(c.location)}</td>
+                        <td>${escapeHTML(c.status)}</td>
+                        <td><button onclick="officerComplaint('${c.id}')">View / Update</button></td>
+                    </tr>
+                `).join("") || "<tr><td colspan='6'>No complaints available.</td></tr>"}
+            </table>
+        </div>
+        <button onclick="changeMyPassword()">Change Password</button>
+    `;
+}
+
+function officerComplaint(id) {
+    const c = complaints.find(x => x.id === id);
+
+    if (!c || (c.officerId && c.officerId !== currentUser.id)) {
+        return showMessage("Complaint is not available.");
+    }
+
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2 class="section-title">Update Complaint</h2>
+            <p><b>Complaint ID:</b> ${escapeHTML(c.id)}</p>
+            <p><b>Title:</b> ${escapeHTML(c.title)}</p>
+            <p><b>Category:</b> ${escapeHTML(c.category)}</p>
+            <p><b>Description:</b> ${escapeHTML(c.description)}</p>
+            <p><b>Location:</b> ${escapeHTML(c.location)}</p>
+            <p><b>User:</b> ${escapeHTML(c.userName)}</p>
+
+            ${c.proof ? `<p><a href="${c.proof}" target="_blank">View User Evidence</a></p>` : ""}
+
+            <form onsubmit="updateComplaint(event, '${c.id}')">
+                <label>Update Status</label>
+                <select id="newStatus" required>
+                    <option ${c.status === "Pending" ? "selected" : ""}>Pending</option>
+                    <option ${c.status === "In Progress" ? "selected" : ""}>In Progress</option>
+                    <option ${c.status === "Resolved" ? "selected" : ""}>Resolved</option>
+                    <option ${c.status === "Rejected" ? "selected" : ""}>Rejected</option>
+                </select>
+
+                <label>Upload Proof of Work (Image / PDF)</label>
+                <input type="file" id="officerProof" accept="image/*,.pdf">
+
+                <button type="submit">Save Update</button>
+            </form>
+            <button onclick="officerDashboard()">Back</button>
+        </div>
+    `;
+}
+
+function updateComplaint(event, id) {
+    event.preventDefault();
+
+    const c = complaints.find(x => x.id === id);
+    if (!c) return showMessage("Complaint not found.");
+
+    const file = document.getElementById("officerProof").files[0];
+
+    if (file && file.size > 500000) {
+        return showMessage("Please upload a file smaller than 500 KB.");
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function() {
+        c.status = document.getElementById("newStatus").value;
+        c.officerId = currentUser.id;
+        c.officerName = currentUser.name;
+        c.updatedAt = new Date().toLocaleString();
+
+        if (file) c.officerProof = reader.result;
+
+        saveData();
+        showMessage("Complaint status updated successfully!");
+        officerDashboard();
+    };
+
+    if (file) reader.readAsDataURL(file);
+    else reader.onload();
+}
+
+// -------------------- ADMIN DASHBOARD --------------------
+
+function adminDashboard() {
+    document.getElementById("app").innerHTML = `
+        <h2 class="section-title">Administrator Dashboard</h2>
+
+        <div class="cards">
+            <div class="card">
+                <h3>Total Users</h3>
+                <h2>${users.length}</h2>
+            </div>
+            <div class="card">
+                <h3>Total Officers</h3>
+                <h2>${officers.length}</h2>
+            </div>
+            <div class="card">
+                <h3>Total Complaints</h3>
+                <h2>${complaints.length}</h2>
+            </div>
+            <div class="card">
+                <h3>Pending Complaints</h3>
+                <h2>${complaints.filter(c => c.status === "Pending").length}</h2>
+            </div>
+        </div>
+
+        <div class="cards">
+            <div class="card">
+                <h3>👮 Officer Accounts</h3>
+                <p>Generate officer IDs and passwords.</p>
+                <button onclick="createOfficerForm()">Create Officer</button>
+                <button onclick="viewOfficers()">View Officers</button>
+            </div>
+
+            <div class="card">
+                <h3>👥 User Accounts</h3>
+                <p>View or delete user accounts.</p>
+                <button onclick="viewUsers()">Manage Users</button>
+            </div>
+
+            <div class="card">
+                <h3>📋 Complaint Management</h3>
+                <p>View and assign complaints to officers.</p>
+                <button onclick="adminComplaints()">Manage Complaints</button>
+            </div>
+
+            <div class="card">
+                <h3>⚙ Feature Settings</h3>
+                <p>Hide or show features for users.</p>
+                <button onclick="featureSettings()">Manage Features</button>
+            </div>
+
+            <div class="card">
+                <h3>🔑 Password Management</h3>
+                <p>Change account passwords.</p>
+                <button onclick="adminPasswordForm()">Change Password</button>
+            </div>
+
+            <div class="card">
+                <h3>💬 Feedback Reports</h3>
+                <p>View feedback submitted by users.</p>
+                <button onclick="viewFeedback()">View Feedback</button>
+            </div>
+        </div>
+    `;
+}
+
+// -------------------- ADMIN: CREATE OFFICER --------------------
+
+function createOfficerForm() {
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2 class="section-title">Generate Officer ID & Password</h2>
+
+            <form onsubmit="createOfficer(event)">
+                <label>Officer Name</label>
+                <input id="newOfficerName" required>
+
+                <label>Email</label>
+                <input id="newOfficerEmail" type="email" required>
+
+                <label>Phone Number</label>
+                <input id="newOfficerPhone" required>
+
+                <label>Officer ID</label>
+                <input id="newOfficerId" placeholder="Example: OFF002" required>
+
+                <label>Password</label>
+                <input id="newOfficerPassword" type="text" required>
+
+                <button type="submit">Generate Account</button>
+            </form>
+            <button onclick="adminDashboard()">Back</button>
+        </div>
+    `;
+}
+
+function createOfficer(event) {
+    event.preventDefault();
+
+    const id = document.getElementById("newOfficerId").value.trim();
+    const email = document.getElementById("newOfficerEmail").value.trim().toLowerCase();
+
+    if (officers.some(o => o.id.toLowerCase() === id.toLowerCase() ||
+        o.email === email)) {
+        return showMessage("Officer ID or email already exists.");
+    }
+
+    officers.push({
+        id,
+        name: document.getElementById("newOfficerName").value.trim(),
+        email,
+        phone: document.getElementById("newOfficerPhone").value.trim(),
+        password: document.getElementById("newOfficerPassword").value,
+        approved: true
+    });
+
+    saveData();
+    showMessage("Officer account created successfully. Officer ID: " + id);
+    viewOfficers();
+}
+
+// -------------------- ADMIN: VIEW OFFICERS --------------------
+
+function viewOfficers() {
+    document.getElementById("app").innerHTML = `
+        <h2 class="section-title">Officer Accounts</h2>
+        <div class="card table-wrap">
+            <table>
+                <tr>
+                    <th>Officer ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Account</th>
+                    <th>Action</th>
+                </tr>
+                ${officers.map(o => `
+                    <tr>
+                        <td>${escapeHTML(o.id)}</td>
+                        <td>${escapeHTML(o.name)}</td>
+                        <td>${escapeHTML(o.email)}</td>
+                        <td>${escapeHTML(o.phone)}</td>
+                        <td>${o.approved ? "Active" : "Registration Request"}</td>
+                        <td>
+                            <button onclick="adminChangePassword('officer','${o.id}')">Password</button>
+                            <button onclick="deleteOfficer('${o.id}')">Delete</button>
+                        </td>
+                    </tr>
+                `).join("") || "<tr><td colspan='6'>No officers found.</td></tr>"}
+            </table>
+        </div>
+        <button onclick="createOfficerForm()">Create Officer</button>
+        <button onclick="adminDashboard()">Back</button>
+    `;
+}
+
+function deleteOfficer(id) {
+    if (!confirm("Delete this officer account?")) return;
+
+    officers = officers.filter(o => o.id !== id);
+
+    complaints.forEach(c => {
+        if (c.officerId === id) {
+            c.officerId = "";
+            c.officerName = "";
+        }
+    });
+
+    saveData();
+    viewOfficers();
+}
+
+// -------------------- ADMIN: USER ACCOUNTS --------------------
+
+function viewUsers() {
+    document.getElementById("app").innerHTML = `
+        <h2 class="section-title">User Accounts</h2>
+        <div class="card table-wrap">
+            <table>
+                <tr>
+                    <th>User ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Action</th>
+                </tr>
+                ${users.map(u => `
+                    <tr>
+                        <td>${escapeHTML(u.id)}</td>
+                        <td>${escapeHTML(u.name)}</td>
+                        <td>${escapeHTML(u.email)}</td>
+                        <td>${escapeHTML(u.phone)}</td>
+                        <td>${escapeHTML(u.address)}</td>
+                        <td>
+                            <button onclick="adminChangePassword('user','${u.id}')">Password</button>
+                            <button onclick="deleteUser('${u.id}')">Delete</button>
+                        </td>
+                    </tr>
+                `).join("") || "<tr><td colspan='6'>No users found.</td></tr>"}
+            </table>
+        </div>
+        <button onclick="adminDashboard()">Back</button>
+    `;
+}
+
+function deleteUser(id) {
+    if (!confirm("Delete this user account and their complaints?")) return;
+
+    users = users.filter(u => u.id !== id);
+    complaints = complaints.filter(c => c.userId !== id);
+    feedbacks = feedbacks.filter(f => f.userId !== id);
+
+    saveData();
+    viewUsers();
+}
+
+// -------------------- ADMIN: COMPLAINT MANAGEMENT --------------------
+
+function adminComplaints() {
+    document.getElementById("app").innerHTML = `
+        <h2 class="section-title">All Complaints</h2>
+        <div class="card table-wrap">
+            <table>
+                <tr>
+                    <th>Complaint ID</th>
+                    <th>User</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Officer</th>
+                    <th>Action</th>
+                </tr>
+                ${complaints.map(c => `
+                    <tr>
+                        <td>${escapeHTML(c.id)}</td>
+                        <td>${escapeHTML(c.userName)}</td>
+                        <td>${escapeHTML(c.title)}</td>
+                        <td>${escapeHTML(c.category)}</td>
+                        <td>${escapeHTML(c.location)}</td>
+                        <td>${escapeHTML(c.status)}</td>
+                        <td>${escapeHTML(c.officerName || "Not assigned")}</td>
+                        <td><button onclick="adminComplaintDetails('${c.id}')">Manage</button></td>
+                    </tr>
+                `).join("") || "<tr><td colspan='8'>No complaints found.</td></tr>"}
+            </table>
+        </div>
+        <button onclick="adminDashboard()">Back</button>
+    `;
+}
+
+function adminComplaintDetails(id) {
+    const c = complaints.find(x => x.id === id);
+    if (!c) return;
+
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2 class="section-title">Manage Complaint</h2>
+            <p><b>ID:</b> ${escapeHTML(c.id)}</p>
+            <p><b>User:</b> ${escapeHTML(c.userName)}</p>
+            <p><b>Title:</b> ${escapeHTML(c.title)}</p>
+            <p><b>Description:</b> ${escapeHTML(c.description)}</p>
+            <p><b>Location:</b> ${escapeHTML(c.location)}</p>
+            <p><b>Status:</b> ${escapeHTML(c.status)}</p>
+
+            <form onsubmit="assignOfficer(event,'${c.id}')">
+                <label>Assign Officer</label>
+                <select id="assignOfficer" required>
+                    <option value="">Select Officer</option>
+                    ${officers.filter(o => o.approved).map(o => `
+                        <option value="${escapeHTML(o.id)}" ${c.officerId === o.id ? "selected" : ""}>
+                            ${escapeHTML(o.id)} - ${escapeHTML(o.name)}
+                        </option>
+                    `).join("")}
+                </select>
+                <button type="submit">Assign Officer</button>
+            </form>
+
+            ${c.proof ? `<p><a href="${c.proof}" target="_blank">View User Evidence</a></p>` : ""}
+            ${c.officerProof ? `<p><a href="${c.officerProof}" target="_blank">View Officer Proof</a></p>` : ""}
+
+            <button onclick="adminDeleteComplaint('${c.id}')">Delete Complaint</button>
+            <button onclick="adminComplaints()">Back</button>
+        </div>
+    `;
+}
+
+function assignOfficer(event, complaintId) {
+    event.preventDefault();
+
+    const c = complaints.find(x => x.id === complaintId);
+    const officer = officers.find(o =>
+        o.id === document.getElementById("assignOfficer").value
+    );
+
+    if (!c || !officer) return showMessage("Please select a valid officer.");
+
+    c.officerId = officer.id;
+    c.officerName = officer.name;
+    c.updatedAt = new Date().toLocaleString();
+
+    saveData();
+    showMessage("Officer assigned successfully.");
+    adminComplaints();
+}
+
+function adminDeleteComplaint(id) {
+    if (!confirm("Delete this complaint?")) return;
+
+    complaints = complaints.filter(c => c.id !== id);
+    feedbacks = feedbacks.filter(f => f.complaintId !== id);
+
+    saveData();
+    adminComplaints();
+}
+
+// -------------------- ADMIN: HIDE / SHOW FEATURES --------------------
+
+function featureSettings() {
+    const features = [
+        ["postComplaint", "Post Complaint"],
+        ["tracking", "View Complaint Status"],
+        ["feedback", "Feedback"],
+        ["contact", "Admin Contact Details"]
+    ];
+
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2 class="section-title">Feature Visibility Settings</h2>
+            <p>Enable or disable features displayed on the user dashboard.</p>
+            ${features.map(([key, name]) => `
+                <p style="margin:18px 0">
+                    <label>${name}</label><br>
+                    <select id="feature_${key}" onchange="toggleFeature('${key}',this.value)">
+                        <option value="true" ${settings[key] ? "selected" : ""}>Visible</option>
+                        <option value="false" ${!settings[key] ? "selected" : ""}>Hidden</option>
+                    </select>
+                </p>
+            `).join("")}
+            <button onclick="adminDashboard()">Back</button>
+        </div>
+    `;
+}
+
+function toggleFeature(key, value) {
+    settings[key] = value === "true";
+    saveData();
+    showMessage("Feature setting updated.");
+}
+
+// -------------------- ADMIN: PASSWORD MANAGEMENT --------------------
+
+function adminChangePassword(type, id) {
+    const list = type === "user" ? users : officers;
+    const account = list.find(x => x.id === id);
+    if (!account) return showMessage("Account not found.");
+
+    const newPassword = prompt("Enter new password for " + id + ":");
+    if (newPassword === null) return;
+
+    if (newPassword.length < 4) {
+        return showMessage("Password must contain at least 4 characters.");
+    }
+
+    account.password = newPassword;
+    saveData();
+    showMessage("Password updated successfully.");
+}
+
+function adminPasswordForm() {
+    document.getElementById("app").innerHTML = `
+        <div class="form-box">
+            <h2 class="section-title">Change Admin Password</h2>
+            <form onsubmit="changeAdminPassword(event)">
+                <label>Current Password</label>
+                <input type="password" id="adminOld" required>
+                <label>New Password</label>
+                <input type="password" id="adminNew" minlength="4" required>
+                <button type="submit">Change Password</button>
+            </form>
+            <button onclick="adminDashboard()">Back</button>
+        </div>
+    `;
+}
+
+function changeAdminPassword(event) {
+    event.preventDefault();
+
+    const oldPass = document.getElementById("adminOld").value;
+    const newPass = document.getElementById("adminNew").value;
+
+    const saved = localStorage.getItem("ce_admin_password") || "admin123";
+
+    if (oldPass !== saved) {
+        return showMessage("Current admin password is incorrect.");
+    }
+
+    localStorage.setItem("ce_admin_password", newPass);
+    showMessage("Admin password changed successfully. Login again to use the new password.");
+    logout();
+}
+
+// -------------------- ADMIN: VIEW FEEDBACK --------------------
+
+function viewFeedback() {
+    document.getElementById("app").innerHTML = `
+        <h2 class="section-title">User Feedback</h2>
+        <div class="card table-wrap">
+            <table>
+                <tr>
+                    <th>Feedback ID</th>
+                    <th>Complaint ID</th>
+                    <th>User</th>
+                    <th>Rating</th>
+                    <th>Comments</th>
+                    <th>Date</th>
+                </tr>
+                ${feedbacks.map(f => `
+                    <tr>
+                        <td>${escapeHTML(f.id)}</td>
+                        <td>${escapeHTML(f.complaintId)}</td>
+                        <td>${escapeHTML(f.userName)}</td>
+                        <td>${escapeHTML(f.rating)}</td>
+                        <td>${escapeHTML(f.comments)}</td>
+                        <td>${escapeHTML(f.date)}</td>
+                    </tr>
+                `).join("") || "<tr><td colspan='6'>No feedback found.</td></tr>"}
+            </table>
+        </div>
+        <button onclick="adminDashboard()">Back</button>
+    `;
+}
+
+// -------------------- INITIALIZE --------------------
+
+function loginUser(event) {
+    event.preventDefault();
+
+    const id = document.getElementById("loginId").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    const adminPassword = localStorage.getItem("ce_admin_password") || "admin123";
+
+    if (id.toLowerCase() === "admin@complainease.com" &&
+        password === adminPassword) {
+        setCurrent({ role: "admin", name: "Administrator", id: "ADMIN" });
+        refreshNavigation();
+        dashboard();
+        return;
+    }
+
+    const officer = officers.find(o =>
+        (o.id.toLowerCase() === id.toLowerCase() ||
+         o.email.toLowerCase() === id.toLowerCase()) &&
+        o.password === password && o.approved
+    );
+
+    if (officer) {
+        setCurrent({
+            role: "officer",
+            id: officer.id,
+            name: officer.name
+        });
+        refreshNavigation();
+        dashboard();
+        return;
+    }
+
+    const user = users.find(u =>
+        u.email.toLowerCase() === id.toLowerCase() &&
+        u.password === password
+    );
+
+    if (user) {
+        setCurrent({
+            role: "user",
+            id: user.id,
+            name: user.name,
+            email: user.email
+        });
+        refreshNavigation();
+        dashboard();
+        return;
+    }
+
+    showMessage("Invalid login details.");
+}
+
+if (currentUser) {
+    const valid =
+        currentUser.role === "admin" ||
+        (currentUser.role === "user" && users.some(u => u.id === currentUser.id)) ||
+        (currentUser.role === "officer" && officers.some(o => o.id === currentUser.id && o.approved));
+
+    if (valid) dashboard();
+    else {
+        currentUser = null;
+        sessionStorage.removeItem("ce_current");
+        showHome();
+    }
+} else {
+    showHome();
+}
+</script>
+
+</body>
+</html>
